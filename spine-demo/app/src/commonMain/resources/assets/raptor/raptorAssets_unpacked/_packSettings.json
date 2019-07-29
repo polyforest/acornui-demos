@@ -1,0 +1,23 @@
+{
+  "alphaThreshold": 0,
+  "filterMag": "NEAREST",
+  "filterMin": "LINEAR_MIPMAP_LINEAR",
+  "pixelType": "UNSIGNED_BYTE",
+  "pixelFormat": "RGBA",
+  "compressionExtension": "png",
+  "compressionQuality": 0.9,
+  "maxDirectoryDepth": 10,
+  "packAlgorithm": "BEST",
+  "powerOfTwo": true,
+  "premultipliedAlpha": false,
+  "stripWhitespace": true,
+  "algorithmSettings" : {
+    "allowRotation": false,
+    "paddingX": 2,
+    "paddingY": 2,
+    "pageMaxHeight": 2048,
+    "pageMaxWidth": 2048,
+    "powerOfTwo": true,
+    "hasWhitePixel": true
+  }
+}

@@ -1,0 +1,32 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: build-test-web
+    image: gradle:jdk8
+    commands:
+      - gradle build webProdAssemble --stacktrace
+  - name: upload
+    image: appleboy/drone-scp
+    settings:
+      host:
+        - bandbox.dreamhost.com
+      username:
+        from_secret: BANDBOX_FTP_USERNAME
+      password:
+        from_secret: BANDBOX_FTP_PASSWORD
+      port: 22
+      command_timeout: 4m
+      target: ~/demos.acornui.com/
+      source:
+        - ./**/build/wwwProd
+
+---
+kind: pipeline
+name: jdk11
+
+steps:
+  - name: build-test-web
+    image: gradle:jdk11
+    commands:
+      - gradle build webProdAssemble --stacktrace
