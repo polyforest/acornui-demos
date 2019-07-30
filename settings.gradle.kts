@@ -26,4 +26,4 @@ pluginManagement {
 enableFeaturePreview("GRADLE_METADATA")
 
 // Add modules as they are created.  By default, subprojects take on the name of their root directory in gradle.
-include("text-demo:app", "spine-demo:app")
+include("text-demo:app", "spine-demo:app", "rect-demo:app")
