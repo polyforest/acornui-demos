@@ -26,4 +26,21 @@ pluginManagement {
 enableFeaturePreview("GRADLE_METADATA")
 
 // Add modules as they are created.  By default, subprojects take on the name of their root directory in gradle.
-include("text-demo:app", "spine-demo:app", "rect-demo:app")
+include("text-demo", "spine-demo", "rect-demo")
+
+
+// Acorn composite project as sub-projects as a workaround to https://youtrack.jetbrains.com/issue/KT-30285
+val acornUiHome: String? by extra
+
+if (acornUiHome != null && file(acornUiHome!!).exists()) {
+	listOf("utils", "core", "game", "spine", "test-utils").forEach { acornModule ->
+		include(":acornui:acornui-$acornModule")
+		val proj = project(":acornui:acornui-$acornModule")
+		proj.projectDir = file("$acornUiHome/acornui-$acornModule")
+	}
+	listOf("lwjgl", "webgl").forEach { backend ->
+		include(":acornui:backends:acornui-$backend-backend")
+		val proj = project(":acornui:backends:acornui-$backend-backend")
+		proj.projectDir = file("$acornUiHome/backends/acornui-$backend-backend")
+	}
+}

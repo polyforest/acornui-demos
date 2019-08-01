@@ -15,5 +15,20 @@
  */
 
 plugins {
-	id("com.acornui.root")
+	id("com.acornui.app")
+}
+
+kotlin {
+	sourceSets {
+		commonMain {
+			dependencies {
+				implementation("com.acornui:acornui-spine")
+				implementation("com.acornui.skins:basic")
+			}
+		}
+	}
+}
+
+tasks.runJvm {
+	main = "spinedemo.jvm.SpineDemoJvmKt"
 }
