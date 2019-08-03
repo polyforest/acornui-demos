@@ -16,9 +16,9 @@
 
 package textdemo
 
-import com.acornui.core.AppConfig
-import com.acornui.core.GlConfig
-import com.acornui.core.WindowConfig
+import com.acornui.AppConfig
+import com.acornui.GlConfig
+import com.acornui.WindowConfig
 
 fun getConfig(): AppConfig {
 	return AppConfig(frameRate = 60, window = WindowConfig(title = "TextDemo"), gl = GlConfig(antialias = false))

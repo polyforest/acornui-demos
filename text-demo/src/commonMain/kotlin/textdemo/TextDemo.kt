@@ -19,8 +19,8 @@ package textdemo
 import com.acornui.component.*
 import com.acornui.component.scroll.ScrollPolicy
 import com.acornui.component.text.textArea
-import com.acornui.core.di.Owned
-import com.acornui.core.nav.NavBindable
+import com.acornui.di.Owned
+import com.acornui.nav.NavBindable
 import com.acornui.math.Pad
 import com.acornui.skins.BasicUiSkin
 import com.acornui.skins.Theme
