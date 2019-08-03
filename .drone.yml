@@ -19,7 +19,7 @@ steps:
       command_timeout: 4m
       target: ~/demos.acornui.com/
       source:
-        - ./**/**/build/wwwProd
+        - ./**/build/wwwProd
 
 ---
 kind: pipeline
