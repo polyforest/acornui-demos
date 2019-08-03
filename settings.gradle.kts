@@ -28,7 +28,7 @@ pluginManagement {
 enableFeaturePreview("GRADLE_METADATA")
 
 // Add modules as they are created.  By default, subprojects take on the name of their root directory in gradle.
-include("text-demo", "spine-demo", "rect-demo", "datagrid-demo")
+include("text-demo", "spine-demo", "rect-demo", "datagrid-demo", "fileio-demo")
 
 
 // Acorn composite project as sub-projects as a workaround to https://youtrack.jetbrains.com/issue/KT-30285
