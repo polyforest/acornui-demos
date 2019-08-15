@@ -23,7 +23,7 @@ kotlin {
 		commonMain {
 			dependencies {
 				implementation("com.acornui:acornui-spine")
-				implementation("com.acornui.skins:basic")
+				runtimeOnly("com.acornui.skins:basic")
 			}
 		}
 	}

@@ -6,7 +6,7 @@ kotlin {
 	sourceSets {
 		commonMain {
 			dependencies {
-				implementation("com.acornui.skins:basic")
+				runtimeOnly("com.acornui.skins:basic")
 			}
 		}
 	}
