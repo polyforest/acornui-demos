@@ -16,7 +16,7 @@
 
 package fileiodemo
 
-import com.acornui.async.launch
+import com.acornui.async.globalLaunch
 import com.acornui.component.button
 import com.acornui.component.layout.algorithm.VerticalLayoutContainer
 import com.acornui.component.layout.algorithm.hGroup
@@ -110,7 +110,7 @@ class FileIoDemo(owner: Owned) : VerticalLayoutContainer(owner) {
 
 				for (i in 1..it.lastIndex) {
 					tryCatch {
-						launch {
+						globalLaunch {
 							if (i < 1)
 								fileText.append("${it[0].name}\n${it[0].readAsString()}")
 							else
