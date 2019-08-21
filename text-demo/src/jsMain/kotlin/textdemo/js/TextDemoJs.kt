@@ -17,7 +17,7 @@
 package textdemo.js
 
 import com.acornui.component.stage
-import com.acornui.js.gl.WebGlApplication
+import com.acornui.js.webgl.WebGlApplication
 import textdemo.TextDemo
 import textdemo.getConfig
 

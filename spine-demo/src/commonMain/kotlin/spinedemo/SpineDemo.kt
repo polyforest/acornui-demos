@@ -16,7 +16,10 @@
 
 package spinedemo
 
-import com.acornui.async.async
+import com.acornui.AppConfig
+import com.acornui.WindowConfig
+import com.acornui.asset.cachedGroup
+import com.acornui.async.globalAsync
 import com.acornui.async.then
 import com.acornui.component.button
 import com.acornui.component.image
@@ -24,17 +27,13 @@ import com.acornui.component.layout.HAlign
 import com.acornui.component.layout.VAlign
 import com.acornui.component.layout.algorithm.CanvasLayoutContainer
 import com.acornui.component.layout.algorithm.vGroup
-import com.acornui.component.stage
-import com.acornui.AppConfig
-import com.acornui.WindowConfig
-import com.acornui.asset.cachedGroup
 import com.acornui.di.Owned
-import com.acornui.input.interaction.click
-import com.acornui.tween.Tween
 import com.acornui.graphic.Color
+import com.acornui.input.interaction.click
 import com.acornui.math.Pad
 import com.acornui.skins.BasicUiSkin
 import com.acornui.skins.Theme
+import com.acornui.tween.Tween
 import com.esotericsoftware.spine.component.SkeletonComponent
 import com.esotericsoftware.spine.component.loadSkeleton
 import com.esotericsoftware.spine.component.skeletonComponent
@@ -62,7 +61,7 @@ class SpineDemo(owner: Owned) : CanvasLayoutContainer(owner) {
 				defaultHeight = 1200f
 				setOrigin(-defaultWidth!! * 0.5f, -defaultHeight!!)
 
-				async {
+				globalAsync {
 					loadSkeleton("assets/raptor/raptor.json", "assets/raptor/raptorAssets.json", null, cachedGroup()).await()
 				} then { skeleton ->
 					raptor = +skeletonComponent(skeleton) {

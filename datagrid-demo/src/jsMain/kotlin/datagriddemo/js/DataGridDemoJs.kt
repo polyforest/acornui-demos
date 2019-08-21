@@ -17,7 +17,7 @@
 package datagriddemo.js
 
 import com.acornui.component.stage
-import com.acornui.js.gl.WebGlApplication
+import com.acornui.js.webgl.WebGlApplication
 import datagriddemo.DataGridDemo
 import datagriddemo.getConfig
 

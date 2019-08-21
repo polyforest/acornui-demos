@@ -17,10 +17,7 @@
 package spinedemo.js
 
 import com.acornui.component.stage
-import com.acornui.AppConfig
-import com.acornui.GlConfig
-import com.acornui.WindowConfig
-import com.acornui.js.gl.WebGlApplication
+import com.acornui.js.webgl.WebGlApplication
 import spinedemo.SpineDemo
 import spinedemo.config
 

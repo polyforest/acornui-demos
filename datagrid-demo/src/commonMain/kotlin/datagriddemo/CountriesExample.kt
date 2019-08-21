@@ -16,6 +16,7 @@
 
 package datagriddemo
 
+import com.acornui.asset.loadText
 import com.acornui.async.launch
 import com.acornui.collection.ActiveList
 import com.acornui.collection.ObservableList
@@ -34,7 +35,6 @@ import com.acornui.component.style.and
 import com.acornui.component.text.TextField
 import com.acornui.component.text.strong
 import com.acornui.component.text.text
-import com.acornui.asset.AssetType
 import com.acornui.compareTo2
 import com.acornui.di.Owned
 import com.acornui.di.own
@@ -57,7 +57,7 @@ class CountriesExample(owned: Owned) : VerticalLayoutContainer(owned) {
 		val data = ActiveList<CountryData>()
 
 		launch {
-			val it = assets.load("assets/countries.tsv", AssetType.TEXT).await()
+			val it = loadText("assets/countries.tsv")
 			val countries = it.split('\n')
 			for (country in countries) {
 				val countrySplit = country.split('\t')

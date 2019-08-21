@@ -23,7 +23,6 @@ import com.acornui.component.layout.algorithm.*
 import com.acornui.component.scroll.hSlider
 import com.acornui.component.scroll.scrollArea
 import com.acornui.component.text.text
-import com.acornui.asset.loadingQueueBusyWatch
 import com.acornui.di.Owned
 import com.acornui.di.inject
 import com.acornui.input.Ascii
@@ -46,7 +45,6 @@ class RectDemo(owner: Owned) : StackLayoutContainer(owner) {
 		Tween.prepare()
 
 		BasicUiSkin(stage, Theme()).apply()
-		loadingQueueBusyWatch().start()
 
 		val linearGradient = LinearGradient(GradientDirection.RIGHT,
 				ColorStop(Color(1f, 0f, 0f, 1f), 0f),
