@@ -17,7 +17,7 @@
 package datagriddemo
 
 import com.acornui.asset.loadText
-import com.acornui.async.launch
+import com.acornui.async.globalLaunch
 import com.acornui.collection.ActiveList
 import com.acornui.collection.ObservableList
 import com.acornui.collection.addAll
@@ -56,7 +56,7 @@ class CountriesExample(owned: Owned) : VerticalLayoutContainer(owned) {
 
 		val data = ActiveList<CountryData>()
 
-		launch {
+		globalLaunch {
 			val it = loadText("assets/countries.tsv")
 			val countries = it.split('\n')
 			for (country in countries) {
