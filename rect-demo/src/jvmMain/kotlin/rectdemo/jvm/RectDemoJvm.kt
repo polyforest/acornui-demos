@@ -17,7 +17,7 @@
 package rectdemo.jvm
 
 import com.acornui.component.stage
-import com.acornui.jvm.LwjglApplication
+import com.acornui.lwjgl.LwjglApplication
 import rectdemo.RectDemo
 import rectdemo.getConfig
 

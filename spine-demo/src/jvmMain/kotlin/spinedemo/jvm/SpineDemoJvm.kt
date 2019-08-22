@@ -17,7 +17,7 @@
 package spinedemo.jvm
 
 import com.acornui.component.stage
-import com.acornui.jvm.LwjglApplication
+import com.acornui.lwjgl.LwjglApplication
 import spinedemo.SpineDemo
 import spinedemo.config
 
