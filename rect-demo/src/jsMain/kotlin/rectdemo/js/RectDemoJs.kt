@@ -17,7 +17,7 @@
 package rectdemo.js
 
 import com.acornui.component.stage
-import com.acornui.js.webgl.WebGlApplication
+import com.acornui.webgl.WebGlApplication
 import rectdemo.RectDemo
 import rectdemo.getConfig
 
