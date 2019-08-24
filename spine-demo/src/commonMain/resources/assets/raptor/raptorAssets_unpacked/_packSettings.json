@@ -17,6 +17,6 @@
     "pageMaxHeight": 2048,
     "pageMaxWidth": 2048,
     "powerOfTwo": true,
-    "hasWhitePixel": true
+    "addWhitePixel": true
   }
 }
