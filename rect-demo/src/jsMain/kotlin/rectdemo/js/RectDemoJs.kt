@@ -19,10 +19,10 @@ package rectdemo.js
 import com.acornui.component.stage
 import com.acornui.webgl.WebGlApplication
 import rectdemo.RectDemo
-import rectdemo.getConfig
+import rectdemo.config
 
 fun main(args: Array<String>) {
-	WebGlApplication("rectDemoRoot").start(getConfig()) {
+	WebGlApplication("rectDemoRoot").start(config) {
 		stage.addElement(RectDemo(this))
 	}
 }

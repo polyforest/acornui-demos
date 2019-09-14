@@ -17,9 +17,6 @@
 package datagriddemo
 
 import com.acornui.AppConfig
-import com.acornui.GlConfig
 import com.acornui.WindowConfig
 
-fun getConfig(): AppConfig {
-	return AppConfig(frameRate = 60, window = WindowConfig(title = "DataGridDemo"), gl = GlConfig(antialias = false))
-}
+val config = AppConfig(window = WindowConfig(title = "DataGridDemo"))

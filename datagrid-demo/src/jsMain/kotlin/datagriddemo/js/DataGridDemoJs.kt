@@ -19,10 +19,10 @@ package datagriddemo.js
 import com.acornui.component.stage
 import com.acornui.webgl.WebGlApplication
 import datagriddemo.DataGridDemo
-import datagriddemo.getConfig
+import datagriddemo.config
 
 fun main(args: Array<String>) {
-	WebGlApplication("dataGridDemoRoot").start(getConfig()) {
+	WebGlApplication("dataGridDemoRoot").start(config) {
 		stage.addElement(DataGridDemo(this))
 	}
 }

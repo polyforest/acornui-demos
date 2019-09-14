@@ -19,10 +19,10 @@ package textdemo.jvm
 import com.acornui.component.stage
 import com.acornui.lwjgl.LwjglApplication
 import textdemo.TextDemo
-import textdemo.getConfig
+import textdemo.config
 
 fun main(args: Array<String>) {
-	LwjglApplication().start(getConfig()) {
+	LwjglApplication().start(config) {
 		stage.addElement(TextDemo(this))
 	}
 }

@@ -26,4 +26,4 @@ requirejs.config({
 	}
 });
 
-requirejs(["spine-demo"]);
+requirejs(["acornui-demos-spine-demo"]);

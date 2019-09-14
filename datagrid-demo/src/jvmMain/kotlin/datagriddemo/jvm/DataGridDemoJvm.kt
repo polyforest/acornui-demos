@@ -19,10 +19,10 @@ package datagriddemo.jvm
 import com.acornui.component.stage
 import com.acornui.lwjgl.LwjglApplication
 import datagriddemo.DataGridDemo
-import datagriddemo.getConfig
+import datagriddemo.config
 
 fun main(args: Array<String>) {
-	LwjglApplication().start(getConfig()) {
+	LwjglApplication().start(config) {
 		stage.addElement(DataGridDemo(this))
 	}
 }

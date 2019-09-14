@@ -26,4 +26,4 @@ requirejs.config({
 	}
 });
 
-requirejs(["text-demo"]);
+requirejs(["acornui-demos-text-demo"]);

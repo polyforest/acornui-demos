@@ -20,6 +20,4 @@ import com.acornui.AppConfig
 import com.acornui.GlConfig
 import com.acornui.WindowConfig
 
-fun getConfig(): AppConfig {
-	return AppConfig(frameRate = 60, window = WindowConfig(title = "TextDemo"), gl = GlConfig(antialias = false))
-}
+val config = AppConfig(frameRate = 60, window = WindowConfig(title = "TextDemo"), gl = GlConfig(antialias = false))

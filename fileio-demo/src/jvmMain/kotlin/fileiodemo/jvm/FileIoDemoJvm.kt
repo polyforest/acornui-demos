@@ -18,11 +18,11 @@ package fileiodemo.jvm
 
 import com.acornui.component.stage
 import com.acornui.lwjgl.LwjglApplication
-import datagriddemo.getConfig
+import fileiodemo.config
 import fileiodemo.FileIoDemo
 
 fun main(args: Array<String>) {
-	LwjglApplication().start(getConfig()) {
+	LwjglApplication().start(config) {
 		stage.addElement(FileIoDemo(this))
 	}
 }

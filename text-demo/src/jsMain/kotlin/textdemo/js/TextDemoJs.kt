@@ -19,10 +19,10 @@ package textdemo.js
 import com.acornui.component.stage
 import com.acornui.webgl.WebGlApplication
 import textdemo.TextDemo
-import textdemo.getConfig
+import textdemo.config
 
 fun main(args: Array<String>) {
-	WebGlApplication("textDemoRoot").start(getConfig()) {
+	WebGlApplication("textDemoRoot").start(config) {
 		stage.addElement(TextDemo(this))
 	}
 }

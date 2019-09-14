@@ -26,4 +26,4 @@ requirejs.config({
 	}
 });
 
-requirejs(["app"]);
+requirejs(["acornui-demos-app"]);

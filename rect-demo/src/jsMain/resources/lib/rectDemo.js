@@ -26,4 +26,4 @@ requirejs.config({
 	}
 });
 
-requirejs(["rect-demo"]);
+requirejs(["acornui-demos-rect-demo"]);

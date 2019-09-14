@@ -26,4 +26,4 @@ requirejs.config({
 	}
 });
 
-requirejs(["datagrid-demo"]);
+requirejs(["acornui-demos-datagrid-demo"]);

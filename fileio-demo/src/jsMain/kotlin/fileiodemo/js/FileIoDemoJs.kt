@@ -18,11 +18,11 @@ package fileiodemo.js
 
 import com.acornui.component.stage
 import com.acornui.webgl.WebGlApplication
-import datagriddemo.getConfig
+import fileiodemo.config
 import fileiodemo.FileIoDemo
 
 fun main(args: Array<String>) {
-	WebGlApplication("fileIoDemoRoot").start(getConfig()) {
+	WebGlApplication("fileIoDemoRoot").start(config) {
 		stage.addElement(FileIoDemo(this))
 	}
 }
