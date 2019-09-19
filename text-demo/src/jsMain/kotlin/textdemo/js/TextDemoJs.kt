@@ -16,12 +16,13 @@
 
 package textdemo.js
 
+import com.acornui.async.runMain
 import com.acornui.component.stage
 import com.acornui.webgl.WebGlApplication
 import textdemo.TextDemo
 import textdemo.config
 
-fun main(args: Array<String>) {
+fun main() = runMain {
 	WebGlApplication("textDemoRoot").start(config) {
 		stage.addElement(TextDemo(this))
 	}

@@ -16,12 +16,13 @@
 
 package rectdemo.jvm
 
+import com.acornui.async.runMain
 import com.acornui.component.stage
 import com.acornui.lwjgl.LwjglApplication
 import rectdemo.RectDemo
 import rectdemo.config
 
-fun main(args: Array<String>) {
+fun main() = runMain {
 	LwjglApplication().start(config) {
 		stage.addElement(RectDemo(this))
 	}

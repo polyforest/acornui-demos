@@ -16,12 +16,13 @@
 
 package datagriddemo.js
 
+import com.acornui.async.runMain
 import com.acornui.component.stage
 import com.acornui.webgl.WebGlApplication
 import datagriddemo.DataGridDemo
 import datagriddemo.config
 
-fun main(args: Array<String>) {
+fun main() = runMain {
 	WebGlApplication("dataGridDemoRoot").start(config) {
 		stage.addElement(DataGridDemo(this))
 	}

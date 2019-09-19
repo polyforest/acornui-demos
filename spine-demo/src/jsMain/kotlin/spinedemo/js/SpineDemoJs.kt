@@ -16,12 +16,13 @@
 
 package spinedemo.js
 
+import com.acornui.async.runMain
 import com.acornui.component.stage
 import com.acornui.webgl.WebGlApplication
 import spinedemo.SpineDemo
 import spinedemo.config
 
-fun main(args: Array<String>) {
+fun main() = runMain {
 	WebGlApplication("spineDemoRoot").start(config()) {
 		stage.addElement(SpineDemo(this)) // Ignore the inspection error, this is because we're mixing module types.
 	}

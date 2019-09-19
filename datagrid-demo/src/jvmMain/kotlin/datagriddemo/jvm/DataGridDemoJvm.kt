@@ -16,12 +16,13 @@
 
 package datagriddemo.jvm
 
+import com.acornui.async.runMain
 import com.acornui.component.stage
 import com.acornui.lwjgl.LwjglApplication
 import datagriddemo.DataGridDemo
 import datagriddemo.config
 
-fun main(args: Array<String>) {
+fun main() = runMain {
 	LwjglApplication().start(config) {
 		stage.addElement(DataGridDemo(this))
 	}
