@@ -39,7 +39,7 @@ import com.acornui.skins.Theme
 /**
  * @author nbilyk
  */
-class RectDemo(owner: Owned) : StackLayoutContainer(owner) {
+class RectDemo(owner: Owned) : StackLayoutContainer<UiComponent>(owner) {
 
 	init {
 		Tween.prepare()

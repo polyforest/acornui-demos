@@ -28,7 +28,7 @@ import com.acornui.skins.Theme
 /**
  * @author nbilyk
  */
-class TextDemo(owner: Owned) : StackLayoutContainer(owner), NavBindable {
+class TextDemo(owner: Owned) : StackLayoutContainer<UiComponent>(owner), NavBindable {
 
 	init {
 		BasicUiSkin(stage, Theme()).apply()

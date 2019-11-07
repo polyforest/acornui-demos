@@ -17,6 +17,7 @@
 package datagriddemo
 
 import com.acornui.component.StackLayoutContainer
+import com.acornui.component.UiComponent
 import com.acornui.component.hr
 import com.acornui.component.layout.algorithm.flow
 import com.acornui.component.layout.algorithm.hGroup
@@ -42,7 +43,7 @@ import com.acornui.version
 /**
  * @author nbilyk
  */
-class DataGridDemo(owner: Owned) : StackLayoutContainer(owner), NavBindable {
+class DataGridDemo(owner: Owned) : StackLayoutContainer<UiComponent>(owner), NavBindable {
 
 	private val nav = navBinding("countries")
 

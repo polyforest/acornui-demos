@@ -21,6 +21,7 @@ import com.acornui.WindowConfig
 import com.acornui.asset.cachedGroup
 import com.acornui.async.globalAsync
 import com.acornui.async.then
+import com.acornui.component.UiComponent
 import com.acornui.component.button
 import com.acornui.component.image
 import com.acornui.component.layout.HAlign
@@ -42,7 +43,7 @@ import com.esotericsoftware.spine.component.spineScene
 /**
  * @author nbilyk
  */
-class SpineDemo(owner: Owned) : CanvasLayoutContainer(owner) {
+class SpineDemo(owner: Owned) : CanvasLayoutContainer<UiComponent>(owner) {
 
 	private var raptor: SkeletonComponent? = null
 

@@ -16,7 +16,8 @@
 
 package fileiodemo
 
-import com.acornui.async.globalLaunch
+import com.acornui.async.launch
+import com.acornui.component.UiComponent
 import com.acornui.component.button
 import com.acornui.component.layout.algorithm.VerticalLayoutContainer
 import com.acornui.component.layout.algorithm.hGroup
@@ -32,19 +33,20 @@ import com.acornui.file.FileIoManager
 import com.acornui.file.FileReader
 import com.acornui.input.interaction.click
 import com.acornui.math.Pad
+import com.acornui.observe.bind
 import com.acornui.observe.dataBinding
 import com.acornui.popup.alert
 import com.acornui.skins.BasicUiSkin
 import com.acornui.skins.Theme
 
-class FileIoDemo(owner: Owned) : VerticalLayoutContainer(owner) {
+class FileIoDemo(owner: Owned) : VerticalLayoutContainer<UiComponent>(owner) {
 
-	private lateinit var editor: TextArea
+	private val editor: TextArea
 	private val dataBinding = dataBinding(emptyList<FileReader>())
 	private var fileManager: FileIoManager
 	private val saveSupported: Boolean
 	// Set extensions to null for all.
-	private val filterGroups = listOf(listOf(".txt",".kt"), listOf("zip"), listOf("image/*")).map { FileFilterGroup(it) }
+	private val filterGroups = listOf(listOf(".txt", ".kt"), listOf("zip"), listOf("image/*")).map { FileFilterGroup(it) }
 	private var multipleFilesOpen = false
 
 	init {
@@ -103,29 +105,18 @@ class FileIoDemo(owner: Owned) : VerticalLayoutContainer(owner) {
 		}
 
 		+vGroup {
-			dataBinding.bind {
-				clearElements()
-				var fileOpen = false
-				val fileText = StringBuilder("")
+			+scrollArea {
+				editor = +textArea() layout { fill() }
+			} layout { fill() }
 
-				for (i in 1..it.lastIndex) {
-					tryCatch {
-						globalLaunch {
-							if (i < 1)
-								fileText.append("${it[0].name}\n${it[0].readAsString()}")
-							else
-								fileText.append("\n\n\n${it[i].name}\n${it[i].readAsString()}")
-							fileOpen = true
-						}
+			dataBinding.bind { fileReaders ->
+				clearElements(dispose = false)
+				editor.text = ""
+
+				launch {
+					fileReaders.forEach { fileReader ->
+						editor.text += "${fileReader.name}\n${fileReader.readAsString()}\n\n\n"
 					}
-				}
-
-				if (fileOpen) {
-					+scrollArea {
-						editor = +textArea {
-							this.text = fileText.toString()
-						} layout { fill() }
-					} layout { fill() }
 				}
 			}
 		} layout { fill() }

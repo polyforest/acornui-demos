@@ -47,7 +47,7 @@ import com.acornui.signal.bind
 import kotlin.collections.HashMap
 import kotlin.collections.set
 
-class CountriesExample(owned: Owned) : VerticalLayoutContainer(owned) {
+class CountriesExample(owner: Owned) : VerticalLayoutContainer<UiComponent>(owner) {
 
 	private val bundle = own(i18n("datagrid"))
 
@@ -116,7 +116,7 @@ class CountriesExample(owned: Owned) : VerticalLayoutContainer(owned) {
 						}
 
 						override fun createCell(owner: Owned): DataGridCell<String?> {
-							return object : HorizontalLayoutContainer(owner), DataGridCell<String?> {
+							return object : HorizontalLayoutContainer<UiComponent>(owner), DataGridCell<String?> {
 								val flag = +atlas {}
 								val textField = +text() layout { widthPercent = 1f }
 								private var _data: String? = null

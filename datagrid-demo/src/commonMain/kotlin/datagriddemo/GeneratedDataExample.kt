@@ -31,14 +31,13 @@ import com.acornui.component.scroll.ScrollPolicy
 import com.acornui.component.text.text
 import com.acornui.di.Owned
 import com.acornui.di.own
-import com.acornui.i18n.I18nBundleRo
 import com.acornui.i18n.i18n
 import com.acornui.input.interaction.click
-import com.acornui.replaceTokens
 import com.acornui.math.Pad
+import com.acornui.replaceTokens
 import com.acornui.signal.bind
 
-class GeneratedDataExample(owned: Owned) : VerticalLayoutContainer(owned) {
+class GeneratedDataExample(owner: Owned) : VerticalLayoutContainer<UiComponent>(owner) {
 
 	private val bundle = own(i18n("datagrid"))
 
