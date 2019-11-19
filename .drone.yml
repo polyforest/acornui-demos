@@ -3,7 +3,7 @@ name: default
 
 steps:
   - name: build-test-web
-    image: gradle:5.5-jdk8
+    image: gradle:6.0-jdk8
     commands:
       - gradle build webProdAssemble --stacktrace
   - name: upload

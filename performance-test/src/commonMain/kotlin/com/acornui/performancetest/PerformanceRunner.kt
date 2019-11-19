@@ -32,7 +32,9 @@ import com.acornui.serialization.jsonStringify
 import com.acornui.skins.BasicUiSkin
 import com.acornui.skins.Theme
 import com.acornui.skins.ThemeFontVo
+import com.acornui.text.NumberFormatter
 import com.acornui.text.dateTimeFormatter
+import com.acornui.text.numberFormatter
 import com.acornui.text.percentFormatter
 import com.acornui.time.Date
 import com.acornui.time.DateRo
@@ -141,7 +143,10 @@ class PerformanceTest(owner: Owned) : StackLayoutContainer<UiComponent>(owner) {
 							val resultsA = Json.nonstrict.parse(PerformanceResultsSuite.serializer(), inputA.text)
 							val resultsB = Json.nonstrict.parse(PerformanceResultsSuite.serializer(), inputB.text)
 							val comparisonStr = resultsB.getComparisonStr(resultsA)
-							addPopUp(popUpInfo = PopUpInfo(this@PerformanceTest.windowPanel { +textArea { text = comparisonStr } layout { fill() } }, layoutData = canvasLayoutData { left = 10f; top = 10f; bottom = 10f; right = 10f }))
+							addPopUp(popUpInfo = PopUpInfo(this@PerformanceTest.windowPanel { +textArea {
+								text = comparisonStr
+
+							} layout { fill() } }, layoutData = canvasLayoutData { left = 10f; top = 10f; bottom = 10f; right = 10f }))
 						} catch (e: Throwable) {
 							window.alert(e.message ?: "Error")
 						}
@@ -406,7 +411,6 @@ data class PerformanceResultsSuite(
 		val dF = dateTimeFormatter()
 		var headingStr = "1) ${previous.name} ${dF.format(previous.date)} vs\n"
 		headingStr += "2) $name ${dF.format(date)}\nLower percents are better for #2\n\n"
-		val pF = percentFormatter()
 		val grid = ArrayList<List<Any>>()
 		grid.add(listOf("NAME", "AVG CREATE", "AVG UPDATE", "AVG RENDER", "AVG FRAME TIME", "AVG DRAW COUNT"))
 		for (result in results) {
@@ -416,15 +420,30 @@ data class PerformanceResultsSuite(
 			else
 				grid.add(listOf(
 						result.name,
-						pF.format(result.constructionTimeAvg / otherResult.constructionTimeAvg),
-						pF.format(result.updatePerformance.average / otherResult.updatePerformance.average),
-						pF.format(result.renderPerformance.average / otherResult.renderPerformance.average),
+						compareStr(result.constructionTimeAvg, otherResult.constructionTimeAvg),
+						compareStr(result.updatePerformance.average, otherResult.updatePerformance.average),
+						compareStr(result.renderPerformance.average, otherResult.renderPerformance.average),
 						pF.format(result.frameTimeAvg / otherResult.frameTimeAvg),
-						pF.format(result.drawCallsAvg / otherResult.drawCallsAvg)
+						compareStr(pF, result.drawCallsAvg, otherResult.drawCallsAvg)
 				))
 		}
 		return headingStr + grid.toTabularString()
 	}
+}
+
+private val pF = percentFormatter()
+private val nF = numberFormatter() {
+	maxFractionDigits = 2
+}
+
+private fun compareStr(resultA: Duration, resultB: Duration): String {
+	val sign = if (resultA > resultB) "+" else ""
+	return "${pF.format(resultA / resultB)} : $sign${resultA - resultB}"
+}
+
+private fun compareStr(pF: NumberFormatter, resultA: Double, resultB: Double): String {
+	val sign = if (resultA > resultB) "+" else ""
+	return "${pF.format(resultA / resultB)} : $sign${nF.format(resultA - resultB)}"
 }
 
 private fun List<List<Any>>.toTabularString(): String {
