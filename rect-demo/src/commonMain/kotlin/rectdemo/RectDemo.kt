@@ -60,7 +60,7 @@ class RectDemo(owner: Owned) : StackLayoutContainer<UiComponent>(owner) {
 		+scrollArea {
 			style.tossScrolling = true
 			+hGroup {
-				minWidth(760f)
+				minWidth = 760f
 
 				style.padding = Pad(10f)
 				style.verticalAlign = VAlign.TOP
