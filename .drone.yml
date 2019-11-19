@@ -28,6 +28,6 @@ name: jdk11
 
 steps:
   - name: build-test-web
-    image: gradle:5.5-jdk11
+    image: gradle:6.0-jdk11
     commands:
       - gradle build webProdAssemble --stacktrace
