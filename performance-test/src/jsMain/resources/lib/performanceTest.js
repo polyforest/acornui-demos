@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package com.acornui.newproject.js
-
-import com.acornui.async.runMain
-import com.acornui.component.stage
-import com.acornui.newproject.NewProjectMain
-import com.acornui.webgl.WebGlApplication
-
-fun main() = runMain {
-//	js("""require("jszip");""")
-	WebGlApplication("newProjectRoot").start {
-		stage.addElement(NewProjectMain(this))
+requirejs.config({
+	urlArgs: function (id, url) {
+		for (var i = 0; i < manifest.files.length; i++) {
+			var file = manifest.files[i];
+			if (file.path == url) {
+				return "?version=" + file.modified;
+			}
+		}
+		return "";
 	}
-}
+});
 
-
+requirejs(["acornui-demos-performance-test"]);
