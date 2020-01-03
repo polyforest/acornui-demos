@@ -17,13 +17,12 @@
 package fileiodemo.jvm
 
 import com.acornui.async.runMain
-import com.acornui.component.stage
-import com.acornui.lwjgl.LwjglApplication
-import fileiodemo.config
+import com.acornui.lwjgl.lwjglApplication
 import fileiodemo.FileIoDemo
+import fileiodemo.config
 
 fun main() = runMain {
-	LwjglApplication().start(config) {
-		stage.addElement(FileIoDemo(this))
+	lwjglApplication(config) {
+		+FileIoDemo(this)
 	}
 }

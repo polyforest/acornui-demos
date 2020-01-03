@@ -17,13 +17,12 @@
 package spinedemo.jvm
 
 import com.acornui.async.runMain
-import com.acornui.component.stage
-import com.acornui.lwjgl.LwjglApplication
+import com.acornui.lwjgl.lwjglApplication
 import spinedemo.SpineDemo
 import spinedemo.config
 
 fun main() = runMain {
-	LwjglApplication().start(config()) {
-		stage.addElement(SpineDemo(this))
+	lwjglApplication(config()) {
+		+SpineDemo(this)
 	}
 }

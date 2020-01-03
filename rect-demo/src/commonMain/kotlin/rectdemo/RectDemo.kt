@@ -24,17 +24,13 @@ import com.acornui.component.scroll.hSlider
 import com.acornui.component.scroll.scrollArea
 import com.acornui.component.text.text
 import com.acornui.di.Owned
-import com.acornui.di.inject
-import com.acornui.input.Ascii
-import com.acornui.input.keyDown
-import com.acornui.tween.Tween
-import com.acornui.gl.core.GlState
 import com.acornui.graphic.Color
 import com.acornui.math.Corners
 import com.acornui.math.Pad
 import com.acornui.signal.bind
 import com.acornui.skins.BasicUiSkin
 import com.acornui.skins.Theme
+import com.acornui.tween.Tween
 
 /**
  * @author nbilyk
@@ -50,12 +46,6 @@ class RectDemo(owner: Owned) : StackLayoutContainer<UiComponent>(owner) {
 				ColorStop(Color(1f, 0f, 0f, 1f), 0f),
 				ColorStop(Color(1f, 0f, 1f, 1f), 1f)
 		)
-
-		inject(Stage).keyDown().add {
-			if (it.ctrlKey && it.keyCode == Ascii.R) {
-				println("Render count: " + inject(GlState).batch.renderCount)
-			}
-		}
 
 		+scrollArea {
 			style.tossScrolling = true

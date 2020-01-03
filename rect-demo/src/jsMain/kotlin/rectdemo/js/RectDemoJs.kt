@@ -17,14 +17,13 @@
 package rectdemo.js
 
 import com.acornui.async.runMain
-import com.acornui.component.stage
-import com.acornui.webgl.WebGlApplication
+import com.acornui.webgl.webGlApplication
 import rectdemo.RectDemo
 import rectdemo.config
 
 fun main() = runMain {
-	WebGlApplication("rectDemoRoot").start(config) {
-		stage.addElement(RectDemo(this))
+	webGlApplication("rectDemoRoot", config) {
+		+RectDemo(this)
 	}
 }
 

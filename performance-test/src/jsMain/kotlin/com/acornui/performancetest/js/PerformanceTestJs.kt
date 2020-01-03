@@ -18,7 +18,6 @@ package com.acornui.performancetest.js
 
 import com.acornui.async.runMain
 import com.acornui.component.Stage
-import com.acornui.component.stage
 import com.acornui.di.Injector
 import com.acornui.di.InjectorImpl
 import com.acornui.performancetest.MeasuredStage
@@ -35,7 +34,7 @@ fun main() = runMain {
 			return InjectorImpl(p, listOf(Stage to MeasuredStage(Stage.factory(p)!!)))
 		}
 	}.start(appConfig) {
-		stage.addElement(PerformanceTest(this))
+		+PerformanceTest(this)
 	}
 }
 
