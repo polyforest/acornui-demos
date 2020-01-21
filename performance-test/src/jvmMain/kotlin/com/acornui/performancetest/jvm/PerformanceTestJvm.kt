@@ -20,19 +20,15 @@ import com.acornui.async.runMain
 import com.acornui.component.Stage
 import com.acornui.component.stage
 import com.acornui.di.Injector
-import com.acornui.di.InjectorImpl
 import com.acornui.lwjgl.LwjglApplication
 import com.acornui.performancetest.MeasuredStage
 import com.acornui.performancetest.PerformanceTest
 import com.acornui.performancetest.appConfig
-import com.acornui.popup.PopUpManager
-import com.acornui.popup.PopUpManagerImpl
 
 fun main() = runMain {
 	object : LwjglApplication() {
-		override suspend fun createInjector(): Injector {
-			val p = InjectorImpl(bootstrap.dependenciesList() + listOf(PopUpManager to PopUpManagerImpl()))
-			return InjectorImpl(p, listOf(Stage to MeasuredStage(Stage.factory(p)!!)))
+		override fun createStage(injector: Injector): Stage {
+			return MeasuredStage(super.createStage(injector))
 		}
 	}.start(appConfig) {
 		stage.addElement(PerformanceTest(this))

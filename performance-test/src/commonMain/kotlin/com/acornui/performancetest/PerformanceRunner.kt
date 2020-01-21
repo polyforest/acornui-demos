@@ -17,7 +17,7 @@ import com.acornui.component.scroll.scrollArea
 import com.acornui.component.text.*
 import com.acornui.di.Owned
 import com.acornui.di.inject
-import com.acornui.gl.core.GlState
+import com.acornui.gl.core.CachedGl20
 import com.acornui.graphic.Color
 import com.acornui.input.interaction.click
 import com.acornui.logging.Log
@@ -66,10 +66,9 @@ class PerformanceTest(owner: Owned) : StackLayoutContainer<UiComponent>(owner) {
 		set(value) {
 			field = value
 			persistence.setItem("performanceHistory", jsonStringify(ArrayListSerializer(PerformanceResultsSuite.serializer()), value))
-			persistence.flush()
 		}
 
-	private val atlasPath = "assets/uiskin/uiskin.json"
+	private val atlasPath = "assets/uiskin/icons.json"
 
 	init {
 		window.continuousRendering = true
@@ -237,9 +236,7 @@ class PerformanceTest(owner: Owned) : StackLayoutContainer<UiComponent>(owner) {
 }
 
 fun Owned.spriteComponent(): UiComponent {
-	val glState = inject(GlState)
-	return drawableC(Sprite(glState).apply {
-		texture = glState.whitePixel
+	return drawableC(Sprite(inject(CachedGl20)).apply {
 		setUv(0f, 0f, 0f, 0f, false)
 	}) {
 		colorTint = Color(0.29f, 0f, 0.51f, 0.5f)

@@ -1,14 +1,15 @@
 package com.acornui.performancetest
 
 import com.acornui.component.Stage
-import com.acornui.gl.core.GlState
+import com.acornui.di.plus
+import com.acornui.gl.core.ShaderBatch
 
 /**
  * A wrapper to Stage that measures performance.
  */
 class MeasuredStage(private val stage: Stage) : Stage by stage {
 
-	private val glState by GlState
+	override val injector = owner.injector + listOf(Stage to this)
 
 	var totalFrames = 0
 	var totalDrawCalls = 0
@@ -26,7 +27,7 @@ class MeasuredStage(private val stage: Stage) : Stage by stage {
 			stage.render()
 		}
 		totalFrames++
-		totalDrawCalls += glState.batch.renderCount
+		totalDrawCalls += ShaderBatch.totalDrawCalls
 	}
 
 	fun clearPerformanceMetrics() {

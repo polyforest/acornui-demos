@@ -7,6 +7,9 @@ pluginManagement {
 		maven {
 			url = uri("http://artifacts.acornui.com/mvn/")
 		}
+		maven {
+			url = uri("https://dl.bintray.com/kotlin/kotlin-dev/")
+		}
 		gradlePluginPortal()
 	}
 	resolutionStrategy {
@@ -19,25 +22,5 @@ pluginManagement {
 	}
 }
 
-enableFeaturePreview("GRADLE_METADATA")
-
 // Add modules as they are created.  By default, subprojects take on the name of their root directory in gradle.
 include("text-demo", "spine-demo", "rect-demo", "datagrid-demo", "fileio-demo", "new-project", "performance-test")
-
-// Acorn composite project as sub-projects as a workaround to https://youtrack.jetbrains.com/issue/KT-30285
-val acornUiHome: String? by extra
-if (acornUiHome != null && file(acornUiHome!!).exists()) {
-	include(":acornui")
-	project(":acornui").projectDir = file("$acornUiHome")
-
-	listOf("utils", "core", "game", "spine", "test-utils").forEach { acornModule ->
-		val name = ":acornui:acornui-$acornModule"
-		include(name)
-		project(name).projectDir = file("$acornUiHome/acornui-$acornModule")
-	}
-	listOf("lwjgl", "webgl").forEach { backend ->
-		val name = ":acornui:backends:acornui-$backend-backend"
-		include(name)
-		project(name).projectDir = file("$acornUiHome/backends/acornui-$backend-backend")
-	}
-}

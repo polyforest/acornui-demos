@@ -28,7 +28,6 @@ import com.acornui.component.scroll.scrollArea
 import com.acornui.component.text.text
 import com.acornui.di.Owned
 import com.acornui.i18n.Locale
-import com.acornui.i18n.chooseLocale
 import com.acornui.math.Pad
 import com.acornui.nav.NavBindable
 import com.acornui.nav.navAddElement
@@ -78,7 +77,7 @@ class DataGridDemo(owner: Owned) : StackLayoutContainer<UiComponent>(owner), Nav
 							+radioButton(Locale("en-US"), "English")
 							+radioButton(Locale("de-DE"), "German")
 							+radioButton(Locale("fr-FR"), "French")
-							selectedData = chooseLocale(listOf(Locale("en-US"), Locale("de-DE"), Locale("fr-FR")))
+//							selectedData = chooseLocale(listOf(Locale("en-US"), Locale("de-DE"), Locale("fr-FR")))
 						}
 					}
 
