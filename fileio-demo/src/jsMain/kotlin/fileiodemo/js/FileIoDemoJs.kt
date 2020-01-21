@@ -17,14 +17,13 @@
 package fileiodemo.js
 
 import com.acornui.async.runMain
-import com.acornui.component.stage
-import com.acornui.webgl.WebGlApplication
-import fileiodemo.config
+import com.acornui.webgl.webGlApplication
 import fileiodemo.FileIoDemo
+import fileiodemo.config
 
 fun main() = runMain {
-	WebGlApplication("fileIoDemoRoot").start(config) {
-		stage.addElement(FileIoDemo(this))
+	webGlApplication("fileIoDemoRoot", config) {
+		+FileIoDemo(this)
 	}
 }
 

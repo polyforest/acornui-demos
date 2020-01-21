@@ -18,7 +18,6 @@ package com.acornui.performancetest.jvm
 
 import com.acornui.async.runMain
 import com.acornui.component.Stage
-import com.acornui.component.stage
 import com.acornui.di.Injector
 import com.acornui.lwjgl.LwjglApplication
 import com.acornui.performancetest.MeasuredStage
@@ -31,6 +30,6 @@ fun main() = runMain {
 			return MeasuredStage(super.createStage(injector))
 		}
 	}.start(appConfig) {
-		stage.addElement(PerformanceTest(this))
+		+PerformanceTest(this)
 	}
 }

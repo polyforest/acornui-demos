@@ -17,13 +17,12 @@
 package textdemo.jvm
 
 import com.acornui.async.runMain
-import com.acornui.component.stage
-import com.acornui.lwjgl.LwjglApplication
+import com.acornui.lwjgl.lwjglApplication
 import textdemo.TextDemo
 import textdemo.config
 
 fun main() = runMain {
-	LwjglApplication().start(config) {
-		stage.addElement(TextDemo(this))
+	lwjglApplication(config) {
+		+TextDemo(this)
 	}
 }

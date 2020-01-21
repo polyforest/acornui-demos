@@ -17,12 +17,11 @@
 package com.acornui.newproject.jvm
 
 import com.acornui.async.runMain
-import com.acornui.component.stage
-import com.acornui.lwjgl.LwjglApplication
+import com.acornui.lwjgl.lwjglApplication
 import com.acornui.newproject.NewProjectMain
 
 fun main() = runMain {
-	LwjglApplication().start {
-		stage.addElement(NewProjectMain(this))
+	lwjglApplication {
+		+NewProjectMain(this)
 	}
 }
