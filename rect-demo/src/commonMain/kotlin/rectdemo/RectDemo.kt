@@ -24,11 +24,7 @@ import com.acornui.component.scroll.hSlider
 import com.acornui.component.scroll.scrollArea
 import com.acornui.component.text.text
 import com.acornui.di.Owned
-import com.acornui.di.inject
-import com.acornui.input.Ascii
-import com.acornui.input.keyDown
 import com.acornui.tween.Tween
-import com.acornui.gl.core.GlState
 import com.acornui.graphic.Color
 import com.acornui.math.Corners
 import com.acornui.math.Pad
