@@ -5,7 +5,7 @@ steps:
   - name: build-test-web
     image: gradle:6.0-jdk8
     commands:
-      - gradle build webProdAssemble --stacktrace
+      - gradle build jsProd --stacktrace
   - name: upload
     image: appleboy/drone-scp
     settings:
@@ -30,4 +30,4 @@ steps:
   - name: build-test-web
     image: gradle:6.0-jdk11
     commands:
-      - gradle build webProdAssemble --stacktrace
+      - gradle build jsProd --stacktrace
