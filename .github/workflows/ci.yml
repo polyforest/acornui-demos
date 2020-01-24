@@ -5,25 +5,32 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-    - name: Setup Java
-      uses: actions/setup-java@v1
-      with:
-        java-version: 11
-    - name: Build
-      uses: eskatos/gradle-command-action@v1
-      with:
-        arguments: jsProd --stacktrace
-    - name: Upload Artifacts
-      uses: appleboy/scp-action@v0.0.5
-      if: github.ref == 'refs/heads/master' && matrix.os == 'ubuntu-latest'
-      with:
-        host: bandbox.dreamhost.com
-        username: ${{ secrets.BANDBOX_FTP_USERNAME }}
-        password: ${{ secrets.BANDBOX_FTP_PASSWORD }}
-        source: "./**/build/wwwProd"
-        target: "~/demos.acornui.com/"
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Gradle Cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+      - name: Build
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: jsProd
+      - name: Upload Artifacts
+        uses: appleboy/scp-action@v0.0.5
+        if: github.ref == 'refs/heads/master' && matrix.os == 'ubuntu-latest'
+        with:
+          host: bandbox.dreamhost.com
+          username: ${{ secrets.BANDBOX_FTP_USERNAME }}
+          password: ${{ secrets.BANDBOX_FTP_PASSWORD }}
+          source: "./**/build/wwwProd"
+          target: "~/demos.acornui.com/"
