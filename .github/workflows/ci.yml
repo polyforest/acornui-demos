@@ -24,7 +24,7 @@ jobs:
     - name: Build
       uses: eskatos/gradle-command-action@v1
       with:
-        arguments: build publish -x jsBrowserTest --stacktrace
+        arguments: jsProd --stacktrace
     - name: Upload Artifacts
       uses: appleboy/scp-action@v0.0.5
       if: github.ref == 'refs/heads/master' && matrix.os == 'ubuntu-latest'
