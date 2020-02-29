@@ -17,10 +17,10 @@
 package datagriddemo
 
 import com.acornui.asset.loadText
-import com.acornui.async.globalLaunch
 import com.acornui.collection.ActiveList
 import com.acornui.collection.ObservableList
 import com.acornui.collection.addAll
+import com.acornui.compareTo2
 import com.acornui.component.UiComponent
 import com.acornui.component.atlas
 import com.acornui.component.checkbox
@@ -35,28 +35,27 @@ import com.acornui.component.style.and
 import com.acornui.component.text.TextField
 import com.acornui.component.text.strong
 import com.acornui.component.text.text
-import com.acornui.compareTo2
-import com.acornui.di.Owned
+import com.acornui.di.Context
 import com.acornui.di.own
 import com.acornui.i18n.i18n
 import com.acornui.input.interaction.click
-import com.acornui.replaceTokens
-import com.acornui.text.NumberFormatType
 import com.acornui.math.Pad
+import com.acornui.replaceTokens
 import com.acornui.signal.bind
-import kotlin.collections.HashMap
+import com.acornui.text.NumberFormatType
+import kotlinx.coroutines.launch
 import kotlin.collections.set
 
-class CountriesExample(owner: Owned) : VerticalLayoutContainer<UiComponent>(owner) {
+class CountriesExample(owner: Context) : VerticalLayoutContainer<UiComponent>(owner) {
 
-	private val bundle = own(i18n("datagrid"))
+	private val bundle = i18n("datagrid")
 
 	init {
 		style.padding = Pad(8f)
 
 		val data = ActiveList<CountryData>()
 
-		globalLaunch {
+		launch {
 			val it = loadText("assets/countries.tsv")
 			val countries = it.split('\n')
 			for (country in countries) {
@@ -75,26 +74,21 @@ class CountriesExample(owner: Owned) : VerticalLayoutContainer<UiComponent>(owne
 		}
 
 		val dG = +dataGrid(data) {
-//			rowHeight = 80f
 			editable = true
 			val headerFlowStyle = FlowLayoutStyle()
 			headerFlowStyle.multiline = true
 			addStyleRule(headerFlowStyle, TextField and DataGrid.HEADER_CELL)
 
-//			val bodyFlowStyle = bind(FlowStyle())
-//			bodyFlowStyle.multiline = false
-//			setStyle(bodyFlowStyle, DataGrid.BODY_CELL, TextField)
-
 			hScrollPolicy = ScrollPolicy.AUTO
 
 			columns.addAll(
-					object : IntColumn<CountryData>(injector) {
+					object : IntColumn<CountryData>() {
 						init {
 							flexible = true
 							width = 60f
 						}
 
-						override fun createHeaderCell(owner: Owned): UiComponent {
+						override fun createHeaderCell(owner: Context): UiComponent {
 							return owner.text {
 								bundle.bind { text = it["popRank"] ?: "" }
 							}
@@ -115,7 +109,7 @@ class CountriesExample(owner: Owned) : VerticalLayoutContainer<UiComponent>(owne
 							editable = false
 						}
 
-						override fun createCell(owner: Owned): DataGridCell<String?> {
+						override fun createCell(owner: Context): DataGridCell<String?> {
 							return object : HorizontalLayoutContainer<UiComponent>(owner), DataGridCell<String?> {
 								val flag = +atlas {}
 								val textField = +text() layout { widthPercent = 1f }
@@ -124,18 +118,18 @@ class CountriesExample(owner: Owned) : VerticalLayoutContainer<UiComponent>(owne
 								override fun setData(value: String?) {
 									if (_data == value) return
 									_data = value
-									if (value != null) flag.setRegion("assets/flags.json", value.replace(" ", "_"))
+									if (value != null) flag.region("assets/flags.json", value.replace(" ", "_"))
 									else flag.clear()
 									textField.text = value ?: ""
 								}
 							}
 						}
 
-						override fun createEditorCell(owner: Owned): DataGridEditorCell<String> {
+						override fun createEditorCell(owner: Context): DataGridEditorCell<String> {
 							throw UnsupportedOperationException("not implemented")
 						}
 
-						override fun createHeaderCell(owner: Owned): UiComponent {
+						override fun createHeaderCell(owner: Context): UiComponent {
 							return owner.text {
 								bundle.bind { text = it["countryOrArea"] ?: "" }
 							}
@@ -155,7 +149,7 @@ class CountriesExample(owner: Owned) : VerticalLayoutContainer<UiComponent>(owne
 							width = 117f
 						}
 
-						override fun createHeaderCell(owner: Owned): UiComponent {
+						override fun createHeaderCell(owner: Context): UiComponent {
 							return owner.text {
 								bundle.bind { text = it["continentalRegion"] ?: "" }
 							}
@@ -173,7 +167,7 @@ class CountriesExample(owner: Owned) : VerticalLayoutContainer<UiComponent>(owne
 							width = 117f
 						}
 
-						override fun createHeaderCell(owner: Owned): UiComponent {
+						override fun createHeaderCell(owner: Context): UiComponent {
 							return owner.text {
 								bundle.bind { text = it["statisticalRegion"] ?: "" }
 							}
@@ -185,13 +179,13 @@ class CountriesExample(owner: Owned) : VerticalLayoutContainer<UiComponent>(owne
 						}
 					},
 
-					object : IntColumn<CountryData>(injector) {
+					object : IntColumn<CountryData>() {
 						init {
 							flexible = true
 							width = 117f
 						}
 
-						override fun createHeaderCell(owner: Owned): UiComponent {
+						override fun createHeaderCell(owner: Context): UiComponent {
 							return owner.text {
 								bundle.bind { text = it["population"]?.replaceTokens("2016") ?: "" }
 							}
@@ -203,13 +197,13 @@ class CountriesExample(owner: Owned) : VerticalLayoutContainer<UiComponent>(owne
 						}
 					},
 
-					object : IntColumn<CountryData>(injector) {
+					object : IntColumn<CountryData>() {
 						init {
 							flexible = true
 							width = 117f
 						}
 
-						override fun createHeaderCell(owner: Owned): UiComponent {
+						override fun createHeaderCell(owner: Context): UiComponent {
 							return owner.text {
 								bundle.bind { text = it["population"]?.replaceTokens("2015") ?: "" }
 							}
@@ -221,14 +215,14 @@ class CountriesExample(owner: Owned) : VerticalLayoutContainer<UiComponent>(owne
 						}
 					},
 
-					object : FloatColumn<CountryData>(injector) {
+					object : FloatColumn<CountryData>() {
 						init {
 							formatter.type = NumberFormatType.PERCENT
 							flexible = true
 							width = 90f
 						}
 
-						override fun createHeaderCell(owner: Owned): UiComponent {
+						override fun createHeaderCell(owner: Context): UiComponent {
 							return owner.text {
 								bundle.bind { text = it["change"] ?: "" }
 							}
@@ -286,7 +280,7 @@ class CountriesExample(owner: Owned) : VerticalLayoutContainer<UiComponent>(owne
 									if (!existing.containsKey(region)) {
 										existing[region] = true
 										val newGroup = object : DataGridGroup<CountryData>() {
-											override fun createHeader(owner: Owned, list: ObservableList<CountryData>): DataGridGroupHeader {
+											override fun createHeader(owner: Context, list: ObservableList<CountryData>): DataGridGroupHeader {
 												return owner.dataGridGroupHeader(this, list, region) {
 													+spacer() layout { widthPercent = 1f }
 													+text {
@@ -310,7 +304,7 @@ class CountriesExample(owner: Owned) : VerticalLayoutContainer<UiComponent>(owne
 									if (!existing.containsKey(region)) {
 										existing[region] = true
 										val newGroup = object : DataGridGroup<CountryData>() {
-											override fun createHeader(owner: Owned, list: ObservableList<CountryData>): DataGridGroupHeader {
+											override fun createHeader(owner: Context, list: ObservableList<CountryData>): DataGridGroupHeader {
 												return owner.dataGridGroupHeader(this, list, region)
 											}
 										}

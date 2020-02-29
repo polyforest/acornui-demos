@@ -16,20 +16,20 @@
 
 package com.acornui.performancetest.jvm
 
-import com.acornui.async.runMain
+import com.acornui.runMain
 import com.acornui.component.Stage
-import com.acornui.di.Injector
+import com.acornui.di.Context
 import com.acornui.lwjgl.LwjglApplication
 import com.acornui.performancetest.MeasuredStage
 import com.acornui.performancetest.PerformanceTest
 import com.acornui.performancetest.appConfig
 
 fun main() = runMain {
-	object : LwjglApplication() {
-		override fun createStage(injector: Injector): Stage {
-			return MeasuredStage(super.createStage(injector))
+	object : LwjglApplication(this@runMain) {
+		override suspend fun createStage(context: Context): Stage {
+			return MeasuredStage(super.createStage(context))
 		}
-	}.start(appConfig) {
+	}.startAsync(appConfig) {
 		+PerformanceTest(this)
 	}
 }

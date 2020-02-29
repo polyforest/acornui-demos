@@ -18,9 +18,7 @@ package spinedemo
 
 import com.acornui.AppConfig
 import com.acornui.WindowConfig
-import com.acornui.asset.cachedGroup
-import com.acornui.async.globalAsync
-import com.acornui.async.then
+import com.acornui.asset.cacheSet
 import com.acornui.component.UiComponent
 import com.acornui.component.button
 import com.acornui.component.image
@@ -28,7 +26,7 @@ import com.acornui.component.layout.HAlign
 import com.acornui.component.layout.VAlign
 import com.acornui.component.layout.algorithm.CanvasLayoutContainer
 import com.acornui.component.layout.algorithm.vGroup
-import com.acornui.di.Owned
+import com.acornui.di.Context
 import com.acornui.graphic.Color
 import com.acornui.input.interaction.click
 import com.acornui.math.Pad
@@ -39,11 +37,12 @@ import com.esotericsoftware.spine.component.SkeletonComponent
 import com.esotericsoftware.spine.component.loadSkeleton
 import com.esotericsoftware.spine.component.skeletonComponent
 import com.esotericsoftware.spine.component.spineScene
+import kotlinx.coroutines.launch
 
 /**
  * @author nbilyk
  */
-class SpineDemo(owner: Owned) : CanvasLayoutContainer<UiComponent>(owner) {
+class SpineDemo(owner: Context) : CanvasLayoutContainer<UiComponent>(owner) {
 
 	private var raptor: SkeletonComponent? = null
 
@@ -62,9 +61,8 @@ class SpineDemo(owner: Owned) : CanvasLayoutContainer<UiComponent>(owner) {
 				defaultHeight = 1200f
 				setOrigin(-defaultWidth!! * 0.5f, -defaultHeight!!)
 
-				globalAsync {
-					loadSkeleton("assets/raptor/raptor.json", "assets/raptor/raptorAssets.json", null, cachedGroup()).await()
-				} then { skeleton ->
+				launch {
+					val skeleton = loadSkeleton("assets/raptor/raptor.json", "assets/raptor/raptorAssets.json", null, cacheSet()).await()
 					raptor = +skeletonComponent(skeleton) {
 						animationState.data.defaultMix = 0.25f
 						animationState.setAnimation(0, "walk", loop = true)
@@ -95,7 +93,6 @@ class SpineDemo(owner: Owned) : CanvasLayoutContainer<UiComponent>(owner) {
 				raptor?.animationState?.addAnimation(0, "walk", loop = true)
 			}
 		}
-
 	}
 }
 

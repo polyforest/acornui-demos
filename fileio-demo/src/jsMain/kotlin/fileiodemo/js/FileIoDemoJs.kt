@@ -16,7 +16,7 @@
 
 package fileiodemo.js
 
-import com.acornui.async.runMain
+import com.acornui.runMain
 import com.acornui.webgl.webGlApplication
 import fileiodemo.FileIoDemo
 import fileiodemo.config

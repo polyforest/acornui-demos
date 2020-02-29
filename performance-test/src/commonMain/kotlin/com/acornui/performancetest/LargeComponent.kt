@@ -25,10 +25,10 @@ import com.acornui.component.style.addStyleRule
 import com.acornui.component.style.and
 import com.acornui.component.text.TextField
 import com.acornui.component.text.text
-import com.acornui.di.Owned
+import com.acornui.di.Context
 import com.acornui.text.NumberFormatType
 
-fun Owned.dataGridComponent(): DataGrid<*> {
+fun Context.dataGridComponent(): DataGrid<*> {
 	return dataGrid(countryData) {
 		defaultWidth = 400f
 		defaultHeight = 300f
@@ -37,13 +37,13 @@ fun Owned.dataGridComponent(): DataGrid<*> {
 		addStyleRule(headerFlowStyle, TextField and DataGrid.HEADER_CELL)
 		hScrollPolicy = ScrollPolicy.AUTO
 		columns.addAll(
-				object : IntColumn<CountryData>(injector) {
+				object : IntColumn<CountryData>() {
 					init {
 						flexible = true
 						width = 60f
 					}
 
-					override fun createHeaderCell(owner: Owned): UiComponent {
+					override fun createHeaderCell(owner: Context): UiComponent {
 						return owner.text {
 							text = "Pea horseradish"
 						}
@@ -62,7 +62,7 @@ fun Owned.dataGridComponent(): DataGrid<*> {
 						width = 117f
 					}
 
-					override fun createHeaderCell(owner: Owned): UiComponent {
+					override fun createHeaderCell(owner: Context): UiComponent {
 						return owner.text {
 							text = "Turnip greens"
 						}
@@ -80,7 +80,7 @@ fun Owned.dataGridComponent(): DataGrid<*> {
 						width = 117f
 					}
 
-					override fun createHeaderCell(owner: Owned): UiComponent {
+					override fun createHeaderCell(owner: Context): UiComponent {
 						return owner.text {
 							text = "Gumbo beet"
 						}
@@ -92,13 +92,13 @@ fun Owned.dataGridComponent(): DataGrid<*> {
 					}
 				},
 
-				object : IntColumn<CountryData>(injector) {
+				object : IntColumn<CountryData>() {
 					init {
 						flexible = true
 						width = 117f
 					}
 
-					override fun createHeaderCell(owner: Owned): UiComponent {
+					override fun createHeaderCell(owner: Context): UiComponent {
 						return owner.text {
 							text = "Soko radicchio"
 						}
@@ -110,14 +110,14 @@ fun Owned.dataGridComponent(): DataGrid<*> {
 					}
 				},
 
-				object : FloatColumn<CountryData>(injector) {
+				object : FloatColumn<CountryData>() {
 					init {
 						formatter.type = NumberFormatType.PERCENT
 						flexible = true
 						width = 90f
 					}
 
-					override fun createHeaderCell(owner: Owned): UiComponent {
+					override fun createHeaderCell(owner: Context): UiComponent {
 						return owner.text {
 							text = "Dandelion zucchini"
 						}

@@ -1,3 +1,5 @@
+import com.acornui.build.plugins.util.acorn
+
 /*
  * Copyright 2019 Poly Forest, LLC
  *
@@ -18,12 +20,13 @@ plugins {
 	id("com.acornui.app")
 }
 
+val acornVersion: String by project
 kotlin {
 	sourceSets {
 		commonMain {
 			dependencies {
-				implementation("com.acornui:acornui-spine")
-				runtimeOnly("com.acornui.skins:basic")
+				implementation(acorn(project, "spine"))
+				runtimeOnly("com.acornui.skins:basic:$acornVersion")
 			}
 		}
 	}

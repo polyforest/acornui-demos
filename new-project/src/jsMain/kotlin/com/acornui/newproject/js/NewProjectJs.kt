@@ -16,8 +16,8 @@
 
 package com.acornui.newproject.js
 
-import com.acornui.async.runMain
 import com.acornui.newproject.NewProjectMain
+import com.acornui.runMain
 import com.acornui.webgl.webGlApplication
 
 fun main() = runMain {

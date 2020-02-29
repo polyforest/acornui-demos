@@ -23,7 +23,7 @@ import com.acornui.component.layout.algorithm.*
 import com.acornui.component.scroll.hSlider
 import com.acornui.component.scroll.scrollArea
 import com.acornui.component.text.text
-import com.acornui.di.Owned
+import com.acornui.di.Context
 import com.acornui.tween.Tween
 import com.acornui.graphic.Color
 import com.acornui.math.Corners
@@ -35,7 +35,7 @@ import com.acornui.skins.Theme
 /**
  * @author nbilyk
  */
-class RectDemo(owner: Owned) : StackLayoutContainer<UiComponent>(owner) {
+class RectDemo(owner: Context) : StackLayoutContainer<UiComponent>(owner) {
 
 	init {
 		Tween.prepare()
@@ -252,7 +252,7 @@ class RectDemo(owner: Owned) : StackLayoutContainer<UiComponent>(owner) {
 	}
 }
 
-private fun Owned.slider(getter: () -> Float, setter: (value: Float) -> Unit, min: Float = 0f, max: Float = 100f): UiComponent {
+private fun Context.slider(getter: () -> Float, setter: (value: Float) -> Unit, min: Float = 0f, max: Float = 100f): UiComponent {
 	return hGroup {
 		val hSlider = +hSlider {
 			scrollModel.min = min

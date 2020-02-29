@@ -29,17 +29,16 @@ import com.acornui.component.layout.algorithm.hGroup
 import com.acornui.component.radioGroup
 import com.acornui.component.scroll.ScrollPolicy
 import com.acornui.component.text.text
-import com.acornui.di.Owned
-import com.acornui.di.own
+import com.acornui.di.Context
 import com.acornui.i18n.i18n
 import com.acornui.input.interaction.click
 import com.acornui.math.Pad
 import com.acornui.replaceTokens
 import com.acornui.signal.bind
 
-class GeneratedDataExample(owner: Owned) : VerticalLayoutContainer<UiComponent>(owner) {
+class GeneratedDataExample(owner: Context) : VerticalLayoutContainer<UiComponent>(owner) {
 
-	private val bundle = own(i18n("datagrid"))
+	private val bundle = i18n("datagrid")
 
 	init {
 		val bundle = bundle
@@ -127,14 +126,14 @@ class GeneratedDataExample(owner: Owned) : VerticalLayoutContainer<UiComponent>(
 								else -> 0
 							}
 							dG.columns.clear()
-							for (i in 0..cols - 1) {
+							for (i in 0 until cols) {
 								dG.columns.add(
-										object : IntColumn<Int>(injector) {
+										object : IntColumn<Int>() {
 											init {
 												widthPercent = 0.18f
 											}
 
-											override fun createHeaderCell(owner: Owned): UiComponent {
+											override fun createHeaderCell(owner: Context): UiComponent {
 												return owner.text {
 													bundle.bind { text = it["column"]?.replaceTokens("$i") ?: "" }
 												}

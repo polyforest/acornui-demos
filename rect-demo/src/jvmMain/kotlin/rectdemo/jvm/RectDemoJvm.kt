@@ -16,7 +16,7 @@
 
 package rectdemo.jvm
 
-import com.acornui.async.runMain
+import com.acornui.runMain
 import com.acornui.lwjgl.lwjglApplication
 import rectdemo.RectDemo
 import rectdemo.config

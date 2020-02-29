@@ -16,7 +16,7 @@
 
 package datagriddemo.js
 
-import com.acornui.async.runMain
+import com.acornui.runMain
 import com.acornui.webgl.webGlApplication
 import datagriddemo.DataGridDemo
 import datagriddemo.config

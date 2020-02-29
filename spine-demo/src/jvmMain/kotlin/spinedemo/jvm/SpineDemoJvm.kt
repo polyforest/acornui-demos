@@ -16,7 +16,7 @@
 
 package spinedemo.jvm
 
-import com.acornui.async.runMain
+import com.acornui.runMain
 import com.acornui.lwjgl.lwjglApplication
 import spinedemo.SpineDemo
 import spinedemo.config

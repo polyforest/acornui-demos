@@ -26,7 +26,7 @@ import com.acornui.component.layout.spacer
 import com.acornui.component.radioGroup
 import com.acornui.component.scroll.scrollArea
 import com.acornui.component.text.text
-import com.acornui.di.Owned
+import com.acornui.di.Context
 import com.acornui.i18n.Locale
 import com.acornui.math.Pad
 import com.acornui.nav.NavBindable
@@ -42,7 +42,7 @@ import com.acornui.version
 /**
  * @author nbilyk
  */
-class DataGridDemo(owner: Owned) : StackLayoutContainer<UiComponent>(owner), NavBindable {
+class DataGridDemo(owner: Context) : StackLayoutContainer<UiComponent>(owner), NavBindable {
 
 	private val nav = navBinding("countries")
 

@@ -5,7 +5,6 @@ package com.acornui.performancetest
 import com.acornui.AppConfig
 import com.acornui.WindowConfig
 import com.acornui.async.delay
-import com.acornui.async.launch
 import com.acornui.ceilInt
 import com.acornui.collection.ArrayList
 import com.acornui.component.*
@@ -15,8 +14,7 @@ import com.acornui.component.layout.algorithm.*
 import com.acornui.component.layout.spacer
 import com.acornui.component.scroll.scrollArea
 import com.acornui.component.text.*
-import com.acornui.di.Owned
-import com.acornui.di.inject
+import com.acornui.di.Context
 import com.acornui.gl.core.CachedGl20
 import com.acornui.graphic.Color
 import com.acornui.input.interaction.click
@@ -39,6 +37,7 @@ import com.acornui.text.percentFormatter
 import com.acornui.time.Date
 import com.acornui.time.DateRo
 import com.acornui.time.onTick
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.internal.ArrayListSerializer
 import kotlinx.serialization.json.Json
@@ -56,7 +55,7 @@ private val TEST_DURATION = 10.seconds
  */
 private const val MIN_FPS = 5.0
 
-class PerformanceTest(owner: Owned) : StackLayoutContainer<UiComponent>(owner) {
+class PerformanceTest(owner: Context) : StackLayoutContainer<UiComponent>(owner) {
 
 	private val name: String = "0.3.25"
 
@@ -235,7 +234,7 @@ class PerformanceTest(owner: Owned) : StackLayoutContainer<UiComponent>(owner) {
 	}
 }
 
-fun Owned.spriteComponent(): UiComponent {
+fun Context.spriteComponent(): UiComponent {
 	return drawableC(Sprite(inject(CachedGl20)).apply {
 		setUv(0f, 0f, 0f, 0f, false)
 	}) {
@@ -245,11 +244,11 @@ fun Owned.spriteComponent(): UiComponent {
 	}
 }
 
-fun Owned.buttonComponent(): UiComponent {
+fun Context.buttonComponent(): UiComponent {
 	return button("Beetroot water spinach")
 }
 
-fun Owned.textAreaComponent(): UiComponent {
+fun Context.textAreaComponent(): UiComponent {
 	return textArea {
 		defaultWidth = 100f
 		defaultHeight = 50f
@@ -340,7 +339,7 @@ fun getUpdateCount(elementCount: Int, percentUpdated: Float): Int {
 	return maxOf(1, ceilInt(percentUpdated * elementCount))
 }
 
-data class Constructor(val name: String, val difficulty: Float, val componentFactory: Owned.() -> UiComponent)
+data class Constructor(val name: String, val difficulty: Float, val componentFactory: Context.() -> UiComponent)
 data class Updater<T>(val name: String, val difficulty: Float, val dataFactory: () -> T, val updateMethod: (c: UiComponent, data: T) -> Unit)
 
 fun translation(component: UiComponent, data: Vector2) {

@@ -16,24 +16,20 @@
 
 package com.acornui.performancetest.js
 
-import com.acornui.async.runMain
 import com.acornui.component.Stage
-import com.acornui.di.Injector
-import com.acornui.di.InjectorImpl
+import com.acornui.di.Context
 import com.acornui.performancetest.MeasuredStage
 import com.acornui.performancetest.PerformanceTest
 import com.acornui.performancetest.appConfig
-import com.acornui.popup.PopUpManager
-import com.acornui.popup.PopUpManagerImpl
+import com.acornui.runMain
 import com.acornui.webgl.WebGlApplication
 
 fun main() = runMain {
-	object : WebGlApplication("performanceTestRoot") {
-		override suspend fun createInjector(): Injector {
-			val p = InjectorImpl(bootstrap.dependenciesList() + listOf(PopUpManager to PopUpManagerImpl()))
-			return InjectorImpl(p, listOf(Stage to MeasuredStage(Stage.factory(p)!!)))
+	object : WebGlApplication(this@runMain, "performanceTestRoot") {
+		override suspend fun createStage(context: Context): Stage {
+			return MeasuredStage(super.createStage(context))
 		}
-	}.start(appConfig) {
+	}.startAsync(appConfig) {
 		+PerformanceTest(this)
 	}
 }

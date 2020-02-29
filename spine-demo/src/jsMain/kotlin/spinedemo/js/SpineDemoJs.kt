@@ -16,7 +16,7 @@
 
 package spinedemo.js
 
-import com.acornui.async.runMain
+import com.acornui.runMain
 import com.acornui.webgl.webGlApplication
 import spinedemo.SpineDemo
 import spinedemo.config

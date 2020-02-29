@@ -19,7 +19,7 @@ package textdemo
 import com.acornui.component.*
 import com.acornui.component.scroll.ScrollPolicy
 import com.acornui.component.text.textArea
-import com.acornui.di.Owned
+import com.acornui.di.Context
 import com.acornui.nav.NavBindable
 import com.acornui.math.Pad
 import com.acornui.skins.BasicUiSkin
@@ -28,7 +28,7 @@ import com.acornui.skins.Theme
 /**
  * @author nbilyk
  */
-class TextDemo(owner: Owned) : StackLayoutContainer<UiComponent>(owner), NavBindable {
+class TextDemo(owner: Context) : StackLayoutContainer<UiComponent>(owner), NavBindable {
 
 	init {
 		BasicUiSkin(stage, Theme()).apply()

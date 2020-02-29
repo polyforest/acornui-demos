@@ -16,7 +16,7 @@
 
 package rectdemo.js
 
-import com.acornui.async.runMain
+import com.acornui.runMain
 import com.acornui.webgl.webGlApplication
 import rectdemo.RectDemo
 import rectdemo.config

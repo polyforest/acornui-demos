@@ -16,7 +16,6 @@
 
 package fileiodemo
 
-import com.acornui.async.launch
 import com.acornui.component.UiComponent
 import com.acornui.component.button
 import com.acornui.component.layout.algorithm.VerticalLayoutContainer
@@ -26,8 +25,7 @@ import com.acornui.component.scroll.scrollArea
 import com.acornui.component.text.TextArea
 import com.acornui.component.text.text
 import com.acornui.component.text.textArea
-import com.acornui.di.Owned
-import com.acornui.di.inject
+import com.acornui.di.Context
 import com.acornui.file.FileFilterGroup
 import com.acornui.file.FileIoManager
 import com.acornui.file.FileReader
@@ -38,8 +36,9 @@ import com.acornui.observe.dataBinding
 import com.acornui.popup.alert
 import com.acornui.skins.BasicUiSkin
 import com.acornui.skins.Theme
+import kotlinx.coroutines.launch
 
-class FileIoDemo(owner: Owned) : VerticalLayoutContainer<UiComponent>(owner) {
+class FileIoDemo(owner: Context) : VerticalLayoutContainer<UiComponent>(owner) {
 
 	private val editor: TextArea
 	private val dataBinding = dataBinding(emptyList<FileReader>())
