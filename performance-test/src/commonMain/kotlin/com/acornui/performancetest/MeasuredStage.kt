@@ -1,19 +1,16 @@
 package com.acornui.performancetest
 
 import com.acornui.component.Stage
-import com.acornui.component.TooltipManager
-import com.acornui.component.TooltipManagerImpl
 import com.acornui.gl.core.ShaderBatch
-import com.acornui.popup.PopUpManager
 
 /**
  * A wrapper to Stage that measures performance.
  */
 class MeasuredStage(private val stage: Stage) : Stage by stage {
 
-//	init {
-//		childDependencies += listOf(Stage to this, TooltipManager to TooltipManagerImpl(owner.inject(PopUpManager), this))
-//	}
+	init {
+		childDependencies += listOf(Stage to this)
+	}
 
 	var totalFrames = 0
 	var totalDrawCalls = 0
