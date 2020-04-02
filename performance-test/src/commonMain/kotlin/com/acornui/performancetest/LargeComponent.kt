@@ -17,12 +17,13 @@
 package com.acornui.performancetest
 
 import com.acornui.collection.addAll
+import com.acornui.collection.and
 import com.acornui.component.UiComponent
 import com.acornui.component.datagrid.*
 import com.acornui.component.layout.algorithm.FlowLayoutStyle
 import com.acornui.component.scroll.ScrollPolicy
 import com.acornui.component.style.addStyleRule
-import com.acornui.component.style.and
+import com.acornui.component.style.filter
 import com.acornui.component.text.TextField
 import com.acornui.component.text.text
 import com.acornui.di.Context
@@ -34,7 +35,7 @@ fun Context.dataGridComponent(): DataGrid<*> {
 		defaultHeight = 300f
 		val headerFlowStyle = FlowLayoutStyle()
 		headerFlowStyle.multiline = true
-		addStyleRule(headerFlowStyle, TextField and DataGrid.HEADER_CELL)
+		addStyleRule(headerFlowStyle, TextField.filter and DataGrid.HEADER_CELL.filter)
 		hScrollPolicy = ScrollPolicy.AUTO
 		columns.addAll(
 				object : IntColumn<CountryData>() {

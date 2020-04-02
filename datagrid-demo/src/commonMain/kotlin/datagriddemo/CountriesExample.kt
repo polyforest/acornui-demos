@@ -20,6 +20,7 @@ import com.acornui.asset.loadText
 import com.acornui.collection.ActiveList
 import com.acornui.collection.ObservableList
 import com.acornui.collection.addAll
+import com.acornui.collection.and
 import com.acornui.compareTo2
 import com.acornui.component.UiComponent
 import com.acornui.component.atlas
@@ -31,7 +32,7 @@ import com.acornui.component.layout.spacer
 import com.acornui.component.radioGroup
 import com.acornui.component.scroll.ScrollPolicy
 import com.acornui.component.style.addStyleRule
-import com.acornui.component.style.and
+import com.acornui.component.style.filter
 import com.acornui.component.text.TextField
 import com.acornui.component.text.strong
 import com.acornui.component.text.text
@@ -77,7 +78,7 @@ class CountriesExample(owner: Context) : VerticalLayoutContainer<UiComponent>(ow
 			editable = true
 			val headerFlowStyle = FlowLayoutStyle()
 			headerFlowStyle.multiline = true
-			addStyleRule(headerFlowStyle, TextField and DataGrid.HEADER_CELL)
+			addStyleRule(headerFlowStyle, TextField.filter and DataGrid.HEADER_CELL.filter)
 
 			hScrollPolicy = ScrollPolicy.AUTO
 

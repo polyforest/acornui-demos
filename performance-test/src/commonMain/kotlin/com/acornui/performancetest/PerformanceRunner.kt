@@ -39,7 +39,7 @@ import com.acornui.time.DateRo
 import com.acornui.time.onTick
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.internal.ArrayListSerializer
+import kotlinx.serialization.builtins.list
 import kotlinx.serialization.json.Json
 import kotlin.math.roundToInt
 import kotlin.random.Random
@@ -61,10 +61,10 @@ class PerformanceTest(owner: Context) : StackLayoutContainer<UiComponent>(owner)
 
 	private val persistence by Persistence
 
-	private var history: List<PerformanceResultsSuite> = persistence.getItem("performanceHistory", ArrayListSerializer(PerformanceResultsSuite.serializer())) ?: emptyList()
+	private var history: List<PerformanceResultsSuite> = persistence.getItem("performanceHistory", PerformanceResultsSuite.serializer().list) ?: emptyList()
 		set(value) {
 			field = value
-			persistence.setItem("performanceHistory", jsonStringify(ArrayListSerializer(PerformanceResultsSuite.serializer()), value))
+			persistence.setItem("performanceHistory", jsonStringify(PerformanceResultsSuite.serializer().list, value))
 		}
 
 	private val atlasPath = "assets/uiskin/icons.json"
