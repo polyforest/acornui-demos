@@ -26,5 +26,5 @@ jobs:
           host: bandbox.dreamhost.com
           username: ${{ secrets.BANDBOX_FTP_USERNAME }}
           password: ${{ secrets.BANDBOX_FTP_PASSWORD }}
-          source: "./**/build/wwwProd"
+          source: "./**/build/www"
           target: "~/demos.acornui.com/"
