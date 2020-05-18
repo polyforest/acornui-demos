@@ -21,27 +21,25 @@ import com.acornui.component.UiComponent
 import com.acornui.component.checkbox
 import com.acornui.component.datagrid.IntColumn
 import com.acornui.component.datagrid.dataGrid
+import com.acornui.component.hRadioGroup
 import com.acornui.component.layout.HAlign
 import com.acornui.component.layout.algorithm.FlowVAlign
 import com.acornui.component.layout.algorithm.VerticalLayoutContainer
 import com.acornui.component.layout.algorithm.flow
-import com.acornui.component.layout.algorithm.hGroup
-import com.acornui.component.radioGroup
 import com.acornui.component.scroll.ScrollPolicy
 import com.acornui.component.text.text
 import com.acornui.di.Context
 import com.acornui.i18n.i18n
+import com.acornui.i18n.i18nBundle
+import com.acornui.i18n.string
 import com.acornui.input.interaction.click
 import com.acornui.math.Pad
+import com.acornui.observe.bind
 import com.acornui.replaceTokens
-import com.acornui.signal.bind
 
 class GeneratedDataExample(owner: Context) : VerticalLayoutContainer<UiComponent>(owner) {
 
-	private val bundle = i18n("datagrid")
-
 	init {
-		val bundle = bundle
 		style.padding = Pad(8f)
 
 		val data = ActiveList<Int>()
@@ -96,54 +94,52 @@ class GeneratedDataExample(owner: Context) : VerticalLayoutContainer<UiComponent
 //				}
 //			}
 
-			+hGroup {
-				radioGroup<String> {
-					+radioButton("small", "Small")
-					+radioButton("medium", "Medium")
-					+radioButton("large", "Large")
-					+radioButton("bananas", "Bananas")
-					selectedData = "small"
+			+hRadioGroup<String> {
+				+radioButton("small", "Small")
+				+radioButton("medium", "Medium")
+				+radioButton("large", "Large")
+				+radioButton("bananas", "Bananas")
+				value = "small"
 
-					changed.bind {
-						data.batchUpdate {
-							data.clear()
-							val rows = when (selectedData) {
-								"small" -> 10
-								"medium" -> 1_000
-								"large" -> 100_000
-								"bananas" -> 1_000_000
-								else -> 0
-							}
-							for (i in 0..rows - 1) {
-								data.add(i)
-							}
+				bind(changed) {
+					data.batchUpdate {
+						data.clear()
+						val rows = when (value) {
+							"small" -> 10
+							"medium" -> 1_000
+							"large" -> 100_000
+							"bananas" -> 1_000_000
+							else -> 0
+						}
+						for (i in 0 until rows) {
+							data.add(i)
+						}
 
-							val cols = when (selectedData) {
-								"small" -> 5
-								"medium" -> 10
-								"large" -> 100
-								"bananas" -> 1_000
-								else -> 0
-							}
-							dG.columns.clear()
-							for (i in 0 until cols) {
-								dG.columns.add(
-										object : IntColumn<Int>() {
-											init {
-												widthPercent = 0.18f
-											}
-
-											override fun createHeaderCell(owner: Context): UiComponent {
-												return owner.text {
-													bundle.bind { text = it["column"]?.replaceTokens("$i") ?: "" }
-												}
-											}
-
-											override fun getCellData(row: Int): Int? = row + i
-											override fun setCellData(row: Int, value: Int?) {}
+						val cols = when (value) {
+							"small" -> 5
+							"medium" -> 10
+							"large" -> 100
+							"bananas" -> 1_000
+							else -> 0
+						}
+						dG.columns.clear()
+						for (i in 0 until cols) {
+							dG.columns.add(
+									object : IntColumn<Int>() {
+										init {
+											widthPercent = 0.18f
 										}
-								)
-							}
+
+										override fun createHeaderCell(owner: Context): UiComponent {
+											return owner.text {
+												i18n { text = string("column").replaceTokens("$i") ?: "" }
+											}
+										}
+
+										override fun getCellData(row: Int): Int? = row + i
+										override fun setCellData(row: Int, value: Int?) {}
+									}
+							)
 						}
 					}
 				}

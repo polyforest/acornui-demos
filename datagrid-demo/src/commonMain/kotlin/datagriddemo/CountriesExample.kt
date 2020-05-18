@@ -29,27 +29,27 @@ import com.acornui.component.datagrid.*
 import com.acornui.component.layout.HAlign
 import com.acornui.component.layout.algorithm.*
 import com.acornui.component.layout.spacer
-import com.acornui.component.radioGroup
 import com.acornui.component.scroll.ScrollPolicy
 import com.acornui.component.style.addStyleRule
 import com.acornui.component.style.filter
 import com.acornui.component.text.TextField
 import com.acornui.component.text.strong
 import com.acornui.component.text.text
+import com.acornui.component.vRadioGroup
 import com.acornui.di.Context
-import com.acornui.di.own
 import com.acornui.i18n.i18n
+import com.acornui.i18n.i18nBundle
+import com.acornui.i18n.labelI18n
+import com.acornui.i18n.string
 import com.acornui.input.interaction.click
 import com.acornui.math.Pad
+import com.acornui.observe.bind
 import com.acornui.replaceTokens
-import com.acornui.signal.bind
 import com.acornui.text.NumberFormatType
 import kotlinx.coroutines.launch
 import kotlin.collections.set
 
 class CountriesExample(owner: Context) : VerticalLayoutContainer<UiComponent>(owner) {
-
-	private val bundle = i18n("datagrid")
 
 	init {
 		style.padding = Pad(8f)
@@ -91,7 +91,7 @@ class CountriesExample(owner: Context) : VerticalLayoutContainer<UiComponent>(ow
 
 						override fun createHeaderCell(owner: Context): UiComponent {
 							return owner.text {
-								bundle.bind { text = it["popRank"] ?: "" }
+								i18n { text = string("popRank") }
 							}
 						}
 
@@ -110,19 +110,19 @@ class CountriesExample(owner: Context) : VerticalLayoutContainer<UiComponent>(ow
 							editable = false
 						}
 
-						override fun createCell(owner: Context): DataGridCell<String?> {
-							return object : HorizontalLayoutContainer<UiComponent>(owner), DataGridCell<String?> {
+						override fun createCell(owner: Context): DataGridCell<String> {
+							return object : HorizontalLayoutContainer<UiComponent>(owner), DataGridCell<String> {
 								val flag = +atlas {}
 								val textField = +text() layout { widthPercent = 1f }
-								private var _data: String? = null
 
-								override fun setData(value: String?) {
-									if (_data == value) return
-									_data = value
-									if (value != null) flag.region("assets/flags.json", value.replace(" ", "_"))
-									else flag.clear()
-									textField.text = value ?: ""
-								}
+								override var value: String? = null
+									set(value) {
+										if (field == value) return
+										field = value
+										if (value != null) flag.region("assets/flags.json", value.replace(" ", "_"))
+										else flag.clear()
+										textField.text = value ?: ""
+									}
 							}
 						}
 
@@ -132,7 +132,7 @@ class CountriesExample(owner: Context) : VerticalLayoutContainer<UiComponent>(ow
 
 						override fun createHeaderCell(owner: Context): UiComponent {
 							return owner.text {
-								bundle.bind { text = it["countryOrArea"] ?: "" }
+								i18n { text = string("countryOrArea") }
 							}
 						}
 
@@ -152,7 +152,7 @@ class CountriesExample(owner: Context) : VerticalLayoutContainer<UiComponent>(ow
 
 						override fun createHeaderCell(owner: Context): UiComponent {
 							return owner.text {
-								bundle.bind { text = it["continentalRegion"] ?: "" }
+								labelI18n("continentalRegion")
 							}
 						}
 
@@ -170,7 +170,7 @@ class CountriesExample(owner: Context) : VerticalLayoutContainer<UiComponent>(ow
 
 						override fun createHeaderCell(owner: Context): UiComponent {
 							return owner.text {
-								bundle.bind { text = it["statisticalRegion"] ?: "" }
+								labelI18n("statisticalRegion")
 							}
 						}
 
@@ -188,7 +188,7 @@ class CountriesExample(owner: Context) : VerticalLayoutContainer<UiComponent>(ow
 
 						override fun createHeaderCell(owner: Context): UiComponent {
 							return owner.text {
-								bundle.bind { text = it["population"]?.replaceTokens("2016") ?: "" }
+								i18n { text = string("population").replaceTokens("2016") }
 							}
 						}
 
@@ -206,7 +206,7 @@ class CountriesExample(owner: Context) : VerticalLayoutContainer<UiComponent>(ow
 
 						override fun createHeaderCell(owner: Context): UiComponent {
 							return owner.text {
-								bundle.bind { text = it["population"]?.replaceTokens("2015") ?: "" }
+								i18n { text = string("population").replaceTokens("2015") }
 							}
 						}
 
@@ -225,7 +225,7 @@ class CountriesExample(owner: Context) : VerticalLayoutContainer<UiComponent>(ow
 
 						override fun createHeaderCell(owner: Context): UiComponent {
 							return owner.text {
-								bundle.bind { text = it["change"] ?: "" }
+								labelI18n("change")
 							}
 						}
 
@@ -268,63 +268,62 @@ class CountriesExample(owner: Context) : VerticalLayoutContainer<UiComponent>(ow
 					dG.columnReorderingEnabled = toggled
 				}
 			}
-			+vGroup {
+			+vRadioGroup<String> {
+
 				+text("Group by:") { strong = true }
-				radioGroup<String> {
-					changed.add {
-						dG.groups.clear()
-						val existing = HashMap<String, Boolean>()
-						when (selectedData) {
-							"continental" -> {
-								for (datum in dG.data) {
-									val region = datum.continentalRegion
-									if (!existing.containsKey(region)) {
-										existing[region] = true
-										val newGroup = object : DataGridGroup<CountryData>() {
-											override fun createHeader(owner: Context, list: ObservableList<CountryData>): DataGridGroupHeader {
-												return owner.dataGridGroupHeader(this, list, region) {
-													+spacer() layout { widthPercent = 1f }
-													+text {
-														own(list.bind {
-															text = "Total: " + list.size
-														})
+				changed.add {
+					dG.groups.clear()
+					val existing = HashMap<String, Boolean>()
+					when (value) {
+						"continental" -> {
+							for (datum in dG.data) {
+								val region = datum.continentalRegion
+								if (!existing.containsKey(region)) {
+									existing[region] = true
+									val newGroup = object : DataGridGroup<CountryData>() {
+										override fun createHeader(owner: Context, list: ObservableList<CountryData>): DataGridGroupHeader {
+											return owner.dataGridGroupHeader(this, list, region) {
+												+spacer() layout { widthPercent = 1f }
+												+text {
+													bind(list) {
+														text = "Total: " + list.size
 													}
 												}
 											}
 										}
-										newGroup.filter = {
-											it.continentalRegion == region
-										}
-										dG.groups.add(newGroup)
 									}
+									newGroup.filter = {
+										it.continentalRegion == region
+									}
+									dG.groups.add(newGroup)
 								}
 							}
-							"statistical" -> {
-								for (datum in dG.data) {
-									val region = datum.statisticalRegion
-									if (!existing.containsKey(region)) {
-										existing[region] = true
-										val newGroup = object : DataGridGroup<CountryData>() {
-											override fun createHeader(owner: Context, list: ObservableList<CountryData>): DataGridGroupHeader {
-												return owner.dataGridGroupHeader(this, list, region)
-											}
+						}
+						"statistical" -> {
+							for (datum in dG.data) {
+								val region = datum.statisticalRegion
+								if (!existing.containsKey(region)) {
+									existing[region] = true
+									val newGroup = object : DataGridGroup<CountryData>() {
+										override fun createHeader(owner: Context, list: ObservableList<CountryData>): DataGridGroupHeader {
+											return owner.dataGridGroupHeader(this, list, region)
 										}
-										newGroup.filter = {
-											it.statisticalRegion == region
-										}
-										dG.groups.add(newGroup)
 									}
+									newGroup.filter = {
+										it.statisticalRegion == region
+									}
+									dG.groups.add(newGroup)
 								}
 							}
-
 						}
 
 					}
-					+radioButton("nothing", "Nothing")
-					+radioButton("continental", "Continental Regions")
-					+radioButton("statistical", "Statistical Regions")
-					selectedData = "nothing"
+
 				}
+				+radioButton("nothing", "Nothing")
+				+radioButton("continental", "Continental Regions")
+				+radioButton("statistical", "Statistical Regions")
+				value = "nothing"
 			}
 		}) layout { widthPercent = 1f }
 	}

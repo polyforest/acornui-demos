@@ -8,10 +8,6 @@ import com.acornui.gl.core.ShaderBatch
  */
 class MeasuredStage(private val stage: Stage) : Stage by stage {
 
-	init {
-		childDependencies += listOf(Stage to this)
-	}
-
 	var totalFrames = 0
 	var totalDrawCalls = 0
 	val updatePerformance = PerformanceMetrics()

@@ -19,18 +19,20 @@ package rectdemo
 import com.acornui.component.*
 import com.acornui.component.layout.HAlign
 import com.acornui.component.layout.VAlign
-import com.acornui.component.layout.algorithm.*
+import com.acornui.component.layout.algorithm.FlowHAlign
+import com.acornui.component.layout.algorithm.hGroup
+import com.acornui.component.layout.algorithm.vGroup
 import com.acornui.component.scroll.hSlider
 import com.acornui.component.scroll.scrollArea
 import com.acornui.component.text.text
 import com.acornui.di.Context
-import com.acornui.tween.Tween
 import com.acornui.graphic.Color
 import com.acornui.math.Corners
 import com.acornui.math.Pad
-import com.acornui.signal.bind
+import com.acornui.observe.bind
 import com.acornui.skins.BasicUiSkin
 import com.acornui.skins.Theme
+import com.acornui.tween.Tween
 
 /**
  * @author nbilyk
@@ -73,7 +75,7 @@ class RectDemo(owner: Context) : StackLayoutContainer<UiComponent>(owner) {
 					+headingGroup {
 						label = "Border Thickness"
 
-						+form {
+						+gridForm {
 							+formLabel("Top")
 							+slider({ s.borderThicknesses.top }, { s.borderThicknesses = s.borderThicknesses.copy(top = it) })
 
@@ -90,7 +92,7 @@ class RectDemo(owner: Context) : StackLayoutContainer<UiComponent>(owner) {
 
 					+headingGroup {
 						label = "Corner Radius"
-						+form {
+						+gridForm {
 							+formLabel("Top Left X")
 							+slider({ s.borderRadii.topLeft.x }, { s.borderRadii = s.borderRadii.copy(topLeft = s.borderRadii.topLeft.copy(x = it)) })
 							+formLabel("Top Left Y")
@@ -115,7 +117,7 @@ class RectDemo(owner: Context) : StackLayoutContainer<UiComponent>(owner) {
 
 					+headingGroup {
 						label = "Margin"
-						+form {
+						+gridForm {
 							+formLabel("Top")
 							+slider({ s.margin.top }, { s.margin = s.margin.copy(top = it) })
 
@@ -133,7 +135,7 @@ class RectDemo(owner: Context) : StackLayoutContainer<UiComponent>(owner) {
 					+headingGroup {
 						label = "Size"
 
-						+form {
+						+gridForm {
 							val size = demoRect.layoutData as StackLayoutData
 							+formLabel("Width")
 							+slider({ size.width!! }, { size.width = it }, min = 20f, max = 360f)
@@ -145,33 +147,33 @@ class RectDemo(owner: Context) : StackLayoutContainer<UiComponent>(owner) {
 
 					+headingGroup {
 						label = "Border Color"
-						+form {
+						+gridForm {
 							+formLabel("Top")
 							+colorPicker {
-								color = s.borderColors.top
+								value = s.borderColors.top
 								changed.add {
-									s.borderColors = s.borderColors.copy(top = value.toRgb())
+									s.borderColors = s.borderColors.copy(top = value)
 								}
 							}
 							+formLabel("Right")
 							+colorPicker {
-								color = s.borderColors.right
+								value = s.borderColors.right
 								changed.add {
-									s.borderColors = s.borderColors.copy(right = value.toRgb())
+									s.borderColors = s.borderColors.copy(right = value)
 								}
 							}
 							+formLabel("Bottom")
 							+colorPicker {
-								color = s.borderColors.bottom
+								value = s.borderColors.bottom
 								changed.add {
-									s.borderColors = s.borderColors.copy(bottom = value.toRgb())
+									s.borderColors = s.borderColors.copy(bottom = value)
 								}
 							}
 							+formLabel("Left")
 							+colorPicker {
-								color = s.borderColors.left
+								value = s.borderColors.left
 								changed.add {
-									s.borderColors = s.borderColors.copy(left = value.toRgb())
+									s.borderColors = s.borderColors.copy(left = value)
 								}
 							}
 						} layout { fill() }
@@ -180,58 +182,53 @@ class RectDemo(owner: Context) : StackLayoutContainer<UiComponent>(owner) {
 					+headingGroup {
 						label = "Background Gradient"
 
-						val solidForm = form {
+						val solidForm = gridForm {
 							+formLabel("Background Color")
 							+colorPicker {
-								color = s.backgroundColor
+								value = s.backgroundColor
 								changed.add {
-									s.backgroundColor = value.toRgb()
+									s.backgroundColor = value
 								}
 							}
 						}
 
-						val linearForm = vGroup {
-							radioGroup<GradientDirection> {
-								+radioButton(GradientDirection.ANGLE) { label  = "Angle" }
-								+radioButton(GradientDirection.TOP) { label  = "Top" }
-								+radioButton(GradientDirection.TOP_RIGHT) { label  = "Top Right" }
-								+radioButton(GradientDirection.RIGHT) { label  = "Right" }
-								+radioButton(GradientDirection.BOTTOM_RIGHT) { label  = "Bottom Right" }
-								+radioButton(GradientDirection.BOTTOM) { label  = "Bottom" }
-								+radioButton(GradientDirection.BOTTOM_LEFT) { label  = "Bottom Left" }
-								+radioButton(GradientDirection.LEFT) { label  = "Left" }
-								+radioButton(GradientDirection.TOP_LEFT) { label  = "Top Left" }
+						val linearForm = vRadioGroup<GradientDirection>() {
+							+radioButton(GradientDirection.ANGLE) { label = "Angle" }
+							+radioButton(GradientDirection.TOP) { label = "Top" }
+							+radioButton(GradientDirection.TOP_RIGHT) { label = "Top Right" }
+							+radioButton(GradientDirection.RIGHT) { label = "Right" }
+							+radioButton(GradientDirection.BOTTOM_RIGHT) { label = "Bottom Right" }
+							+radioButton(GradientDirection.BOTTOM) { label = "Bottom" }
+							+radioButton(GradientDirection.BOTTOM_LEFT) { label = "Bottom Left" }
+							+radioButton(GradientDirection.LEFT) { label = "Left" }
+							+radioButton(GradientDirection.TOP_LEFT) { label = "Top Left" }
 
-								changed.add {
-									s.linearGradient = linearGradient.copy(direction = selectedData ?: GradientDirection.TOP)
-								}
-								selectedData = linearGradient.direction
+							changed.add {
+								s.linearGradient = linearGradient.copy(direction = value ?: GradientDirection.TOP)
 							}
-
+							value = linearGradient.direction
 						}
 
-						+vGroup {
-							radioGroup<GradientType> {
-								+radioButton(GradientType.SOLID) { label  = "Solid" }
-								+radioButton(GradientType.LINEAR) { label  = "Linear" }
-								+hr() layout { widthPercent = 1f }
+						+vRadioGroup<GradientType> {
+							+radioButton(GradientType.SOLID) { label = "Solid" }
+							+radioButton(GradientType.LINEAR) { label = "Linear" }
+							+hr() layout { widthPercent = 1f }
 
-								changed.bind {
-									-linearForm
-									-solidForm
-									when (selectedData) {
-										GradientType.LINEAR -> {
-											demoRect.style.linearGradient = linearGradient
-											+linearForm layout { fill() }
-										}
-										else -> {
-											demoRect.style.linearGradient = null
-											+solidForm layout { fill() }
-										}
+							bind(this) {
+								-linearForm
+								-solidForm
+								when (value) {
+									GradientType.LINEAR -> {
+										demoRect.style.linearGradient = linearGradient
+										+linearForm layout { fill() }
+									}
+									else -> {
+										demoRect.style.linearGradient = null
+										+solidForm layout { fill() }
 									}
 								}
-								selectedData = GradientType.SOLID
 							}
+							value = GradientType.SOLID
 						} layout { fill() }
 					} layout { widthPercent = 1f }
 
@@ -240,7 +237,7 @@ class RectDemo(owner: Context) : StackLayoutContainer<UiComponent>(owner) {
 				+stack {
 					style.horizontalAlign = HAlign.CENTER
 					+panel {
-						style.background = { repeatingTexture("assets/uiskin/AlphaCheckerboard.png") { alpha = 0.4f} }
+						style.background = { repeatingTexture("assets/uiskin/AlphaCheckerboard_{0}x.png".toDpis(1f, 2f)) { alpha = 0.4f } }
 						style.padding = Pad()
 						+demoRect
 					}

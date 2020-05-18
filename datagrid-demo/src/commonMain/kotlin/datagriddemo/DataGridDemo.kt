@@ -18,16 +18,16 @@ package datagriddemo
 
 import com.acornui.component.StackLayoutContainer
 import com.acornui.component.UiComponent
+import com.acornui.component.hRadioGroup
 import com.acornui.component.hr
 import com.acornui.component.layout.algorithm.flow
-import com.acornui.component.layout.algorithm.hGroup
 import com.acornui.component.layout.algorithm.vGroup
 import com.acornui.component.layout.spacer
-import com.acornui.component.radioGroup
 import com.acornui.component.scroll.scrollArea
 import com.acornui.component.text.text
 import com.acornui.di.Context
 import com.acornui.i18n.Locale
+import com.acornui.i18n.i18nBundle
 import com.acornui.math.Pad
 import com.acornui.nav.NavBindable
 import com.acornui.nav.navAddElement
@@ -48,6 +48,7 @@ class DataGridDemo(owner: Context) : StackLayoutContainer<UiComponent>(owner), N
 
 	init {
 		Tween.prepare()
+		i18nBundle("datagrid")
 
 		BasicUiSkin(stage, Theme()).apply()
 
@@ -56,29 +57,25 @@ class DataGridDemo(owner: Context) : StackLayoutContainer<UiComponent>(owner), N
 				+flow {
 					style.padding = Pad(4f)
 
-					+hGroup {
-						radioGroup<String> {
-							changed.add {
-								navigate(selectedData ?: "")
-							}
-							+radioButton("countries", "Countries")
-							+radioButton("generated", "Generated")
-							selectedData = "countries"
+					+hRadioGroup<String>() {
+						changed.add {
+							navigate(value ?: "")
 						}
+						+radioButton("countries", "Countries")
+						+radioButton("generated", "Generated")
+						value = "countries"
 					}
 					+spacer(width = 10f)
 
-					+hGroup {
-						radioGroup<Locale> {
-							changed.add {
-								if (selectedData != null)
-									userInfo.currentLocale.change { listOf(selectedData!!)  }
-							}
-							+radioButton(Locale("en-US"), "English")
-							+radioButton(Locale("de-DE"), "German")
-							+radioButton(Locale("fr-FR"), "French")
-//							selectedData = chooseLocale(listOf(Locale("en-US"), Locale("de-DE"), Locale("fr-FR")))
+					+hRadioGroup<Locale>() {
+						changed.add {
+							if (value != null)
+								userInfo.currentLocale.change { listOf(value!!) }
 						}
+						+radioButton(Locale("en-US"), "English")
+						+radioButton(Locale("de-DE"), "German")
+						+radioButton(Locale("fr-FR"), "French")
+//							value = chooseLocale(listOf(Locale("en-US"), Locale("de-DE"), Locale("fr-FR")))
 					}
 
 					+spacer(width = 20f)

@@ -96,7 +96,7 @@ class PerformanceTest(owner: Context) : StackLayoutContainer<UiComponent>(owner)
 
 			val nameInput: TextInput
 			val fastModeInput: Button
-			+form {
+			+gridForm() {
 				+formLabel("Fast Mode:")
 				fastModeInput = +checkbox() { toggled = true }
 				+formLabel("Name:")
@@ -113,7 +113,7 @@ class PerformanceTest(owner: Context) : StackLayoutContainer<UiComponent>(owner)
 			+hr() layout { width = 800f }
 
 			+headingText("Compare Results")
-			+form {
+			+gridForm {
 				+formLabel("Previous:")
 				val inputA: TextInput
 				+hGroup {
@@ -299,7 +299,7 @@ private suspend fun <T> ElementContainer<UiComponent>.runTest(
 	val constructionTime = measureTime {
 		repeat(elementCount) {
 			val component = constructor.componentFactory(this)
-			component.setPosition(rng.nextFloat(0f, WINDOW_WIDTH - 400f), rng.nextFloat(0f, WINDOW_HEIGHT - 200f))
+			component.position(rng.nextFloat(0f, WINDOW_WIDTH - 400f), rng.nextFloat(0f, WINDOW_HEIGHT - 200f))
 			elements.add(addElement(component))
 		}
 		update() // Include the time for the very first update.
@@ -364,7 +364,7 @@ fun rotation(component: UiComponent, data: Vector3) {
 fun resize(component: UiComponent, data: Vector2) {
 	val w = (component.explicitWidth ?: component.width) + data.x * 10f
 	val h = (component.explicitHeight ?: component.height) + data.y * 10f
-	component.setSize(w, h)
+	component.size(w, h)
 
 	if (data.x > 0f && w >= MAX_SIZE ||
 			data.x < 0f && w <= MIN_SIZE) {
