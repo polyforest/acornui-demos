@@ -1,6 +1,5 @@
-# ![Acorn UI](https://github.com/polyforest/acornui/wiki/images/acornUiLogoText100.png "Acorn UI Demos")
-[![Build Status](https://cloud.drone.io/api/badges/polyforest/acornui-demos/status.svg)](https://cloud.drone.io/polyforest/acornui-demos)
-
+# <a href="https://www.acornui.com"><img src="http://www.acornui.com/img/acornUiLogoText.svg" height="80" /></a>
+![CI](https://github.com/polyforest/acornui-demos/workflows/CI/badge.svg)
 
 # Acorn UI Demos
 Small demonstration projects for the Acorn UI Framework.
