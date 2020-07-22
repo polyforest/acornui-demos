@@ -87,7 +87,7 @@ class InputsDemo(owner: Context) : DivComponent(owner) {
 						refreshLabel()
 						toggledChanged.listen {
 							refreshLabel()
-							currentTheme = (if (toggled) "dark" else "default")
+							currentTheme = if (toggled) "dark" else "default"
 						}
 					}
 				}
