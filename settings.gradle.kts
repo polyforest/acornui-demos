@@ -2,21 +2,26 @@ rootProject.name = "acornui-demos"
 
 pluginManagement {
 	val acornVersion: String by settings
-	buildscript {
-		repositories {
-			mavenLocal()
-			if (acornVersion.endsWith("-SNAPSHOT"))
-				maven("https://oss.sonatype.org/content/repositories/snapshots")
-			mavenCentral()
-			jcenter()
-			maven("https://dl.bintray.com/kotlin/kotlin-eap/")
-		}
-		dependencies {
-			classpath("com.acornui:gradle-app-plugins:$acornVersion")
+	val kotlinVersion: String by settings
+	repositories {
+		maven("https://dl.bintray.com/kotlin/kotlin-eap")
+		maven("https://oss.sonatype.org/content/repositories/snapshots")
+		gradlePluginPortal()
+		mavenCentral()
+		jcenter()
+		mavenLocal()
+	}
+	resolutionStrategy {
+		eachPlugin {
+			when(requested.id.namespace) {
+				"com.acornui" -> useVersion(acornVersion)
+				"org.jetbrains.kotlin.plugin",
+				"org.jetbrains.kotlin" ->
+					useVersion(kotlinVersion)
+			}
 		}
 	}
 }
-apply(plugin = "com.acornui.settings")
 
 // Add modules as they are created.  By default, subprojects take on the name of their root directory in gradle.
-include("text-demo", "spine-demo", "rect-demo", "datagrid-demo", "fileio-demo", "new-project", "performance-test")
+include("components-demo")
