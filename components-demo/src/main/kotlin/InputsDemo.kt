@@ -70,7 +70,7 @@ class InputsDemo(owner: Context) : DivComponent(owner) {
 					padding: 15px;
 					max-width: 800px;
 					margin: auto;
-                """
+				"""
 				)
 
 				+hGroup {
