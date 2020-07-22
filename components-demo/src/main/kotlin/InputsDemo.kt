@@ -67,9 +67,9 @@ class InputsDemo(owner: Context) : DivComponent(owner) {
 
 				applyCss(
 					"""
-                   padding: 15px;
-                   max-width: 800px;
-                   margin: auto;
+					padding: 15px;
+					max-width: 800px;
+					margin: auto;
                 """
 				)
 
