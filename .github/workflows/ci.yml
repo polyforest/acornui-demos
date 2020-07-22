@@ -21,7 +21,6 @@ jobs:
           arguments: build
       - name: Upload Artifacts
         uses: appleboy/scp-action@v0.0.5
-        if: github.ref == 'refs/heads/master'
         with:
           host: bandbox.dreamhost.com
           username: ${{ secrets.BANDBOX_FTP_USERNAME }}
