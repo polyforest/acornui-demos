@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Components Demo" type="JavascriptDebugType" uri="http://localhost:63342/acornui-demos/acornui-demos.components-demo/build/distributions/index.html" useBuiltInWebServerPort="true">
+    <method v="2">
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="browserDevelopmentWebpack" externalProjectPath="$PROJECT_DIR$/components-demo" vmOptions="" scriptParameters="" />
+    </method>
+  </configuration>
+</component>

@@ -1,3 +1,4 @@
+import com.acornui.application
 import com.acornui.component.*
 import com.acornui.component.input.*
 import com.acornui.component.layout.FlowGroup
@@ -14,14 +15,14 @@ import com.acornui.di.Context
 import com.acornui.dom.*
 import com.acornui.google.Icons
 import com.acornui.google.icon
+import com.acornui.input.clicked
+import com.acornui.runMain
 import com.acornui.skins.Theme
 import com.acornui.skins.addCssToHead
 import com.acornui.skins.darkTheme
 import com.acornui.time.Date
 import com.acornui.version
 import kotlin.browser.localStorage
-import kotlin.contracts.InvocationKind
-import kotlin.contracts.contract
 
 /**
  * An example of input controls.
@@ -97,7 +98,11 @@ class InputsDemo(owner: Context) : DivComponent(owner) {
 
 					+vGroup {
 
-						+button("Button")
+						+button("Button") {
+							clicked.listen {
+								println("Button clicked")
+							}
+						}
 
 						+checkbox(true) {
 							label = "Checkbox"
@@ -290,7 +295,15 @@ $mainFlowTag > ${FlowGroup.contentsTag} > div {
 	}
 }
 
-inline fun Context.inputsDemo(init: ComponentInit<InputsDemo> = {}): InputsDemo {
-	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
-	return InputsDemo(this).apply(init)
+/**
+ * `main` is our main entry point.
+ *
+ * This method is wrapped in a [runMain] block to set up the main context.
+ */
+fun main() = runMain {
+
+	application("acornUiRoot") {
+		// Create and add our main component to the stage:
+		+InputsDemo(this)
+	}
 }
