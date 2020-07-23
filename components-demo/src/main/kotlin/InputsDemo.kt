@@ -1,10 +1,7 @@
 import com.acornui.application
 import com.acornui.component.*
 import com.acornui.component.input.*
-import com.acornui.component.layout.FlowGroup
-import com.acornui.component.layout.hFlowGroup
-import com.acornui.component.layout.hGroup
-import com.acornui.component.layout.vGroup
+import com.acornui.component.layout.*
 import com.acornui.component.scroll.scrollArea
 import com.acornui.component.style.StyleTag
 import com.acornui.component.text.text
@@ -41,6 +38,7 @@ class InputsDemo(owner: Context) : DivComponent(owner) {
 
 	init {
 		println(version)
+		addClass(LayoutStyles.vGroup)
 
 		val themes = mapOf(
 			"default" to Theme(),
@@ -59,19 +57,17 @@ class InputsDemo(owner: Context) : DivComponent(owner) {
 			)
 		)
 
-		+form {
-			size(100.percent, 100.percent)
-			+scrollArea {
-				size(100.percent, 100.percent)
+		+scrollArea {
 
-				applyCss(
-					"""
-					padding: 15px;
-					max-width: 800px;
-					margin: auto;
+			applyCss(
 				"""
-				)
-
+flex-grow: 0;
+padding: 15px;
+max-width: 800px;
+margin: auto;
+			"""
+			)
+			+form {
 				+hGroup {
 					+button {
 						+icon(Icons.BRIGHTNESS_MEDIUM)
@@ -250,6 +246,22 @@ class InputsDemo(owner: Context) : DivComponent(owner) {
 							disabled = true
 						}
 
+						+tabNavigator {
+							applyCss("max-height: 200px;")
+							tabs {
+								+tab("one", "One")
+								+tab("two", "Two")
+							}
+							+div {
+								tab = "one"
+								+"One"
+							}
+							+div {
+								tab = "two"
+								+"Soko radicchio bunya nuts gram dulse silver beet parsnip napa cabbage lotus root sea lettuce brussels sprout cabbage. Catsear cauliflower garbanzo yarrow salsify chicory garlic bell pepper napa cabbage lettuce tomato kale arugula melon sierra leone bologi rutabaga tigernut. Sea lettuce gumbo grape kale kombu cauliflower salsify kohlrabi okra sea lettuce broccoli celery lotus root carrot winter purslane turnip greens garlic. Jicama garlic courgette coriander radicchio plantain scallion cauliflower fava bean desert raisin spring onion chicory bunya nuts. Sea lettuce water spinach gram fava bean leek dandelion silver beet eggplant bush tomato."
+							}
+						}
+
 					}
 
 				}
@@ -259,8 +271,8 @@ class InputsDemo(owner: Context) : DivComponent(owner) {
 					+submitInput("Submit")
 				}
 
-			} // scroll area
-		} // form
+			} // form
+		} // scroll area
 	}
 
 	@Suppress("CssOverwrittenProperties")
