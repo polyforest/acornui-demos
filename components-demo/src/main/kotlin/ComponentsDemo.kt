@@ -19,6 +19,7 @@ import com.acornui.skins.addCssToHead
 import com.acornui.skins.darkTheme
 import com.acornui.time.Date
 import com.acornui.version
+import org.w3c.dom.HTMLDivElement
 import kotlin.browser.localStorage
 
 /**
@@ -37,7 +38,6 @@ class InputsDemo(owner: Context) : DivComponent(owner) {
 		}
 
 	init {
-		println(version)
 		addClass(LayoutStyles.vGroup)
 
 		val themes = mapOf(
@@ -273,6 +273,8 @@ margin: auto;
 
 			} // form
 		} // scroll area
+
+		+text("v$version")
 	}
 
 	@Suppress("CssOverwrittenProperties")
