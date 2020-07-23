@@ -40,7 +40,6 @@ class InputsDemo(owner: Context) : DivComponent(owner) {
 		}
 
 	init {
-		// Adds the basic skin to the stage. This sets up styling for all Acorn UI components.
 		println(version)
 
 		val themes = mapOf(
