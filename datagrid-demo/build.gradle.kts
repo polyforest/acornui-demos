@@ -1,18 +1,7 @@
 plugins {
-	id("com.acornui.app")
+	kotlin("js")
+	kotlin("plugin.serialization")
+	id("com.acornui.js")
 }
 
-val acornVersion: String by project
-kotlin {
-	sourceSets {
-		commonMain {
-			dependencies {
-				runtimeOnly("com.acornui.skins:basic:$acornVersion")
-			}
-		}
-	}
-}
-
-tasks.runJvm {
-	main = "datagriddemo.jvm.DataGridDemoJvmKt"
-}
+//kotlin.target.produceExecutable()

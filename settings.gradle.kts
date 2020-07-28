@@ -24,4 +24,4 @@ pluginManagement {
 }
 
 // Add modules as they are created.  By default, subprojects take on the name of their root directory in gradle.
-include("components-demo")
+include("components-demo", "datagrid-demo")

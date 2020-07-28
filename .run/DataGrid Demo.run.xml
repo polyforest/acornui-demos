@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="DataGrid Demo" type="JavascriptDebugType" uri="http://localhost:63342/acornui-demos/acornui-demos.datagrid-demo/build/distributions/index.html" useBuiltInWebServerPort="true">
+    <method v="2">
+      <option name="Gradle.BeforeRunTask" enabled="false" tasks="browserDevelopmentWebpack" externalProjectPath="$PROJECT_DIR$/datagrid-demo" vmOptions="" scriptParameters="" />
+    </method>
+  </configuration>
+</component>
