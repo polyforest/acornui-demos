@@ -22,6 +22,7 @@ import com.acornui.component.input.button
 import com.acornui.component.layout.LayoutStyles
 import com.acornui.component.layout.hFlowGroup
 import com.acornui.component.style.StyleTag
+import com.acornui.css.percent
 import com.acornui.di.Context
 import com.acornui.dom.addCssToHead
 import com.acornui.input.clicked
@@ -35,21 +36,25 @@ class CountriesExample(owner: Context) : DivComponent(owner) {
 	init {
 		addClass(styleTag)
 		addClass(LayoutStyles.vGroup)
+		applyCss("""
+			align-content: center;
+			margin: 50px auto;
+		""")
 
-		+hFlowGroup {
-			for (i in 0..20) {
-				+button("Test $i")
-			}
-		}
+//		+hFlowGroup {
+//			for (i in 0..20) {
+//				+button("Test $i")
+//			}
+//		}
 
 		dG = +dataGrid<CountryData> {
 
 			applyCss(
 				"""
-				width: 100%;
-				max-height: 400px;
-				resize: both;
-				grid-template-columns: repeat(4, 1fr);
+max-height: 400px;
+max-width: 500px;
+resize: both;
+grid-template-columns: repeat(4, 1fr);
 				
 			"""
 			)
@@ -88,18 +93,24 @@ class CountriesExample(owner: Context) : DivComponent(owner) {
 3	United States	Americas	Northern America	324118787	321773631	0.01
 4	Indonesia	Asia	South-Eastern Asia	260581100	257563815	0.01
 5	Brazil	Americas	South America	209567920	207847528	0.01
-6	Pakistan	Asia	Southern Asia	192826502	188924874	0.02	
+6	Pakistan	Asia	Southern Asia	192826502	188924874	0.02
 		""")
 
 		+button("Load more data") {
 			clicked.listen { e ->
-
+				disabled = true
 				launch {
 					val it = loadText("assets/countries.tsv")
 					setData(it)
+					dispose()
 				}
 			}
 		}
+
+//		launch {
+//			val it = loadText("assets/countries.tsv")
+//			setData(it)
+//		}
 
 
 //		val dG = +dataGrid(data) {
@@ -382,7 +393,7 @@ class CountriesExample(owner: Context) : DivComponent(owner) {
 		init {
 			addCssToHead("""
 ${DataGrid.headerCellStyle} {
-min-width: 100px;	
+min-width: 50px;	
 }
 			""")
 		}

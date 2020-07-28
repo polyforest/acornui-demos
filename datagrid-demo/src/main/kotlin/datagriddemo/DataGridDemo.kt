@@ -58,9 +58,8 @@ class DataGridDemo(owner: Context) : DivComponent(owner) {
 		+scrollArea {
 			height(100.percent)
 			+panel {
-
-
 				+vGroup {
+//					width(100.percent)
 //				+flow {
 //					style.padding = Pad(4f)
 //

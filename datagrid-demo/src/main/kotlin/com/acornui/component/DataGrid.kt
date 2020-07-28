@@ -26,7 +26,7 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	})
 
 	val contents = addChild(div {
-		addClass(contentsContainer)
+		addClass(contentsContainerStyle)
 	})
 
 	fun header(init: UiComponent.() -> Unit) {
@@ -59,9 +59,10 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 
 	companion object {
 		val styleTag = StyleTag("DataGrid")
+		val headerContainerStyle = StyleTag("DataGrid_headerRow")
 		val headerRowStyle = StyleTag("DataGrid_headerRow")
 		val headerCellStyle = StyleTag("DataGrid_headerCell")
-		val contentsContainer = StyleTag("DataGrid_contentsContainer")
+		val contentsContainerStyle = StyleTag("DataGrid_contentsContainer")
 		val rowStyle = StyleTag("DataGrid_row")
 		val cellStyle = StyleTag("DataGrid_cell")
 
@@ -70,15 +71,14 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 			addCssToHead(
 				"""
 $styleTag {	
-	display: inline-grid;
-	
+	display: flex;
+	flex-direction: column;
 	background: ${cssVar(Theme::panelBackground)};
 	border: ${cssVar(Theme::borderThickness)} solid ${cssVar(Theme::border)};
 	border-radius: ${cssVar(Theme::borderRadius)};
 	box-sizing: border-box;
-	overflow: auto;
 	box-shadow: ${cssVar(Theme::componentShadow)};
-	grid-auto-rows: min-content;
+	position: relative;
 }
 
 $cellStyle {
@@ -86,9 +86,13 @@ $cellStyle {
 }
 
 $headerRowStyle {
-	display: contents;
+	grid-template-columns: inherit;
+	grid-auto-rows: min-content;
+	display: grid;
+	flex-grow: 0;
+	flex-shrink: 0;
+	overflow-y: scroll;
 }
-
 
 $headerRowStyle > div:first-child {
 	border-top-left-radius: var(--br);
@@ -99,7 +103,6 @@ $headerRowStyle > div {
 	border-radius: 0;
 	grid-row-start: 1;
 	align-self: stretch;
-	position: sticky;
 	top: 0;
 	border: none;
 	clip-path: polygon(-10% -10%, 110% -10%, 110% 100%, -10% 100%);
@@ -110,19 +113,23 @@ $headerCellStyle:focus {
 	border-color: ${cssVar(Theme::focus)};
 }
 
-$contentsContainer {
-	display: contents;
+$contentsContainerStyle {
+	display: grid;
+	grid-template-columns: inherit;
+	grid-auto-rows: min-content;
+	overflow-y: scroll;
+	border-bottom-left-radius: inherit;
 }
 
 $rowStyle {
 	display: contents;
 }
 
-$contentsContainer > div:nth-child(2n+0) > $cellStyle {
+$contentsContainerStyle > div:nth-child(2n+0) > $cellStyle {
 	background: ${cssVar(Theme::dataRowEvenBackground)};
 }
 
-$contentsContainer > div:nth-child(2n+1) > $cellStyle {
+$contentsContainerStyle > div:nth-child(2n+1) > $cellStyle {
 	background: ${cssVar(Theme::dataRowOddBackground)};
 }
 
