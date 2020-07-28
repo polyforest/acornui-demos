@@ -51,8 +51,8 @@ class CountriesExample(owner: Context) : DivComponent(owner) {
 
 			applyCss(
 				"""
-max-height: 400px;
-max-width: 500px;
+width: 500px;
+max-height: calc(100vh - 150px);
 resize: both;
 grid-template-columns: repeat(4, 1fr);
 				

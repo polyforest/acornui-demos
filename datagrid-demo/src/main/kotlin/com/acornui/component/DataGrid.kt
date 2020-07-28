@@ -11,8 +11,11 @@ import com.acornui.css.cssVar
 import com.acornui.di.Context
 import com.acornui.dom.addCssToHead
 import com.acornui.dom.div
+import com.acornui.input.focusin
 import com.acornui.skins.Theme
 import com.acornui.time.nextFrameCallback
+import org.w3c.dom.Node
+import org.w3c.dom.asList
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
@@ -21,11 +24,19 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	private var rowFactory: RowFactory<E>? = null
 	private var data: List<E> = emptyList()
 
-	val header = addChild(div {
+	/**
+	 * Necessary only for Safari
+	 * https://stackoverflow.com/questions/57934803/workaround-for-a-safari-position-sticky-webkit-sticky-bug
+	 */
+	val mainContainer = addChild(div() {
+		addClass(mainContainerStyle)
+	})
+
+	val header = mainContainer.addElement(div {
 		addClass(headerRowStyle)
 	})
 
-	val contents = addChild(div {
+	val contents = mainContainer.addElement(div {
 		addClass(contentsContainerStyle)
 	})
 
@@ -55,11 +66,21 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 
 	init {
 		addClass(styleTag)
+
+		contents.focusin.listen {
+			val row = it.target.unsafeCast<Node>().parentNode!!
+			val cellIndex = row.childNodes.asList().indexOf(it.target)
+			val rowIndex = row.parentNode!!.childNodes.asList().indexOf(row)
+
+			println("Focused $rowIndex $cellIndex")
+		}
 	}
 
 	companion object {
+
 		val styleTag = StyleTag("DataGrid")
 		val headerContainerStyle = StyleTag("DataGrid_headerRow")
+		val mainContainerStyle = StyleTag("DataGrid_mainContainer")
 		val headerRowStyle = StyleTag("DataGrid_headerRow")
 		val headerCellStyle = StyleTag("DataGrid_headerCell")
 		val contentsContainerStyle = StyleTag("DataGrid_contentsContainer")
@@ -79,10 +100,15 @@ $styleTag {
 	box-sizing: border-box;
 	box-shadow: ${cssVar(Theme::componentShadow)};
 	position: relative;
+	overflow: auto;
 }
 
 $cellStyle {
 	padding: ${cssVar(Theme::inputPadding)};
+}
+
+$mainContainerStyle {
+	grid-template-columns: inherit;
 }
 
 $headerRowStyle {
@@ -91,7 +117,9 @@ $headerRowStyle {
 	display: grid;
 	flex-grow: 0;
 	flex-shrink: 0;
-	overflow-y: scroll;
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
 }
 
 $headerRowStyle > div:first-child {
@@ -108,7 +136,7 @@ $headerRowStyle > div {
 	clip-path: polygon(-10% -10%, 110% -10%, 110% 100%, -10% 100%);
 }
 
-$headerCellStyle:focus {
+$styleTag *:focus {
     box-shadow: inset 0 0 0 ${cssVar(Theme::focusThickness)} ${cssVar(Theme::focus)};
 	border-color: ${cssVar(Theme::focus)};
 }
@@ -117,7 +145,6 @@ $contentsContainerStyle {
 	display: grid;
 	grid-template-columns: inherit;
 	grid-auto-rows: min-content;
-	overflow-y: scroll;
 	border-bottom-left-radius: inherit;
 }
 
@@ -167,6 +194,7 @@ inline fun DataGrid<*>.headerCell(init: ComponentInit<Button> = {}): Button {
 inline fun DataGrid<*>.cell(text: String = "", init: ComponentInit<TextFieldImpl> = {}): TextFieldImpl {
 	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
 	return text {
+		tabIndex = 0
 		addClass(DataGrid.cellStyle)
 		this.text = text
 		init()
