@@ -18,11 +18,14 @@ package datagriddemo
 
 import com.acornui.asset.loadText
 import com.acornui.component.*
+import com.acornui.component.datagrid.DataGrid
+import com.acornui.component.datagrid.cell
+import com.acornui.component.datagrid.dataGrid
+import com.acornui.component.datagrid.headerCell
 import com.acornui.component.input.button
 import com.acornui.component.layout.LayoutStyles
-import com.acornui.component.layout.hFlowGroup
 import com.acornui.component.style.StyleTag
-import com.acornui.css.percent
+import com.acornui.css.css
 import com.acornui.di.Context
 import com.acornui.dom.addCssToHead
 import com.acornui.input.clicked
@@ -52,7 +55,6 @@ class CountriesExample(owner: Context) : DivComponent(owner) {
 			applyCss(
 				"""
 width: 500px;
-max-height: calc(100vh - 150px);
 resize: both;
 grid-template-columns: repeat(4, 1fr);
 				
@@ -77,7 +79,7 @@ grid-template-columns: repeat(4, 1fr);
 				}
 			}
 
-			row {
+			rows {
 				+cell(it.countryOrArea)
 				+cell("Hello 2")
 				+cell("Hello 3")
@@ -87,7 +89,7 @@ grid-template-columns: repeat(4, 1fr);
 
 		}
 
-		setData("""
+		dG.data = parseCountries("""
 1	China	Asia	Eastern Asia	1382323332	1376048943	0.01
 2	India	Asia	Southern Asia	1326801576	1311050527	0.01
 3	United States	Americas	Northern America	324118787	321773631	0.01
@@ -96,12 +98,15 @@ grid-template-columns: repeat(4, 1fr);
 6	Pakistan	Asia	Southern Asia	192826502	188924874	0.02
 		""")
 
+//		dG.data += CountryData(0, "Fake", "North America", "Junk", 0, 0, 0f)
+
 		+button("Load more data") {
 			clicked.listen { e ->
+				dG.style.height = css("calc(100vh - 150px)")
 				disabled = true
 				launch {
 					val it = loadText("assets/countries.tsv")
-					setData(it)
+					dG.data = parseCountries(it)
 					dispose()
 				}
 			}
@@ -367,7 +372,7 @@ grid-template-columns: repeat(4, 1fr);
 //		}) layout { widthPercent = 1f }
 	}
 
-	private fun setData(it: String) {
+	private fun parseCountries(it: String): List<CountryData> {
 		val data = ArrayList<CountryData>()
 		val countries = it.trim().split('\n')
 		for (country in countries) {
@@ -383,8 +388,7 @@ grid-template-columns: repeat(4, 1fr);
 			)
 			data.add(newCountry)
 		}
-
-		dG.data(data)
+		return data
 	}
 
 	companion object {
@@ -393,7 +397,7 @@ grid-template-columns: repeat(4, 1fr);
 		init {
 			addCssToHead("""
 ${DataGrid.headerCellStyle} {
-min-width: 50px;	
+	min-width: 50px;	
 }
 			""")
 		}

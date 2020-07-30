@@ -1,7 +1,8 @@
 @file:Suppress("CssReplaceWithShorthandSafely", "CssInvalidPropertyValue", "CssUnresolvedCustomProperty")
 
-package com.acornui.component
+package com.acornui.component.datagrid
 
+import com.acornui.component.*
 import com.acornui.component.input.Button
 import com.acornui.component.input.button
 import com.acornui.component.style.StyleTag
@@ -12,6 +13,8 @@ import com.acornui.di.Context
 import com.acornui.dom.addCssToHead
 import com.acornui.dom.div
 import com.acornui.input.focusin
+import com.acornui.properties.afterChange
+import com.acornui.recycle.recycle
 import com.acornui.skins.Theme
 import com.acornui.time.nextFrameCallback
 import org.w3c.dom.Node
@@ -21,8 +24,11 @@ import kotlin.contracts.contract
 
 class DataGrid<E>(owner: Context) : DivComponent(owner) {
 
-	private var rowFactory: RowFactory<E>? = null
-	private var data: List<E> = emptyList()
+	private var rowBuilder: RowBuilder<E>? = null
+
+	var data: List<E> by afterChange(emptyList()) {
+		refreshRows()
+	}
 
 	/**
 	 * Necessary only for Safari
@@ -36,35 +42,55 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		addClass(headerRowStyle)
 	})
 
+	/**
+	 * Calls the specified function [block] with [header] as its receiver.
+	 * @return Returns [header]
+	 */
+	fun header(block: UiComponent.() -> Unit) = header.apply(block)
+
 	val contents = mainContainer.addElement(div {
 		addClass(contentsContainerStyle)
 	})
 
-	fun header(init: UiComponent.() -> Unit) {
-		header.apply(init)
-	}
+	val footer = mainContainer.addElement(div {
+		addClass(footerRowStyle)
+	})
 
-	fun row(init: RowFactory<E>) {
-		rowFactory = init
-		refreshRows()
-	}
+	/**
+	 * Calls the specified function [block] with [footer] as its receiver.
+	 * @return Returns [footer]
+	 */
+	fun footer(block: UiComponent.() -> Unit) = footer.apply(block)
 
-	fun data(value: List<E>) {
-		data = value
+	/**
+	 * Sets the builder for rows.
+	 */
+	fun rows(init: RowBuilder<E>) {
+		contents.clearElements(dispose = true)
+		rowBuilder = init
 		refreshRows()
 	}
 
 	private val refreshRows = nextFrameCallback {
-		contents.clearElements(dispose = true)
-		for (datum in data) {
-			contents.addElement(div {
+		val rowsContainer = contents.unsafeCast<ElementParent<DataGridRow<E>>>()
+		recycle(data, rowsContainer.elements, factory = {
+			item: E, index: Int ->
+			row(item) {
 				addClass(rowStyle)
-				rowFactory?.invoke(this, datum)
-			})
-		}
+				rowBuilder?.invoke(this, item)
+			}
+		}, configure = {
+			element: WithNode, item: E, index: Int ->
+		}, disposer = {
+			it.dispose()
+		}, retriever = {
+			element ->
+			element.data
+		})
 	}
 
 	init {
+		addClass(Panel.panelColorsStyle)
 		addClass(styleTag)
 
 		contents.focusin.listen {
@@ -79,9 +105,9 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	companion object {
 
 		val styleTag = StyleTag("DataGrid")
-		val headerContainerStyle = StyleTag("DataGrid_headerRow")
 		val mainContainerStyle = StyleTag("DataGrid_mainContainer")
 		val headerRowStyle = StyleTag("DataGrid_headerRow")
+		val footerRowStyle = StyleTag("DataGrid_footerRow")
 		val headerCellStyle = StyleTag("DataGrid_headerCell")
 		val contentsContainerStyle = StyleTag("DataGrid_contentsContainer")
 		val rowStyle = StyleTag("DataGrid_row")
@@ -94,11 +120,7 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 $styleTag {	
 	display: flex;
 	flex-direction: column;
-	background: ${cssVar(Theme::panelBackground)};
-	border: ${cssVar(Theme::borderThickness)} solid ${cssVar(Theme::border)};
-	border-radius: ${cssVar(Theme::borderRadius)};
 	box-sizing: border-box;
-	box-shadow: ${cssVar(Theme::componentShadow)};
 	position: relative;
 	overflow: auto;
 }
@@ -136,9 +158,22 @@ $headerRowStyle > div {
 	clip-path: polygon(-10% -10%, 110% -10%, 110% 100%, -10% 100%);
 }
 
+$footerRowStyle {
+	grid-template-columns: inherit;
+	grid-auto-rows: min-content;
+	display: grid;
+	flex-grow: 0;
+	flex-shrink: 0;
+	position: -webkit-sticky;
+	position: sticky;
+	bottom: 0;
+}
+
 $styleTag *:focus {
     box-shadow: inset 0 0 0 ${cssVar(Theme::focusThickness)} ${cssVar(Theme::focus)};
 	border-color: ${cssVar(Theme::focus)};
+	/* The default focus transition isn't snappy enough for the datagrid */
+	transition: box-shadow 0.0s ease-in-out;
 }
 
 $contentsContainerStyle {
@@ -168,7 +203,19 @@ $contentsContainerStyle > div:nth-child(2n+1) > $cellStyle {
 	}
 }
 
-typealias RowFactory<E> = UiComponent.(E) -> Unit
+class DataGridRow<E>(owner: Context, val data: E) : DivComponent(owner) {
+
+	init {
+		addClass(DataGrid.rowStyle)
+	}
+}
+
+inline fun <E> Context.row(data: E, init: ComponentInit<DataGridRow<E>> = {}): DataGridRow<E> {
+	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
+	return DataGridRow(this, data).apply(init)
+}
+
+typealias RowBuilder<E> = DataGridRow<E>.(E) -> Unit
 
 inline fun <E> Context.dataGrid(init: ComponentInit<DataGrid<E>> = {}): DataGrid<E> {
 	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
@@ -178,7 +225,7 @@ inline fun <E> Context.dataGrid(init: ComponentInit<DataGrid<E>> = {}): DataGrid
 inline fun <E> Context.dataGrid(data: List<E>, init: ComponentInit<DataGrid<E>> = {}): DataGrid<E> {
 	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
 	return DataGrid<E>(this).apply {
-		data(data)
+		this.data = data
 		init()
 	}
 }

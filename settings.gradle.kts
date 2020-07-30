@@ -4,20 +4,17 @@ pluginManagement {
 	val acornVersion: String by settings
 	val kotlinVersion: String by settings
 	repositories {
-		maven("https://dl.bintray.com/kotlin/kotlin-eap")
-		maven("https://oss.sonatype.org/content/repositories/snapshots")
 		gradlePluginPortal()
 		mavenCentral()
 		jcenter()
+		maven("https://dl.bintray.com/kotlin/kotlin-eap")
+		maven("https://oss.sonatype.org/content/repositories/snapshots")
 		mavenLocal()
 	}
 	resolutionStrategy {
 		eachPlugin {
 			when(requested.id.namespace) {
 				"com.acornui" -> useVersion(acornVersion)
-				"org.jetbrains.kotlin.plugin",
-				"org.jetbrains.kotlin" ->
-					useVersion(kotlinVersion)
 			}
 		}
 	}

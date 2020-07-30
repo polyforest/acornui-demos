@@ -17,10 +17,9 @@
 package datagriddemo
 
 import com.acornui.application
-import com.acornui.component.DataGrid
 import com.acornui.component.DivComponent
+import com.acornui.component.datagrid.DataGrid
 import com.acornui.component.layout.vGroup
-import com.acornui.component.panel
 import com.acornui.component.scroll.scrollArea
 import com.acornui.component.style.StyleTag
 import com.acornui.css.cssVar
@@ -57,8 +56,7 @@ class DataGridDemo(owner: Context) : DivComponent(owner) {
 		addClass(styleTag)
 		+scrollArea {
 			height(100.percent)
-			+panel {
-				+vGroup {
+			+vGroup {
 //					width(100.percent)
 //				+flow {
 //					style.padding = Pad(4f)
@@ -91,11 +89,10 @@ class DataGridDemo(owner: Context) : DivComponent(owner) {
 //
 //				+hr() layout { widthPercent = 1f }
 
-					+CountriesExample(this)
+				+CountriesExample(this)
 
 //				navAddElement(nav, "countries", disposeOnRemove = true) { CountriesExample(this) layout { fill() } }
 //				navAddElement(nav, "generated", disposeOnRemove = true) { GeneratedDataExample(this) layout { fill() } }
-				}
 			}
 		}
 

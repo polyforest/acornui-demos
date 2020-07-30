@@ -20,7 +20,7 @@ import com.acornui.skins.addCssToHead
 import com.acornui.skins.darkTheme
 import com.acornui.time.Date
 import com.acornui.version
-import kotlin.browser.localStorage
+import kotlinx.browser.localStorage
 
 /**
  * An example of input controls.
@@ -90,182 +90,184 @@ width: 100%;
 					}
 
 					+panel {
+						width(100.percent)
 
-						addClass(mainFlowTag)
+						+hFlowGroup {
+							addClass(mainFlowTag)
 
-						+vGroup {
+							+vGroup {
 
-							+button("Button") {
-								clicked.listen {
-									println("Button clicked")
+								+button("Button") {
+									clicked.listen {
+										println("Button clicked")
+									}
 								}
-							}
 
-							+checkbox(true) {
-								label = "Checkbox"
-							}
-
-							+checkbox {
-								indeterminate = true
-
-								var count = 0
-								changed.listen {
-									if (++count % 3 == 0)
-										indeterminate = true
+								+checkbox(true) {
+									label = "Checkbox"
 								}
-								label = "Checkbox with indeterminate state and long name!"
-								style.maxWidth = "300px"
-							}
 
-							val radioGroup = RadioGroup()
-							+radio(radioGroup, "1") {
-								label = "Radio 1"
-							}
-							+radio(radioGroup, "2") {
-								label = "Radio 2"
-							}
-							+radio(radioGroup, "3") {
-								label = "Radio 3"
-							}
+								+checkbox {
+									indeterminate = true
 
-							+switch {
-								label = "Switch"
-							}
-
-							+textInput {
-								placeholder = "Text Input"
-							}
-
-							+textArea {
-								placeholder = "Text Area"
-								applyCss("max-width: 100%;")
-							}
-
-							+fileInput {
-								changed.listen {
-									println("File changed")
+									var count = 0
+									changed.listen {
+										if (++count % 3 == 0)
+											indeterminate = true
+									}
+									label = "Checkbox with indeterminate state and long name!"
+									style.maxWidth = "300px"
 								}
-								input.listen {
-									println("File input")
+
+								val radioGroup = RadioGroup()
+								+radio(radioGroup, "1") {
+									label = "Radio 1"
 								}
-							}
-
-							+dateInput {
-								defaultValueAsDate = Date()
-
-								changed.listen {
-									println(valueToString())
+								+radio(radioGroup, "2") {
+									label = "Radio 2"
 								}
-							}
-
-							+monthInput {
-								defaultValueAsDate = Date()
-
-								changed.listen {
-									println(valueToString())
+								+radio(radioGroup, "3") {
+									label = "Radio 3"
 								}
+
+								+switch {
+									label = "Switch"
+								}
+
+								+textInput {
+									placeholder = "Text Input"
+								}
+
+								+textArea {
+									placeholder = "Text Area"
+									applyCss("max-width: 100%;")
+								}
+
+								+fileInput {
+									changed.listen {
+										println("File changed")
+									}
+									input.listen {
+										println("File input")
+									}
+								}
+
+								+dateInput {
+									defaultValueAsDate = Date()
+
+									changed.listen {
+										println(valueToString())
+									}
+								}
+
+								+monthInput {
+									defaultValueAsDate = Date()
+
+									changed.listen {
+										println(valueToString())
+									}
+								}
+
+								+numberInput {
+									placeholder = "Number"
+								}
+
 							}
 
-							+numberInput {
-								placeholder = "Number"
-							}
 
+							+vGroup {
+
+								+emailInput {
+									placeholder = "Email"
+									autocomplete = "username"
+									name = "exampleEmail"
+								}
+
+								+passwordInput {
+									placeholder = "Password"
+									autocomplete = "new-password"
+									name = "examplePassword"
+								}
+
+								+rangeInput()
+
+								+searchInput {
+									placeholder = "Search"
+								}
+
+								+timeInput {
+									defaultValueAsDate = Date()
+
+									changed.listen {
+										println(valueToString())
+										println(valueToString(second = null))
+									}
+								}
+
+								+colorInput {
+									dom.defaultValue = "#ff0000"
+								}
+
+								// Disabled components:
+
+								+button {
+									label = "Button Disabled"
+									disabled = true
+								}
+								+checkbox(true) {
+									label = "Checkbox Disabled"
+									disabled = true
+								}
+
+
+								+checkbox {
+									indeterminate = true
+									disabled = true
+									label = "Disabled indeterminate check"
+								}
+
+								+textInput {
+									placeholder = "Text Input Disabled"
+									disabled = true
+								}
+
+								+textArea {
+									placeholder = "Text Input Disabled"
+									disabled = true
+								}
+
+								+rangeInput {
+									disabled = true
+								}
+
+								+radio(RadioGroup(), "4") {
+									label = "Radio 4 Disabled"
+									disabled = true
+								}
+
+								+switch {
+									label = "Switch Disabled"
+									disabled = true
+								}
+
+								+tabNavigator {
+									applyCss("max-height: 200px;")
+									tabs {
+										+tab("one", "One")
+										+tab("two", "Two")
+									}
+									+div {
+										tab = "one"
+										+"One"
+									}
+									+div {
+										tab = "two"
+										+"Soko radicchio bunya nuts gram dulse silver beet parsnip napa cabbage lotus root sea lettuce brussels sprout cabbage. Catsear cauliflower garbanzo yarrow salsify chicory garlic bell pepper napa cabbage lettuce tomato kale arugula melon sierra leone bologi rutabaga tigernut. Sea lettuce gumbo grape kale kombu cauliflower salsify kohlrabi okra sea lettuce broccoli celery lotus root carrot winter purslane turnip greens garlic. Jicama garlic courgette coriander radicchio plantain scallion cauliflower fava bean desert raisin spring onion chicory bunya nuts. Sea lettuce water spinach gram fava bean leek dandelion silver beet eggplant bush tomato."
+									}
+								}
+
+							}
 						}
-
-
-						+vGroup {
-
-							+emailInput {
-								placeholder = "Email"
-								autocomplete = "username"
-								name = "exampleEmail"
-							}
-
-							+passwordInput {
-								placeholder = "Password"
-								autocomplete = "new-password"
-								name = "examplePassword"
-							}
-
-							+rangeInput()
-
-							+searchInput {
-								placeholder = "Search"
-							}
-
-							+timeInput {
-								defaultValueAsDate = Date()
-
-								changed.listen {
-									println(valueToString())
-									println(valueToString(second = null))
-								}
-							}
-
-							+colorInput {
-								dom.defaultValue = "#ff0000"
-							}
-
-							// Disabled components:
-
-							+button {
-								label = "Button Disabled"
-								disabled = true
-							}
-							+checkbox(true) {
-								label = "Checkbox Disabled"
-								disabled = true
-							}
-
-
-							+checkbox {
-								indeterminate = true
-								disabled = true
-								label = "Disabled indeterminate check"
-							}
-
-							+textInput {
-								placeholder = "Text Input Disabled"
-								disabled = true
-							}
-
-							+textArea {
-								placeholder = "Text Input Disabled"
-								disabled = true
-							}
-
-							+rangeInput {
-								disabled = true
-							}
-
-							+radio(RadioGroup(), "4") {
-								label = "Radio 4 Disabled"
-								disabled = true
-							}
-
-							+switch {
-								label = "Switch Disabled"
-								disabled = true
-							}
-
-							+tabNavigator {
-								applyCss("max-height: 200px;")
-								tabs {
-									+tab("one", "One")
-									+tab("two", "Two")
-								}
-								+div {
-									tab = "one"
-									+"One"
-								}
-								+div {
-									tab = "two"
-									+"Soko radicchio bunya nuts gram dulse silver beet parsnip napa cabbage lotus root sea lettuce brussels sprout cabbage. Catsear cauliflower garbanzo yarrow salsify chicory garlic bell pepper napa cabbage lettuce tomato kale arugula melon sierra leone bologi rutabaga tigernut. Sea lettuce gumbo grape kale kombu cauliflower salsify kohlrabi okra sea lettuce broccoli celery lotus root carrot winter purslane turnip greens garlic. Jicama garlic courgette coriander radicchio plantain scallion cauliflower fava bean desert raisin spring onion chicory bunya nuts. Sea lettuce water spinach gram fava bean leek dandelion silver beet eggplant bush tomato."
-								}
-							}
-
-						}
-
 					}
 					+hFlowGroup {
 						width(100.percent)
@@ -292,16 +294,13 @@ ${StageImpl.styleTag} * {
 }
 
 $mainFlowTag {
+	justify-content: space-evenly;
 	width: 100%;
 }
 
-$mainFlowTag > ${FlowGroup.contentsTag} {
-	justify-content: space-evenly;
-}
-
 $mainFlowTag > ${FlowGroup.contentsTag} > div {
-	width: 250px;
-	align-items: stretch; 
+	max-width: 250px;
+	align-items: stretch;
 }
 
 """
