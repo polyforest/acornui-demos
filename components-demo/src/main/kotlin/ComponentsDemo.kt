@@ -72,7 +72,12 @@ class InputsDemo(owner: Context) : DivComponent(owner) {
 					}
 
 					+panel {
-						width(100.percent)
+						applyCss("""
+							width: 100%;
+							max-width: 800px;
+							margin-left: auto;
+							margin-right: auto;							
+						""")
 
 						+hFlowGroup {
 							addClass(mainFlowTag)
