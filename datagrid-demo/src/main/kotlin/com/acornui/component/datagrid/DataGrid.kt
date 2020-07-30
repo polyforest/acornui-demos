@@ -1,3 +1,19 @@
+/*
+ * Copyright 2020 Poly Forest, LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 @file:Suppress("CssReplaceWithShorthandSafely", "CssInvalidPropertyValue", "CssUnresolvedCustomProperty")
 
 package com.acornui.component.datagrid
@@ -8,6 +24,8 @@ import com.acornui.component.input.button
 import com.acornui.component.style.StyleTag
 import com.acornui.component.text.TextFieldImpl
 import com.acornui.component.text.text
+import com.acornui.css.css
+import com.acornui.css.cssProp
 import com.acornui.css.cssVar
 import com.acornui.di.Context
 import com.acornui.dom.addCssToHead
@@ -123,6 +141,9 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		val rowStyle = StyleTag("DataGrid_row")
 		val cellStyle = StyleTag("DataGrid_cell")
 
+		val borderThickness: String = css("1px")
+		val borderColor: String = css("#ccc")
+
 		init {
 
 			addCssToHead(
@@ -133,6 +154,8 @@ $styleTag {
 	box-sizing: border-box;
 	position: relative;
 	overflow: auto;
+	${cssProp(::borderThickness)};
+	${cssProp(::borderColor)};
 }
 
 $cellStyle {
@@ -141,17 +164,15 @@ $cellStyle {
 
 $mainContainerStyle {
 	grid-template-columns: inherit;
+	display: grid;
+	grid-auto-rows: min-content;
+	row-gap: ${cssVar(::borderThickness)};
+	column-gap: ${cssVar(::borderThickness)};
+	background-color: ${cssVar(::borderColor)};
 }
 
 $headerRowStyle {
-	grid-template-columns: inherit;
-	grid-auto-rows: min-content;
-	display: grid;
-	flex-grow: 0;
-	flex-shrink: 0;
-	position: -webkit-sticky;
-	position: sticky;
-	top: 0;
+	display: contents;
 }
 
 $headerRowStyle > div:first-child {
@@ -162,21 +183,26 @@ $headerRowStyle > div {
 	--br: calc(${cssVar(Theme::borderRadius)} - ${cssVar(Theme::borderThickness)});
 	border-radius: 0;
 	grid-row-start: 1;
-	align-self: stretch;
-	top: 0;
+	/*align-self: stretch;*/
 	border: none;
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+	
+	font-weight: bolder;
 }
 
 $footerRowStyle {
-	grid-template-columns: inherit;
-	grid-auto-rows: min-content;
-	display: grid;
-	flex-grow: 0;
-	flex-shrink: 0;
+	display: contents;
+}
+
+$footerRowStyle > div {
 	position: -webkit-sticky;
 	position: sticky;
 	bottom: 0;
-	box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.35);
+	
+	color: ${cssVar(Theme::footerTextColor)};
+	background: ${cssVar(Theme::footerBackgroundColor)};
 }
 
 $styleTag *:focus {
@@ -187,9 +213,7 @@ $styleTag *:focus {
 }
 
 $contentsContainerStyle {
-	display: grid;
-	grid-template-columns: inherit;
-	grid-auto-rows: min-content;
+	display: contents;
 	border-bottom-left-radius: inherit;
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Poly Forest, LLC
+ * Copyright 2020 Poly Forest, LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,18 +58,27 @@ class CountriesExample(owner: Context) : DivComponent(owner) {
 
 			applyCss(
 				"""
-width: 500px;
+width: 600px;
 resize: both;
-grid-template-columns: [continent] 1fr [country] 1fr [pop-2015] 1fr [pop-2016] 1fr [pop-change] 1fr;
+grid-template-columns: repeat(5, auto);
 			"""
 			)
 
 			header {
 				+headerCell("Continent")
 				+headerCell("Country")
-				+headerCell("Population 2015")
-				+headerCell("Population 2016")
-				+headerCell("Population Change")
+				+headerCell("Pop 2015") {
+					dom.title = "Population 2015"
+				}
+				+headerCell("Pop 2016") {
+					dom.title = "Population 2016"
+				}
+				+headerCell("% Change") {
+					applyCss("""
+						white-space: nowrap;
+					""")
+					dom.title = "Percentage change between 2015 and 2016"
+				}
 			}
 
 			val nF = numberFormatter()
@@ -81,21 +90,16 @@ grid-template-columns: [continent] 1fr [country] 1fr [pop-2015] 1fr [pop-2016] 1
 				applyCss("""font-weight: 400;""")
 				+cell("Total:") {
 				}
+				+cell()
 				+cell {
 					grid.dataChanged.listen {
 						label = nF.format(grid.data.sumByLong { it.population2015 })
 					}
-					applyCss("""
-						grid-column-start: pop-2015;
-					""")
 				}
 				+cell {
 					grid.dataChanged.listen {
 						label = nF.format(grid.data.sumByLong { it.population2016 })
 					}
-					applyCss("""
-						grid-column-start: pop-2016;
-					""")
 				}
 
 				+cell {
@@ -104,9 +108,6 @@ grid-template-columns: [continent] 1fr [country] 1fr [pop-2015] 1fr [pop-2016] 1
 						val p2 = grid.data.sumByLong { it.population2016 }
 						label = pF.format(p2.toDouble() / p1.toDouble() - 1.0)
 					}
-					applyCss("""
-						grid-column-start: pop-change;
-					""")
 				}
 			}
 

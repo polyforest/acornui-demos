@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Poly Forest, LLC
+ * Copyright 2020 Poly Forest, LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,13 @@ package datagriddemo
 import com.acornui.application
 import com.acornui.component.DivComponent
 import com.acornui.component.datagrid.DataGrid
+import com.acornui.component.input.button
 import com.acornui.component.layout.vGroup
 import com.acornui.component.scroll.scrollArea
+import com.acornui.component.stage
 import com.acornui.component.style.StyleTag
+import com.acornui.component.text.text
+import com.acornui.css.css
 import com.acornui.css.cssVar
 import com.acornui.css.percent
 import com.acornui.di.Context
@@ -29,10 +33,16 @@ import com.acornui.dom.add
 import com.acornui.dom.addCssToHead
 import com.acornui.dom.head
 import com.acornui.dom.linkElement
+import com.acornui.google.Icons
+import com.acornui.google.icon
 import com.acornui.i18n.i18nBundle
 import com.acornui.runMain
 import com.acornui.skins.Theme
 import com.acornui.skins.addCssToHead
+import com.acornui.skins.darkTheme
+import kotlinx.dom.addClass
+import kotlinx.dom.removeClass
+import com.acornui.demo.*
 
 /**
  * @author nbilyk
@@ -42,16 +52,8 @@ class DataGridDemo(owner: Context) : DivComponent(owner) {
 
 
 	init {
-
 		i18nBundle("datagrid")
-		Theme().addCssToHead()
-
-		head.add(
-			linkElement(
-				"https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap",
-				rel = "stylesheet"
-			)
-		)
+		initThemes()
 
 		addClass(styleTag)
 		+scrollArea {
@@ -89,6 +91,11 @@ class DataGridDemo(owner: Context) : DivComponent(owner) {
 //
 //				+hr() layout { widthPercent = 1f }
 
+
+
+				+themeButton()
+
+
 				+CountriesExample(this)
 
 //				navAddElement(nav, "countries", disposeOnRemove = true) { CountriesExample(this) layout { fill() } }
@@ -103,21 +110,6 @@ class DataGridDemo(owner: Context) : DivComponent(owner) {
 
 		val styleTag = StyleTag("DataGridDemo")
 
-		init {
-			addCssToHead(
-				"""
-				$styleTag {
-					padding: ${cssVar(Theme::padding)};
-					font-family: 'Montserrat', sans-serif;
-					font-weight: 300;
-				}
-				
-				${DataGrid.headerRowStyle} {
-					font-weight: 500;
-				}
-			"""
-			)
-		}
 	}
 }
 
