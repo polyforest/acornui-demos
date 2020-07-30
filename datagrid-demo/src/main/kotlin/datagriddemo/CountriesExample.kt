@@ -17,7 +17,9 @@
 package datagriddemo
 
 import com.acornui.asset.loadText
-import com.acornui.component.*
+import com.acornui.collection.sumByLong
+import com.acornui.component.DivComponent
+import com.acornui.component.applyCss
 import com.acornui.component.datagrid.DataGrid
 import com.acornui.component.datagrid.cell
 import com.acornui.component.datagrid.dataGrid
@@ -28,6 +30,8 @@ import com.acornui.component.style.StyleTag
 import com.acornui.css.css
 import com.acornui.di.Context
 import com.acornui.dom.addCssToHead
+import com.acornui.formatters.numberFormatter
+import com.acornui.formatters.percentFormatter
 import com.acornui.input.clicked
 import kotlinx.coroutines.launch
 
@@ -56,34 +60,62 @@ class CountriesExample(owner: Context) : DivComponent(owner) {
 				"""
 width: 500px;
 resize: both;
-grid-template-columns: repeat(4, 1fr);
-				
+grid-template-columns: [continent] 1fr [country] 1fr [pop-2015] 1fr [pop-2016] 1fr [pop-change] 1fr;
 			"""
 			)
 
 			header {
-				+headerCell {
-					+"Country"
+				+headerCell("Continent")
+				+headerCell("Country")
+				+headerCell("Population 2015")
+				+headerCell("Population 2016")
+				+headerCell("Population Change")
+			}
+
+			val nF = numberFormatter()
+			val pF = percentFormatter()
+			pF.maxFractionDigits = 1
+
+			val grid = this
+			footer {
+				applyCss("""font-weight: 400;""")
+				+cell("Total:") {
+				}
+				+cell {
+					grid.dataChanged.listen {
+						label = nF.format(grid.data.sumByLong { it.population2015 })
+					}
+					applyCss("""
+						grid-column-start: pop-2015;
+					""")
+				}
+				+cell {
+					grid.dataChanged.listen {
+						label = nF.format(grid.data.sumByLong { it.population2016 })
+					}
+					applyCss("""
+						grid-column-start: pop-2016;
+					""")
 				}
 
-				+headerCell {
-					+"Header 2"
-				}
-
-				+headerCell {
-					+"Header 3"
-				}
-
-				+headerCell {
-					+"Header 4"
+				+cell {
+					grid.dataChanged.listen {
+						val p1 = grid.data.sumByLong { it.population2015 }
+						val p2 = grid.data.sumByLong { it.population2016 }
+						label = pF.format(p2.toDouble() / p1.toDouble() - 1.0)
+					}
+					applyCss("""
+						grid-column-start: pop-change;
+					""")
 				}
 			}
 
 			rows {
+				+cell(it.continentalRegion)
 				+cell(it.countryOrArea)
-				+cell("Hello 2")
-				+cell("Hello 3")
-				+cell("Hello 4")
+				+cell(nF.format(it.population2015))
+				+cell(nF.format(it.population2016))
+				+cell(pF.format(it.populationChange))
 			}
 
 
@@ -382,8 +414,8 @@ grid-template-columns: repeat(4, 1fr);
 				countrySplit[1],
 				countrySplit[2],
 				countrySplit[3],
-				countrySplit[4].toInt(),
-				countrySplit[5].toInt(),
+				countrySplit[4].toLong(),
+				countrySplit[5].toLong(),
 				countrySplit[6].toFloat()
 			)
 			data.add(newCountry)
@@ -409,7 +441,7 @@ private data class CountryData(
 	var countryOrArea: String,
 	var continentalRegion: String,
 	var statisticalRegion: String,
-	var population2016: Int,
-	var population2015: Int,
+	var population2016: Long,
+	var population2015: Long,
 	var populationChange: Float
 )

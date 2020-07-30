@@ -13,22 +13,32 @@ import com.acornui.di.Context
 import com.acornui.dom.addCssToHead
 import com.acornui.dom.div
 import com.acornui.input.focusin
-import com.acornui.properties.afterChange
 import com.acornui.recycle.recycle
+import com.acornui.signal.signal
 import com.acornui.skins.Theme
 import com.acornui.time.nextFrameCallback
 import org.w3c.dom.Node
 import org.w3c.dom.asList
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
+import com.acornui.dom.footer as footerEl
 
 class DataGrid<E>(owner: Context) : DivComponent(owner) {
 
+	class DataChangeEvent<E>(oldData: List<E>, newData: List<E>)
+
+	val dataChanged = signal<DataChangeEvent<E>>()
+
 	private var rowBuilder: RowBuilder<E>? = null
 
-	var data: List<E> by afterChange(emptyList()) {
-		refreshRows()
-	}
+	var data: List<E>  = emptyList()
+		set(value) {
+			val old = field
+			if (old == value) return
+			field = value
+			dataChanged.dispatch(DataChangeEvent(old, value))
+			refreshRows()
+		}
 
 	/**
 	 * Necessary only for Safari
@@ -52,7 +62,7 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		addClass(contentsContainerStyle)
 	})
 
-	val footer = mainContainer.addElement(div {
+	val footer = mainContainer.addElement(footerEl {
 		addClass(footerRowStyle)
 	})
 
@@ -155,7 +165,6 @@ $headerRowStyle > div {
 	align-self: stretch;
 	top: 0;
 	border: none;
-	clip-path: polygon(-10% -10%, 110% -10%, 110% 100%, -10% 100%);
 }
 
 $footerRowStyle {
@@ -167,6 +176,7 @@ $footerRowStyle {
 	position: -webkit-sticky;
 	position: sticky;
 	bottom: 0;
+	box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.35);
 }
 
 $styleTag *:focus {
@@ -230,10 +240,11 @@ inline fun <E> Context.dataGrid(data: List<E>, init: ComponentInit<DataGrid<E>> 
 	}
 }
 
-inline fun DataGrid<*>.headerCell(init: ComponentInit<Button> = {}): Button {
+inline fun DataGrid<*>.headerCell(label: String = "", init: ComponentInit<Button> = {}): Button {
 	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
 	return button {
 		addClass(DataGrid.headerCellStyle)
+		this.label = label
 		init()
 	}
 }
