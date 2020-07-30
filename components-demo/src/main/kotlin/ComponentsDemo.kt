@@ -63,7 +63,11 @@ class InputsDemo(owner: Context) : DivComponent(owner) {
 				+vGroup {
 					applyCss(
 						"""
-						min-height: 100%;						
+						min-height: 100%;
+						width: 100%;
+						max-width: 800px;
+						margin-left: auto;
+						margin-right: auto;							
 					"""
 					)
 
@@ -72,13 +76,7 @@ class InputsDemo(owner: Context) : DivComponent(owner) {
 					}
 
 					+panel {
-						applyCss("""
-							width: 100%;
-							max-width: 800px;
-							margin-left: auto;
-							margin-right: auto;							
-						""")
-
+						width(100.percent)
 						+hFlowGroup {
 							addClass(mainFlowTag)
 
@@ -160,7 +158,6 @@ class InputsDemo(owner: Context) : DivComponent(owner) {
 								}
 
 							}
-
 
 							+vGroup {
 
@@ -252,10 +249,9 @@ class InputsDemo(owner: Context) : DivComponent(owner) {
 										+"Soko radicchio bunya nuts gram dulse silver beet parsnip napa cabbage lotus root sea lettuce brussels sprout cabbage. Catsear cauliflower garbanzo yarrow salsify chicory garlic bell pepper napa cabbage lettuce tomato kale arugula melon sierra leone bologi rutabaga tigernut. Sea lettuce gumbo grape kale kombu cauliflower salsify kohlrabi okra sea lettuce broccoli celery lotus root carrot winter purslane turnip greens garlic. Jicama garlic courgette coriander radicchio plantain scallion cauliflower fava bean desert raisin spring onion chicory bunya nuts. Sea lettuce water spinach gram fava bean leek dandelion silver beet eggplant bush tomato."
 									}
 								}
-
 							}
-						}
-					}
+						} // hFlowGroup
+					} // panel
 					+hFlowGroup {
 						width(100.percent)
 						+resetInput("Reset")
