@@ -25,14 +25,23 @@ import com.acornui.component.datagrid.cell
 import com.acornui.component.datagrid.dataGrid
 import com.acornui.component.datagrid.headerCell
 import com.acornui.component.input.button
+import com.acornui.component.input.numberInput
+import com.acornui.component.input.textInput
 import com.acornui.component.layout.LayoutStyles
 import com.acornui.component.style.StyleTag
 import com.acornui.css.css
 import com.acornui.di.Context
 import com.acornui.dom.addCssToHead
+import com.acornui.dom.img
 import com.acornui.formatters.numberFormatter
 import com.acornui.formatters.percentFormatter
+import com.acornui.frame
 import com.acornui.input.clicked
+import com.acornui.logging.Log
+import com.acornui.observe.bind
+import com.acornui.observe.dataBinding
+import com.acornui.signal.once
+import com.acornui.time.nextFrameCallback
 import kotlinx.coroutines.launch
 
 
@@ -55,80 +64,109 @@ class CountriesExample(owner: Context) : DivComponent(owner) {
 //		}
 
 		dG = +dataGrid<CountryData> {
+			val worldPop = dataBinding(0L)
+			dataChanged.listen {
+				worldPop.value = data.sumByLong { it.population }
+			}
 
 			applyCss(
 				"""
 width: 600px;
-resize: both;
-grid-template-columns: repeat(5, auto);
+min-height: 100px;
+grid-template-columns: 32px repeat(3, auto);
+
 			"""
 			)
 
 			header {
-				+headerCell("Continent")
+				+headerCell()
 				+headerCell("Country")
-				+headerCell("Pop 2015") {
-					dom.title = "Population 2015"
+				+headerCell("Population 2020") {
+					title = "Population 2020"
 				}
-				+headerCell("Pop 2016") {
-					dom.title = "Population 2016"
-				}
-				+headerCell("% Change") {
+				+headerCell("% World") {
 					applyCss("""
 						white-space: nowrap;
 					""")
-					dom.title = "Percentage change between 2015 and 2016"
+					title = "Percentage of world population"
 				}
 			}
 
 			val nF = numberFormatter()
 			val pF = percentFormatter()
-			pF.maxFractionDigits = 1
+			pF.maxFractionDigits = 2
 
 			val grid = this
 			footer {
 				applyCss("""font-weight: 400;""")
 				+cell("Total:") {
+					applyCss(
+						"grid-column: 1/3;"
+					)
+				}
+				+cell {
+					grid.dataChanged.listen {
+						bind(worldPop) {
+							label = nF.format(it)
+						}
+					}
 				}
 				+cell()
-				+cell {
-					grid.dataChanged.listen {
-						label = nF.format(grid.data.sumByLong { it.population2015 })
-					}
-				}
-				+cell {
-					grid.dataChanged.listen {
-						label = nF.format(grid.data.sumByLong { it.population2016 })
-					}
-				}
 
-				+cell {
-					grid.dataChanged.listen {
-						val p1 = grid.data.sumByLong { it.population2015 }
-						val p2 = grid.data.sumByLong { it.population2016 }
-						label = pF.format(p2.toDouble() / p1.toDouble() - 1.0)
-					}
-				}
 			}
 
 			rows {
-				+cell(it.continentalRegion)
-				+cell(it.countryOrArea)
-				+cell(nF.format(it.population2015))
-				+cell(nF.format(it.population2016))
-				+cell(pF.format(it.populationChange))
+				+cell {
+					frame.once { _ ->
+						+img(it.flag)
+					}
+				}
+				+cell(it.name) {
+					tabIndex = 0
+				}
+				+cell(nF.format(it.population)) {
+					tabIndex = 0
+				}
+				+cell {
+					tabIndex = 0
+					bind(worldPop) { worldPop ->
+						label = pF.format(it.population.toDouble() / worldPop)
+					}
+				}
 			}
 
+			rowEditor {
+				+cell {
+					+img(it.flag)
+				}
+				+cell {
+					+textInput {
+						value = it.name
+					}
+				}
+				+cell {
+					+numberInput {
+						valueAsNumber = it.population.toDouble()
+						step = 1.0
+					}
+				}
+				+cell {
+					tabIndex = 0
+					bind(worldPop) { worldPop ->
+						label = pF.format(it.population.toDouble() / worldPop)
+					}
+				}
+			}
 
 		}
 
 		dG.data = parseCountries("""
-1	China	Asia	Eastern Asia	1382323332	1376048943	0.01
-2	India	Asia	Southern Asia	1326801576	1311050527	0.01
-3	United States	Americas	Northern America	324118787	321773631	0.01
-4	Indonesia	Asia	South-Eastern Asia	260581100	257563815	0.01
-5	Brazil	Americas	South America	209567920	207847528	0.01
-6	Pakistan	Asia	Southern Asia	192826502	188924874	0.02
+China[b]	1403772560	//upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/23px-Flag_of_the_People%27s_Republic_of_China.svg.png
+India[c]	1365368088	//upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/23px-Flag_of_India.svg.png
+United States[d]	330047753	//upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/23px-Flag_of_the_United_States.svg.png
+Indonesia	269603400	//upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/23px-Flag_of_Indonesia.svg.png
+Pakistan[e]	220892331	//upload.wikimedia.org/wikipedia/commons/thumb/3/32/Flag_of_Pakistan.svg/23px-Flag_of_Pakistan.svg.png
+Brazil	211866273	//upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.svg/22px-Flag_of_Brazil.svg.png
 		""")
 
 //		dG.data += CountryData(0, "Fake", "North America", "Junk", 0, 0, 0f)
@@ -138,271 +176,13 @@ grid-template-columns: repeat(5, auto);
 				dG.style.height = css("calc(100vh - 150px)")
 				disabled = true
 				launch {
+					// Data from: https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population
 					val it = loadText("assets/countries.tsv")
 					dG.data = parseCountries(it)
 					dispose()
 				}
 			}
 		}
-
-//		launch {
-//			val it = loadText("assets/countries.tsv")
-//			setData(it)
-//		}
-
-
-//		val dG = +dataGrid(data) {
-//			editable = true
-//			val headerFlowStyle = FlowLayoutStyle()
-//			headerFlowStyle.multiline = true
-//			addStyleRule(headerFlowStyle, TextField.filter and DataGrid.HEADER_CELL.filter)
-//
-//			hScrollPolicy = ScrollPolicy.AUTO
-//
-//			columns.addAll(
-//					object : IntColumn<CountryData>() {
-//						init {
-//							flexible = true
-//							width = 60f
-//						}
-//
-//						override fun createHeaderCell(owner: Context): UiComponent {
-//							return owner.text {
-//								i18n { text = string("popRank") }
-//							}
-//						}
-//
-//						override fun getCellData(row: CountryData): Int = row.popRank
-//
-//						override fun setCellData(row: CountryData, value: Int?) {
-//							row.popRank = value ?: 0
-//						}
-//					},
-//					object : DataGridColumn<CountryData, String>() {
-//						init {
-//							flexible = true
-//							sortable = true
-//							width = 300f
-//							minWidth = 100f
-//							editable = false
-//						}
-//
-//						override fun createCell(owner: Context): DataGridCell<String> {
-//							return object : HorizontalLayoutContainer<UiComponent>(owner), DataGridCell<String> {
-//								val flag = +atlas {}
-//								val textField = +text() layout { widthPercent = 1f }
-//
-//								override var value: String? = null
-//									set(value) {
-//										if (field == value) return
-//										field = value
-//										if (value != null) flag.region("assets/flags.json", value.replace(" ", "_"))
-//										else flag.clear()
-//										textField.text = value ?: ""
-//									}
-//							}
-//						}
-//
-//						override fun createEditorCell(owner: Context): DataGridEditorCell<String> {
-//							throw UnsupportedOperationException("not implemented")
-//						}
-//
-//						override fun createHeaderCell(owner: Context): UiComponent {
-//							return owner.text {
-//								i18n { text = string("countryOrArea") }
-//							}
-//						}
-//
-//						override fun getCellData(row: CountryData): String = row.countryOrArea
-//						override fun setCellData(row: CountryData, value: String) {}
-//
-//						override fun compareRows(row1: CountryData, row2: CountryData): Int {
-//							return getCellData(row1).compareTo2(getCellData(row2), ignoreCase = true)
-//						}
-//					},
-//
-//					object : StringColumn<CountryData>() {
-//						init {
-//							flexible = true
-//							width = 117f
-//						}
-//
-//						override fun createHeaderCell(owner: Context): UiComponent {
-//							return owner.text {
-//								labelI18n("continentalRegion")
-//							}
-//						}
-//
-//						override fun getCellData(row: CountryData): String = row.continentalRegion
-//						override fun setCellData(row: CountryData, value: String) {
-//							row.continentalRegion = value
-//						}
-//					},
-//
-//					object : StringColumn<CountryData>() {
-//						init {
-//							flexible = true
-//							width = 117f
-//						}
-//
-//						override fun createHeaderCell(owner: Context): UiComponent {
-//							return owner.text {
-//								labelI18n("statisticalRegion")
-//							}
-//						}
-//
-//						override fun getCellData(row: CountryData): String = row.statisticalRegion
-//						override fun setCellData(row: CountryData, value: String) {
-//							row.statisticalRegion = value
-//						}
-//					},
-//
-//					object : IntColumn<CountryData>() {
-//						init {
-//							flexible = true
-//							width = 117f
-//						}
-//
-//						override fun createHeaderCell(owner: Context): UiComponent {
-//							return owner.text {
-//								i18n { text = string("population").replaceTokens("2016") }
-//							}
-//						}
-//
-//						override fun getCellData(row: CountryData): Int = row.population2016
-//						override fun setCellData(row: CountryData, value: Int?) {
-//							row.population2016 = value ?: 0
-//						}
-//					},
-//
-//					object : IntColumn<CountryData>() {
-//						init {
-//							flexible = true
-//							width = 117f
-//						}
-//
-//						override fun createHeaderCell(owner: Context): UiComponent {
-//							return owner.text {
-//								i18n { text = string("population").replaceTokens("2015") }
-//							}
-//						}
-//
-//						override fun getCellData(row: CountryData): Int = row.population2015
-//						override fun setCellData(row: CountryData, value: Int?) {
-//							row.population2015 = value ?: 0
-//						}
-//					},
-//
-//					object : FloatColumn<CountryData>() {
-//						init {
-//							formatter.type = NumberFormatType.PERCENT
-//							flexible = true
-//							width = 90f
-//						}
-//
-//						override fun createHeaderCell(owner: Context): UiComponent {
-//							return owner.text {
-//								labelI18n("change")
-//							}
-//						}
-//
-//						override fun getCellData(row: CountryData): Float = row.populationChange
-//						override fun setCellData(row: CountryData, value: Float?) {
-//							row.populationChange = value ?: 0f
-//						}
-//					}
-//
-//			)
-//		} layout { fill(); horizontalAlign = HAlign.CENTER }
-//
-//		addElement(0, flow {
-//			style.verticalAlign = FlowVAlign.TOP
-//			+checkbox {
-//				label = "HScrolling"
-//				toggled = true
-//				click().add {
-//					dG.hScrollPolicy = if (toggled) ScrollPolicy.AUTO else ScrollPolicy.OFF
-//				}
-//			}
-//			+checkbox {
-//				label = "Resizable"
-//				toggled = true
-//				click().add {
-//					dG.columnResizingEnabled = toggled
-//				}
-//			}
-//			+checkbox {
-//				label = "Sortable"
-//				toggled = true
-//				click().add {
-//					dG.columnSortingEnabled = toggled
-//				}
-//			}
-//			+checkbox {
-//				label = "Reorderable"
-//				toggled = true
-//				click().add {
-//					dG.columnReorderingEnabled = toggled
-//				}
-//			}
-//			+vRadioGroup<String> {
-//
-//				+text("Group by:") { strong = true }
-//				changed.add {
-//					dG.groups.clear()
-//					val existing = HashMap<String, Boolean>()
-//					when (value) {
-//						"continental" -> {
-//							for (datum in dG.data) {
-//								val region = datum.continentalRegion
-//								if (!existing.containsKey(region)) {
-//									existing[region] = true
-//									val newGroup = object : DataGridGroup<CountryData>() {
-//										override fun createHeader(owner: Context, list: ObservableList<CountryData>): DataGridGroupHeader {
-//											return owner.dataGridGroupHeader(this, list, region) {
-//												+spacer() layout { widthPercent = 1f }
-//												+text {
-//													bind(list) {
-//														text = "Total: " + list.size
-//													}
-//												}
-//											}
-//										}
-//									}
-//									newGroup.filter = {
-//										it.continentalRegion == region
-//									}
-//									dG.groups.add(newGroup)
-//								}
-//							}
-//						}
-//						"statistical" -> {
-//							for (datum in dG.data) {
-//								val region = datum.statisticalRegion
-//								if (!existing.containsKey(region)) {
-//									existing[region] = true
-//									val newGroup = object : DataGridGroup<CountryData>() {
-//										override fun createHeader(owner: Context, list: ObservableList<CountryData>): DataGridGroupHeader {
-//											return owner.dataGridGroupHeader(this, list, region)
-//										}
-//									}
-//									newGroup.filter = {
-//										it.statisticalRegion == region
-//									}
-//									dG.groups.add(newGroup)
-//								}
-//							}
-//						}
-//
-//					}
-//
-//				}
-//				+radioButton("nothing", "Nothing")
-//				+radioButton("continental", "Continental Regions")
-//				+radioButton("statistical", "Statistical Regions")
-//				value = "nothing"
-//			}
-//		}) layout { widthPercent = 1f }
 	}
 
 	private fun parseCountries(it: String): List<CountryData> {
@@ -410,16 +190,16 @@ grid-template-columns: repeat(5, auto);
 		val countries = it.trim().split('\n')
 		for (country in countries) {
 			val countrySplit = country.split('\t')
-			val newCountry = CountryData(
-				countrySplit[0].toInt(),
-				countrySplit[1],
-				countrySplit[2],
-				countrySplit[3],
-				countrySplit[4].toLong(),
-				countrySplit[5].toLong(),
-				countrySplit[6].toFloat()
-			)
-			data.add(newCountry)
+			try {
+				val newCountry = CountryData(
+					countrySplit[0],
+					countrySplit[1].toLong(),
+					countrySplit[2]
+				)
+				data.add(newCountry)
+			} catch (e: Throwable) {
+				Log.warn("Bad row: $country")
+			}
 		}
 		return data
 	}
@@ -430,7 +210,7 @@ grid-template-columns: repeat(5, auto);
 		init {
 			addCssToHead("""
 ${DataGrid.headerCellStyle} {
-	min-width: 50px;	
+		
 }
 			""")
 		}
@@ -438,11 +218,7 @@ ${DataGrid.headerCellStyle} {
 }
 
 private data class CountryData(
-	var popRank: Int,
-	var countryOrArea: String,
-	var continentalRegion: String,
-	var statisticalRegion: String,
-	var population2016: Long,
-	var population2015: Long,
-	var populationChange: Float
+	val name: String,
+	val population: Long,
+	val flag: String
 )

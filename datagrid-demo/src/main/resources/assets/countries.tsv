@@ -1,233 +1,241 @@
-1	China	Asia	Eastern Asia	1382323332	1376048943	0.01
-2	India	Asia	Southern Asia	1326801576	1311050527	0.01
-3	United States	Americas	Northern America	324118787	321773631	0.01
-4	Indonesia	Asia	South-Eastern Asia	260581100	257563815	0.01
-5	Brazil	Americas	South America	209567920	207847528	0.01
-6	Pakistan	Asia	Southern Asia	192826502	188924874	0.02
-7	Nigeria	Africa	Western Africa	186987563	182201962	0.03
-8	Bangladesh	Asia	Southern Asia	162910864	160995642	0.01
-9	Russia	Europe	Eastern Europe	143439832	143456918	0.00
-10	Mexico	Americas	Central America	128632004	127017224	0.01
-11	Japan	Asia	Eastern Asia	126323715	126573481	0.00
-12	Philippines	Asia	South-Eastern Asia	102250133	100699395	0.02
-13	Ethiopia	Africa	Eastern Africa	101853268	99390750	0.03
-14	Vietnam	Asia	South-Eastern Asia	94444200	93447601	0.01
-15	Egypt	Africa	Northern Africa	93383574	91508084	0.02
-16	Germany	Europe	Western Europe	80682351	80688545	0.00
-17	Iran	Asia	Southern Asia	80043146	79109272	0.01
-18	Democratic Republic of the Congo	Africa	Middle Africa	79722624	77266814	0.03
-19	Turkey	Asia	Western Asia	79622062	78665830	0.01
-20	Thailand	Asia	South-Eastern Asia	68146609	67959359	0.00
-21	United Kingdom	Europe	Northern Europe	65111143	64715810	0.01
-22	France	Europe	Western Europe	64668129	64395345	0.00
-23	Italy	Europe	Southern Europe	59801004	59797685	0.00
-24	Tanzania	Africa	Eastern Africa	55155473	53470420	0.03
-25	South Africa	Africa	Southern Africa	54978907	54490406	0.01
-26	Myanmar	Asia	South-Eastern Asia	54363426	53897154	0.01
-27	South Korea	Asia	Eastern Asia	50503933	50293439	0.00
-28	Colombia	Americas	South America	48654392	48228704	0.01
-29	Kenya	Africa	Eastern Africa	47251449	46050302	0.03
-30	Spain	Europe	Southern Europe	46064604	46121699	0.00
-31	Ukraine	Europe	Eastern Europe	44624373	44823765	0.00
-32	Argentina	Americas	South America	43847277	43416755	0.01
-33	Sudan	Africa	Northern Africa	41175541	40234882	0.02
-34	Algeria	Africa	Northern Africa	40375954	39666519	0.02
-35	Uganda	Africa	Eastern Africa	40322768	39032383	0.03
-36	Poland	Europe	Eastern Europe	38593161	38611794	0.00
-37	Iraq	Asia	Western Asia	37547686	36423395	0.03
-38	Canada	Americas	Northern America	36286378	35939927	0.01
-39	Morocco	Africa	Northern Africa	34817065	34377511	0.01
-40	Afghanistan	Asia	Southern Asia	33369945	32526562	0.03
-41	Saudi Arabia	Asia	Western Asia	32157974	31540372	0.02
-42	Peru	Americas	South America	31774225	31376670	0.01
-43	Venezuela	Americas	South America	31518855	31108083	0.01
-44	Malaysia	Asia	South-Eastern Asia	30751602	30331007	0.01
-45	Uzbekistan	Asia	Central Asia	30300446	29893488	0.01
-46	Nepal	Asia	Southern Asia	28850717	28513700	0.01
-47	Mozambique	Africa	Eastern Africa	28751362	27977863	0.03
-48	Ghana	Africa	Western Africa	28033375	27409893	0.02
-49	Yemen	Asia	Western Asia	27477600	26832215	0.02
-50	Angola	Africa	Middle Africa	25830958	25021974	0.03
-51	North Korea	Asia	Eastern Asia	25281327	25155317	0.01
-52	Madagascar	Africa	Eastern Africa	24915822	24235390	0.03
-53	Australia	Oceania	Australia and New Zealand	24309330	23968973	0.01
-54	Cameroon	Africa	Middle Africa	23924407	23344179	0.03
-55	Taiwan	Asia	Eastern Asia	23395600	23381038	0.00
-56	Côte d'Ivoire	Africa	Western Africa	23254184	22701556	0.02
-57	Sri Lanka	Asia	Southern Asia	20810816	20715010	0.01
-58	Niger	Africa	Western Africa	20715285	19899120	0.04
-59	Romania	Europe	Eastern Europe	19372734	19511324	-0.01
-60	Burkina Faso	Africa	Western Africa	18633725	18105570	0.03
-61	Syria	Asia	Western Asia	18563595	18502413	0.00
-62	Mali	Africa	Western Africa	18134835	17599694	0.03
-63	Chile	Americas	South America	18131850	17948141	0.01
-64	Kazakhstan	Asia	Central Asia	17855384	17625226	0.01
-65	Malawi	Africa	Eastern Africa	17749826	17215232	0.03
-66	Netherlands	Europe	Western Europe	16979729	16924929	0.00
-67	Zambia	Africa	Eastern Africa	16717332	16211767	0.03
-68	Guatemala	Americas	Central America	16672956	16342897	0.02
-69	Ecuador	Americas	South America	16385450	16144363	0.02
-70	Zimbabwe	Africa	Eastern Africa	15966810	15602751	0.02
-71	Cambodia	Asia	South-Eastern Asia	15827241	15577899	0.02
-72	Senegal	Africa	Western Africa	15589485	15129273	0.03
-73	Chad	Africa	Middle Africa	14496739	14037472	0.03
-74	Guinea	Africa	Western Africa	12947122	12608590	0.03
-75	South Sudan	Africa	Eastern Africa	12733427	12339812	0.03
-76	Rwanda	Africa	Eastern Africa	11882766	11609666	0.02
-77	Burundi	Africa	Eastern Africa	11552561	11178921	0.03
-78	Cuba	Americas	Caribbean	11392889	11389562	0.00
-79	Tunisia	Africa	Northern Africa	11375220	11253554	0.01
-80	Belgium	Europe	Western Europe	11371928	11299192	0.01
-81	Benin	Africa	Western Africa	11166658	10879829	0.03
-82	Somalia	Africa	Eastern Africa	11079013	10787104	0.03
-83	Greece	Europe	Southern Europe	10919459	10954617	0.00
-84	Bolivia	Americas	South America	10888402	10724705	0.02
-85	Haiti	Americas	Caribbean	10848175	10711067	0.01
-86	Dominican Republic	Americas	Caribbean	10648613	10528391	0.01
-87	Czech Republic	Europe	Eastern Europe	10548058	10543186	0.00
-88	Portugal	Europe	Southern Europe	10304434	10349803	0.00
-89	Azerbaijan	Asia	Western Asia	9868447	9753968	0.01
-90	Sweden	Europe	Northern Europe	9851852	9779426	0.01
-91	Hungary	Europe	Eastern Europe	9821318	9855023	0.00
-92	Belarus	Europe	Eastern Europe	9481521	9495826	0.00
-93	United Arab Emirates	Asia	Western Asia	9266971	9156963	0.01
-94	Serbia	Europe	Southern Europe	8812705	8850975	0.00
-95	Tajikistan	Asia	Central Asia	8669464	8481855	0.02
-96	Austria	Europe	Western Europe	8569633	8544586	0.00
-97	Switzerland	Europe	Western Europe	8379477	8298663	0.01
-98	Israel	Asia	Western Asia	8192463	8064036	0.02
-99	Honduras	Americas	Central America	8189501	8075060	0.01
-100	Papua New Guinea	Oceania	Melanesia	7776115	7619321	0.02
-101	Jordan	Asia	Western Asia	7747800	7594547	0.02
-102	Togo	Africa	Western Africa	7496833	7304578	0.03
-103	Hong Kong	Asia	Eastern Asia	7346248	7287983	0.01
-104	Bulgaria	Europe	Eastern Europe	7097796	7149787	-0.01
-105	Laos	Asia	South-Eastern Asia	6918367	6802023	0.02
-106	Paraguay	Americas	South America	6725430	6639123	0.01
-107	Sierra Leone	Africa	Western Africa	6592102	6453184	0.02
-108	Libya	Africa	Northern Africa	6330159	6278438	0.01
-109	Nicaragua	Americas	Central America	6150035	6082032	0.01
-110	El Salvador	Americas	Central America	6146419	6126583	0.00
-111	Kyrgyzstan	Asia	Central Asia	6033769	5939962	0.02
-112	Lebanon	Asia	Western Asia	5988153	5850743	0.02
-113	Singapore	Asia	South-Eastern Asia	5696506	5603740	0.02
-114	Denmark	Europe	Northern Europe	5690750	5669081	0.00
-115	Finland	Europe	Northern Europe	5523904	5503457	0.00
-116	Turkmenistan	Asia	Central Asia	5438670	5373502	0.01
-117	Slovakia	Europe	Eastern Europe	5429418	5426258	0.00
-118	Eritrea	Africa	Eastern Africa	5351680	5227791	0.02
-119	Norway	Europe	Northern Europe	5271958	5210967	0.01
-120	Central African Republic	Africa	Middle Africa	4998493	4900274	0.02
-121	Costa Rica	Americas	Central America	4857218	4807850	0.01
-122	Palestine	Asia	Western Asia	4797239	4668466	0.03
-123	Congo	Africa	Middle Africa	4740992	4620330	0.03
-124	Ireland	Europe	Northern Europe	4713993	4688465	0.01
-125	Oman	Asia	Western Asia	4654471	4490541	0.04
-126	Liberia	Africa	Western Africa	4615222	4503438	0.03
-127	New Zealand	Oceania	Australia and New Zealand	4565185	4528526	0.01
-128	Croatia	Europe	Southern Europe	4225001	4240317	0.00
-129	Mauritania	Africa	Western Africa	4166463	4067564	0.02
-130	Moldova	Europe	Eastern Europe	4062862	4068897	0.00
-131	Kuwait	Asia	Western Asia	4007146	3892115	0.03
-132	Panama	Americas	Central America	3990406	3929141	0.02
-133	Georgia	Asia	Western Asia	3979781	3999812	-0.01
-134	Bosnia and Herzegovina	Europe	Southern Europe	3802134	3810416	0.00
-135	Puerto Rico	Americas	Caribbean	3680772	3683238	0.00
-136	Uruguay	Americas	South America	3444071	3431555	0.00
-137	Armenia	Asia	Western Asia	3026048	3017712	0.00
-138	Mongolia	Asia	Eastern Asia	3006444	2959134	0.02
-139	Albania	Europe	Southern Europe	2903700	2896679	0.00
-140	Lithuania	Europe	Northern Europe	2850030	2878405	-0.01
-141	Jamaica	Americas	Caribbean	2803362	2793335	0.00
-142	Namibia	Africa	Southern Africa	2513981	2458830	0.02
-143	Botswana	Africa	Southern Africa	2303820	2262485	0.02
-144	Qatar	Asia	Western Asia	2291368	2235355	0.03
-145	Lesotho	Africa	Southern Africa	2160309	2135022	0.01
-146	Republic of Macedonia	Europe	Southern Europe	2081012	2078453	0.00
-147	Slovenia	Europe	Southern Europe	2069362	2067526	0.00
-148	Gambia	Africa	Western Africa	2054986	1990924	0.03
-149	Latvia	Europe	Northern Europe	1955742	1970503	-0.01
-150	Guinea-Bissau	Africa	Western Africa	1888429	1844325	0.02
-151	Gabon	Africa	Middle Africa	1763142	1725292	0.02
-152	Bahrain	Asia	Western Asia	1396829	1377237	0.01
-153	Trinidad and Tobago	Americas	Caribbean	1364973	1360088	0.00
-154	Estonia	Europe	Northern Europe	1309104	1312558	0.00
-155	Swaziland	Africa	Southern Africa	1304063	1286970	0.01
-156	Mauritius	Africa	Eastern Africa	1277459	1273212	0.00
-157	Timor-Leste	Asia	South-Eastern Asia	1211245	1184765	0.02
-158	Cyprus	Europe	Southern Europe	1176598	1165300	0.01
-159	Djibouti	Africa	Eastern Africa	899598	887861	0.01
-160	Fiji	Oceania	Melanesia	897537	892145	0.01
-161	Equatorial Guinea	Africa	Middle Africa	869587	845060	0.03
-162	Réunion	Africa	Eastern Africa	867214	861154	0.01
-163	Comoros	Africa	Eastern Africa	807118	788474	0.02
-164	Bhutan	Asia	Southern Asia	784103	774830	0.01
-165	Guyana	Americas	South America	770610	767085	0.01
-166	Montenegro	Europe	Southern Europe	626101	625781	0.00
-167	Macau	Asia	Eastern Asia	597126	587606	0.02
-168	Solomon Islands	Oceania	Melanesia	594934	583591	0.02
-169	Western Sahara	Africa	Northern Africa	584206	572540	0.02
-170	Luxembourg	Europe	Western Europe	576243	567110	0.02
-171	Suriname	Americas	South America	547610	542975	0.01
-172	Cabo Verde	Africa	Western Africa	526993	520502	0.01
-173	Guadeloupe	Americas	Caribbean	470547	468450	0.00
-174	Brunei	Asia	South-Eastern Asia	428874	423188	0.01
-175	Malta	Europe	Southern Europe	419615	418670	0.00
-176	Martinique	Americas	Caribbean	396364	396425	0.00
-177	Bahamas	Americas	Caribbean	392718	388019	0.01
-178	Maldives	Asia	Southern Asia	369812	363657	0.02
-179	Belize	Americas	Central America	366942	359287	0.02
-180	Iceland	Europe	Northern Europe	331778	329425	0.01
-181	French Polynesia	Oceania	Polynesia	285735	282764	0.01
-182	Barbados	Americas	Caribbean	285006	284215	0.00
-183	French Guiana	Americas	South America	275688	268606	0.03
-184	Vanuatu	Oceania	Melanesia	270470	264652	0.02
-185	New Caledonia	Oceania	Melanesia	266431	263118	0.01
-186	Mayotte	Africa	Eastern Africa	246496	240015	0.03
-187	Samoa	Oceania	Polynesia	194523	193228	0.01
-188	Sao Tome and Principe	Africa	Middle Africa	194390	190344	0.02
-189	Saint Lucia	Americas	Caribbean	186383	184999	0.01
-190	Guam	Oceania	Micronesia	172094	169885	0.01
-191	Guernsey and  Jersey	Europe	Northern Europe	164466	163692	0.01
-192	Curaçao	Americas	Caribbean	158635	157203	0.01
-193	Kiribati	Oceania	Micronesia	114405	112423	0.02
-194	Saint Vincent and the Grenadines	Americas	Caribbean	109644	109462	0.00
-195	Grenada	Americas	Caribbean	107327	106825	0.01
-196	Tonga	Oceania	Polynesia	106915	106170	0.01
-197	United States Virgin Islands	Americas	Caribbean	106415	106291	0.00
-198	Federated States of Micronesia	Oceania	Micronesia	104966	104460	0.01
-199	Aruba	Americas	Caribbean	104263	103889	0.00
-200	Seychelles	Africa	Eastern Africa	97026	96471	0.01
-201	Antigua and Barbuda	Americas	Caribbean	92738	91818	0.01
-202	Isle of Man	Europe	Northern Europe	88421	87780	0.01
-203	Dominica	Americas	Caribbean	73016	72680	0.01
-204	Andorra	Europe	Southern Europe	69165	70473	-0.02
-205	Bermuda	Americas	Northern America	61662	62004	-0.01
-206	Cayman Islands	Americas	Caribbean	60764	59967	0.01
-207	Greenland	Americas	Northern America	56196	56186	0.00
-208	Saint Kitts and Nevis	Americas	Caribbean	56183	55572	0.01
-209	American Samoa	Oceania	Polynesia	55602	55538	0.00
-210	Northern Mariana Islands	Oceania	Micronesia	55389	55070	0.01
-211	Marshall Islands	Oceania	Micronesia	53069	52993	0.00
-212	Faroe Islands	Europe	Northern Europe	48239	48199	0.00
-213	Sint Maarten	Americas	Caribbean	39538	38745	0.02
-214	Monaco	Europe	Western Europe	37863	37731	0.00
-215	Liechtenstein	Europe	Western Europe	37776	37531	0.01
-216	Turks and Caicos Islands	Americas	Caribbean	34904	34339	0.02
-217	Gibraltar	Europe	Southern Europe	32373	32217	0.01
-218	San Marino	Europe	Southern Europe	31950	31781	0.01
-219	British Virgin Islands	Americas	Caribbean	30659	30117	0.02
-220	Caribbean Netherlands	Americas	Caribbean	25328	24861	0.02
-221	Palau	Oceania	Micronesia	21501	21291	0.01
-222	Cook Islands	Oceania	Polynesia	20948	20833	0.01
-223	Anguilla	Americas	Caribbean	14763	14614	0.01
-224	Wallis and Futuna	Oceania	Polynesia	13112	13151	0.00
-225	Nauru	Oceania	Micronesia	10263	10222	0.00
-226	Tuvalu	Oceania	Polynesia	9943	9916	0.00
-227	Saint Pierre and Miquelon	Americas	Northern America	6301	6288	0.00
-228	Montserrat	Americas	Caribbean	5154	5125	0.01
-229	Saint Helena, Ascension and Tristan da Cunha	Africa	Western Africa	3956	3961	0.00
-230	Falkland Islands	Americas	South America	2912	2903	0.00
-231	Niue	Oceania	Polynesia	1612	1610	0.00
-232	Tokelau	Oceania	Polynesia	1276	1250	0.02
-233	Vatican City	Europe	Southern Europe	801	800	0.00
+China[b]	1403772560	//upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/23px-Flag_of_the_People%27s_Republic_of_China.svg.png
+India[c]	1365368088	//upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/23px-Flag_of_India.svg.png
+United States[d]	330047753	//upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/23px-Flag_of_the_United_States.svg.png
+Indonesia	269603400	//upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/23px-Flag_of_Indonesia.svg.png
+Pakistan[e]	220892331	//upload.wikimedia.org/wikipedia/commons/thumb/3/32/Flag_of_Pakistan.svg/23px-Flag_of_Pakistan.svg.png
+Brazil	211866273	//upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.svg/22px-Flag_of_Brazil.svg.png
+Nigeria	206139587	//upload.wikimedia.org/wikipedia/commons/thumb/7/79/Flag_of_Nigeria.svg/23px-Flag_of_Nigeria.svg.png
+Bangladesh	169047040	//upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Flag_of_Bangladesh.svg/23px-Flag_of_Bangladesh.svg.png
+Russia[f]	146748590	//upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/23px-Flag_of_Russia.svg.png
+Mexico	127792286	//upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/23px-Flag_of_Mexico.svg.png
+Japan	125960000	//upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/23px-Flag_of_Japan.svg.png
+Philippines	108965038	//upload.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/23px-Flag_of_the_Philippines.svg.png
+Ethiopia	100829000	//upload.wikimedia.org/wikipedia/commons/thumb/7/71/Flag_of_Ethiopia.svg/23px-Flag_of_Ethiopia.svg.png
+Egypt	100684505	//upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Egypt.svg/23px-Flag_of_Egypt.svg.png
+Vietnam	96208984	//upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/23px-Flag_of_Vietnam.svg.png
+DR Congo	89561404	//upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Flag_of_the_Democratic_Republic_of_the_Congo.svg/20px-Flag_of_the_Democratic_Republic_of_the_Congo.svg.png
+Iran	83658448	//upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Flag_of_Iran.svg/23px-Flag_of_Iran.svg.png
+Germany	83166711	//upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/23px-Flag_of_Germany.svg.png
+Turkey	83154997	//upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Turkey.svg/23px-Flag_of_Turkey.svg.png
+France[g]	67098000	//upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/23px-Flag_of_France.svg.png
+United Kingdom[h]	66796807	//upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/23px-Flag_of_the_United_Kingdom.svg.png
+Thailand	66535105	//upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/23px-Flag_of_Thailand.svg.png
+Italy	60244639	//upload.wikimedia.org/wikipedia/en/thumb/0/03/Flag_of_Italy.svg/23px-Flag_of_Italy.svg.png
+South Africa	59622350	//upload.wikimedia.org/wikipedia/commons/thumb/a/af/Flag_of_South_Africa.svg/23px-Flag_of_South_Africa.svg.png
+Tanzania[i]	57637628	//upload.wikimedia.org/wikipedia/commons/thumb/3/38/Flag_of_Tanzania.svg/23px-Flag_of_Tanzania.svg.png
+Myanmar	54817919	//upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_of_Myanmar.svg/23px-Flag_of_Myanmar.svg.png
+South Korea	51780579	//upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/23px-Flag_of_South_Korea.svg.png
+Colombia	50372424	//upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Colombia.svg/23px-Flag_of_Colombia.svg.png
+Kenya	47564296	//upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Kenya.svg/23px-Flag_of_Kenya.svg.png
+Spain	47329981	//upload.wikimedia.org/wikipedia/en/thumb/9/9a/Flag_of_Spain.svg/23px-Flag_of_Spain.svg.png
+Argentina	45376763	//upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Flag_of_Argentina.svg/23px-Flag_of_Argentina.svg.png
+Algeria	43000000	//upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Algeria.svg/23px-Flag_of_Algeria.svg.png
+Sudan	42709340	//upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_Sudan.svg/23px-Flag_of_Sudan.svg.png
+Ukraine[j]	41785758	//upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Ukraine.svg/23px-Flag_of_Ukraine.svg.png
+Uganda	41590300	//upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Flag_of_Uganda.svg/23px-Flag_of_Uganda.svg.png
+Iraq	40150200	//upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Iraq.svg/23px-Flag_of_Iraq.svg.png
+Poland	38379000	//upload.wikimedia.org/wikipedia/en/thumb/1/12/Flag_of_Poland.svg/23px-Flag_of_Poland.svg.png
+Canada	38119457	//upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Canada_%28Pantone%29.svg/23px-Flag_of_Canada_%28Pantone%29.svg.png
+Morocco[k]	35972419	//upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_Morocco.svg/23px-Flag_of_Morocco.svg.png
+Uzbekistan	34326831	//upload.wikimedia.org/wikipedia/commons/thumb/8/84/Flag_of_Uzbekistan.svg/23px-Flag_of_Uzbekistan.svg.png
+Saudi Arabia	34218169	//upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/23px-Flag_of_Saudi_Arabia.svg.png
+Afghanistan	32890171	//upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Afghanistan.svg/23px-Flag_of_Afghanistan.svg.png
+Malaysia	32857760	//upload.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/23px-Flag_of_Malaysia.svg.png
+Peru	32824358	//upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Peru.svg/23px-Flag_of_Peru.svg.png
+Angola	31127674	//upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Flag_of_Angola.svg/23px-Flag_of_Angola.svg.png
+Ghana	30280811	//upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Ghana.svg/23px-Flag_of_Ghana.svg.png
+Mozambique	30066648	//upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Flag_of_Mozambique.svg/23px-Flag_of_Mozambique.svg.png
+Nepal	29996478	//upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Flag_of_Nepal.svg/12px-Flag_of_Nepal.svg.png
+Yemen	29825968	//upload.wikimedia.org/wikipedia/commons/thumb/8/89/Flag_of_Yemen.svg/23px-Flag_of_Yemen.svg.png
+Venezuela	28435943	//upload.wikimedia.org/wikipedia/commons/thumb/0/06/Flag_of_Venezuela.svg/23px-Flag_of_Venezuela.svg.png
+Cameroon	26545864	//upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Flag_of_Cameroon.svg/23px-Flag_of_Cameroon.svg.png
+Ivory Coast	26453542	//upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg/23px-Flag_of_C%C3%B4te_d%27Ivoire.svg.png
+Madagascar	26251309	//upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Madagascar.svg/23px-Flag_of_Madagascar.svg.png
+Australia	25638885	//upload.wikimedia.org/wikipedia/commons/thumb/8/88/Flag_of_Australia_%28converted%29.svg/23px-Flag_of_Australia_%28converted%29.svg.png
+North Korea	25550000	//upload.wikimedia.org/wikipedia/commons/thumb/5/51/Flag_of_North_Korea.svg/23px-Flag_of_North_Korea.svg.png
+Taiwan[l]	23586562	//upload.wikimedia.org/wikipedia/commons/thumb/7/72/Flag_of_the_Republic_of_China.svg/23px-Flag_of_the_Republic_of_China.svg.png
+Niger	23196002	//upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Flag_of_Niger.svg/18px-Flag_of_Niger.svg.png
+Sri Lanka	21803000	//upload.wikimedia.org/wikipedia/commons/thumb/1/11/Flag_of_Sri_Lanka.svg/23px-Flag_of_Sri_Lanka.svg.png
+Burkina Faso	21510181	//upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Burkina_Faso.svg/23px-Flag_of_Burkina_Faso.svg.png
+Mali	20250833	//upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_Mali.svg/23px-Flag_of_Mali.svg.png
+Chile	19458310	//upload.wikimedia.org/wikipedia/commons/thumb/7/78/Flag_of_Chile.svg/23px-Flag_of_Chile.svg.png
+Romania	19405156	//upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Romania.svg/23px-Flag_of_Romania.svg.png
+Malawi	19129952	//upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Flag_of_Malawi.svg/23px-Flag_of_Malawi.svg.png
+Kazakhstan	18748392	//upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Flag_of_Kazakhstan.svg/23px-Flag_of_Kazakhstan.svg.png
+Zambia	17885422	//upload.wikimedia.org/wikipedia/commons/thumb/0/06/Flag_of_Zambia.svg/23px-Flag_of_Zambia.svg.png
+Ecuador	17537844	//upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Flag_of_Ecuador.svg/23px-Flag_of_Ecuador.svg.png
+Syria	17500657	//upload.wikimedia.org/wikipedia/commons/thumb/5/53/Flag_of_Syria.svg/23px-Flag_of_Syria.svg.png
+Netherlands[m]	17493031	//upload.wikimedia.org/wikipedia/commons/thumb/2/20/Flag_of_the_Netherlands.svg/23px-Flag_of_the_Netherlands.svg.png
+Guatemala	16858333	//upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_Guatemala.svg/23px-Flag_of_Guatemala.svg.png
+Senegal	16705608	//upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Flag_of_Senegal.svg/23px-Flag_of_Senegal.svg.png
+Chad	16244513	//upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Flag_of_Chad.svg/23px-Flag_of_Chad.svg.png
+Somalia[n]	15893219	//upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Flag_of_Somalia.svg/23px-Flag_of_Somalia.svg.png
+Zimbabwe	15473818	//upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Flag_of_Zimbabwe.svg/23px-Flag_of_Zimbabwe.svg.png
+Cambodia	15288489	//upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_Cambodia.svg/23px-Flag_of_Cambodia.svg.png
+South Sudan	13249924	//upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Flag_of_South_Sudan.svg/23px-Flag_of_South_Sudan.svg.png
+Rwanda	12663116	//upload.wikimedia.org/wikipedia/commons/thumb/1/17/Flag_of_Rwanda.svg/23px-Flag_of_Rwanda.svg.png
+Guinea	12559623	//upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Flag_of_Guinea.svg/23px-Flag_of_Guinea.svg.png
+Benin	12114193	//upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Flag_of_Benin.svg/23px-Flag_of_Benin.svg.png
+Haiti	11743017	//upload.wikimedia.org/wikipedia/commons/thumb/5/56/Flag_of_Haiti.svg/23px-Flag_of_Haiti.svg.png
+Tunisia	11708370	//upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Tunisia.svg/23px-Flag_of_Tunisia.svg.png
+Bolivia	11633371	//upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Bolivia.svg/22px-Flag_of_Bolivia.svg.png
+Belgium	11528375	//upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_Belgium_%28civil%29.svg/23px-Flag_of_Belgium_%28civil%29.svg.png
+Burundi	11215578	//upload.wikimedia.org/wikipedia/commons/thumb/5/50/Flag_of_Burundi.svg/23px-Flag_of_Burundi.svg.png
+Cuba	11193470	//upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/23px-Flag_of_Cuba.svg.png
+Greece	10724599	//upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/23px-Flag_of_Greece.svg.png
+Jordan	10736276	//upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Flag_of_Jordan.svg/23px-Flag_of_Jordan.svg.png
+Czech Republic	10694364	//upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_Czech_Republic.svg/23px-Flag_of_the_Czech_Republic.svg.png
+Dominican Republic	10448499	//upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_the_Dominican_Republic.svg/23px-Flag_of_the_Dominican_Republic.svg.png
+Sweden	10348730	//upload.wikimedia.org/wikipedia/en/thumb/4/4c/Flag_of_Sweden.svg/23px-Flag_of_Sweden.svg.png
+Portugal	10295909	//upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Portugal.svg/23px-Flag_of_Portugal.svg.png
+Azerbaijan	10067108	//upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Azerbaijan.svg/23px-Flag_of_Azerbaijan.svg.png
+United Arab Emirates	9890400	//upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_United_Arab_Emirates.svg/23px-Flag_of_the_United_Arab_Emirates.svg.png
+Hungary	9769526	//upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/23px-Flag_of_Hungary.svg.png
+Belarus	9397800	//upload.wikimedia.org/wikipedia/commons/thumb/8/85/Flag_of_Belarus.svg/23px-Flag_of_Belarus.svg.png
+Tajikistan	9313800	//upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Flag_of_Tajikistan.svg/23px-Flag_of_Tajikistan.svg.png
+Honduras	9304380	//upload.wikimedia.org/wikipedia/commons/thumb/7/79/Flag_of_Honduras_%282008_Olympics%29.svg/23px-Flag_of_Honduras_%282008_Olympics%29.svg.png
+Israel	9230640	//upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Flag_of_Israel.svg/21px-Flag_of_Israel.svg.png
+Papua New Guinea	8935000	//upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Flag_of_Papua_New_Guinea.svg/20px-Flag_of_Papua_New_Guinea.svg.png
+Austria	8910696	//upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_Austria.svg/23px-Flag_of_Austria.svg.png
+Switzerland	8619259	//upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Switzerland.svg/15px-Flag_of_Switzerland.svg.png
+Sierra Leone	8100318	//upload.wikimedia.org/wikipedia/commons/thumb/1/17/Flag_of_Sierra_Leone.svg/23px-Flag_of_Sierra_Leone.svg.png
+Togo	7706000	//upload.wikimedia.org/wikipedia/commons/thumb/6/68/Flag_of_Togo.svg/23px-Flag_of_Togo.svg.png
+Hong Kong (China)	7500700	//upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/23px-Flag_of_Hong_Kong.svg.png
+Paraguay	7252672	//upload.wikimedia.org/wikipedia/commons/thumb/2/27/Flag_of_Paraguay.svg/23px-Flag_of_Paraguay.svg.png
+Laos	7231210	//upload.wikimedia.org/wikipedia/commons/thumb/5/56/Flag_of_Laos.svg/23px-Flag_of_Laos.svg.png
+Bulgaria	6951482	//upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Bulgaria.svg/23px-Flag_of_Bulgaria.svg.png
+Serbia[o]	6926705	//upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Flag_of_Serbia.svg/23px-Flag_of_Serbia.svg.png
+Libya	6871287	//upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Libya.svg/23px-Flag_of_Libya.svg.png
+Lebanon	6825442	//upload.wikimedia.org/wikipedia/commons/thumb/5/59/Flag_of_Lebanon.svg/23px-Flag_of_Lebanon.svg.png
+Kyrgyzstan	6533500	//upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Flag_of_Kyrgyzstan.svg/23px-Flag_of_Kyrgyzstan.svg.png
+El Salvador	6486201	//upload.wikimedia.org/wikipedia/commons/thumb/3/34/Flag_of_El_Salvador.svg/23px-Flag_of_El_Salvador.svg.png
+Nicaragua	6460411	//upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Nicaragua.svg/23px-Flag_of_Nicaragua.svg.png
+Turkmenistan	6031187	//upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Flag_of_Turkmenistan.svg/23px-Flag_of_Turkmenistan.svg.png
+Denmark[p]	5824857	//upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Flag_of_Denmark.svg/20px-Flag_of_Denmark.svg.png
+Singapore	5703600	//upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Singapore.svg/23px-Flag_of_Singapore.svg.png
+Congo	5518092	//upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_the_Republic_of_the_Congo.svg/23px-Flag_of_the_Republic_of_the_Congo.svg.png
+Finland[q]	5498827	//upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Finland.svg/23px-Flag_of_Finland.svg.png
+Central African Republic	5496011	//upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Flag_of_the_Central_African_Republic.svg/23px-Flag_of_the_Central_African_Republic.svg.png
+Slovakia	5457926	//upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Flag_of_Slovakia.svg/23px-Flag_of_Slovakia.svg.png
+Norway	5372355	//upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Norway.svg/21px-Flag_of_Norway.svg.png
+Costa Rica	5111238	//upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Flag_of_Costa_Rica.svg/23px-Flag_of_Costa_Rica.svg.png
+New Zealand	5010499	//upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Flag_of_New_Zealand.svg/23px-Flag_of_New_Zealand.svg.png
+Palestine	4976684	
+Ireland	4921500	//upload.wikimedia.org/wikipedia/commons/thumb/4/45/Flag_of_Ireland.svg/23px-Flag_of_Ireland.svg.png
+Oman	4645249	//upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Oman.svg/23px-Flag_of_Oman.svg.png
+Liberia	4568298	//upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Flag_of_Liberia.svg/23px-Flag_of_Liberia.svg.png
+Kuwait	4420110	//upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_Kuwait.svg/23px-Flag_of_Kuwait.svg.png
+Panama	4278500	//upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Flag_of_Panama.svg/23px-Flag_of_Panama.svg.png
+Mauritania	4173077	//upload.wikimedia.org/wikipedia/commons/thumb/4/43/Flag_of_Mauritania.svg/23px-Flag_of_Mauritania.svg.png
+Croatia	4076246	//upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Flag_of_Croatia.svg/23px-Flag_of_Croatia.svg.png
+Georgia[r]	3716858	//upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Flag_of_Georgia.svg/23px-Flag_of_Georgia.svg.png
+Eritrea	3546000	//upload.wikimedia.org/wikipedia/commons/thumb/2/29/Flag_of_Eritrea.svg/23px-Flag_of_Eritrea.svg.png
+Uruguay	3530912	//upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Uruguay.svg/23px-Flag_of_Uruguay.svg.png
+Mongolia	3330259	//upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Flag_of_Mongolia.svg/23px-Flag_of_Mongolia.svg.png
+Bosnia and Herzegovina	3281000	//upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Flag_of_Bosnia_and_Herzegovina.svg/23px-Flag_of_Bosnia_and_Herzegovina.svg.png
+Puerto Rico (US)	3193694	//upload.wikimedia.org/wikipedia/commons/thumb/2/28/Flag_of_Puerto_Rico.svg/23px-Flag_of_Puerto_Rico.svg.png
+Armenia	2956900	//upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_Armenia.svg/23px-Flag_of_Armenia.svg.png
+Albania	2845955	//upload.wikimedia.org/wikipedia/commons/thumb/3/36/Flag_of_Albania.svg/21px-Flag_of_Albania.svg.png
+Qatar	2795484	//upload.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Qatar.svg/23px-Flag_of_Qatar.svg.png
+Lithuania	2794207	//upload.wikimedia.org/wikipedia/commons/thumb/1/11/Flag_of_Lithuania.svg/23px-Flag_of_Lithuania.svg.png
+Jamaica	2726667	//upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Flag_of_Jamaica.svg/23px-Flag_of_Jamaica.svg.png
+Moldova[s]	2640400	//upload.wikimedia.org/wikipedia/commons/thumb/2/27/Flag_of_Moldova.svg/23px-Flag_of_Moldova.svg.png
+Namibia	2504498	//upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Namibia.svg/23px-Flag_of_Namibia.svg.png
+Gambia	2417000	//upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_The_Gambia.svg/23px-Flag_of_The_Gambia.svg.png
+Botswana	2374698	//upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_Botswana.svg/23px-Flag_of_Botswana.svg.png
+Gabon	2226000	//upload.wikimedia.org/wikipedia/commons/thumb/0/04/Flag_of_Gabon.svg/20px-Flag_of_Gabon.svg.png
+Slovenia	2095861	//upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Flag_of_Slovenia.svg/23px-Flag_of_Slovenia.svg.png
+North Macedonia	2077132	//upload.wikimedia.org/wikipedia/commons/thumb/7/79/Flag_of_North_Macedonia.svg/23px-Flag_of_North_Macedonia.svg.png
+Lesotho	2007201	//upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Flag_of_Lesotho.svg/23px-Flag_of_Lesotho.svg.png
+Latvia	1902000	//upload.wikimedia.org/wikipedia/commons/thumb/8/84/Flag_of_Latvia.svg/23px-Flag_of_Latvia.svg.png
+Kosovo[t]	1782115	//upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Flag_of_Kosovo.svg/21px-Flag_of_Kosovo.svg.png
+Guinea-Bissau	1624945	//upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_Guinea-Bissau.svg/23px-Flag_of_Guinea-Bissau.svg.png
+Bahrain	1592000	//upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_Bahrain.svg/23px-Flag_of_Bahrain.svg.png
+Equatorial Guinea	1454789	//upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Equatorial_Guinea.svg/23px-Flag_of_Equatorial_Guinea.svg.png
+East Timor	1425134	//upload.wikimedia.org/wikipedia/commons/thumb/2/26/Flag_of_East_Timor.svg/23px-Flag_of_East_Timor.svg.png
+Trinidad and Tobago	1363985	//upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Trinidad_and_Tobago.svg/23px-Flag_of_Trinidad_and_Tobago.svg.png
+Estonia	1328976	//upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Flag_of_Estonia.svg/23px-Flag_of_Estonia.svg.png
+Mauritius	1265475	//upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Mauritius.svg/23px-Flag_of_Mauritius.svg.png
+Djibouti	1108567	//upload.wikimedia.org/wikipedia/commons/thumb/3/34/Flag_of_Djibouti.svg/23px-Flag_of_Djibouti.svg.png
+Eswatini	1093238	//upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Flag_of_Eswatini.svg/23px-Flag_of_Eswatini.svg.png
+Comoros	897219	//upload.wikimedia.org/wikipedia/commons/thumb/9/94/Flag_of_the_Comoros.svg/23px-Flag_of_the_Comoros.svg.png
+Fiji	889327	//upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Fiji.svg/23px-Flag_of_Fiji.svg.png
+Cyprus[u]	875900	//upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Flag_of_Cyprus.svg/23px-Flag_of_Cyprus.svg.png
+Guyana	787000	//upload.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_Guyana.svg/23px-Flag_of_Guyana.svg.png
+Bhutan	748931	//upload.wikimedia.org/wikipedia/commons/thumb/9/91/Flag_of_Bhutan.svg/23px-Flag_of_Bhutan.svg.png
+Macau (China)	696100	//upload.wikimedia.org/wikipedia/commons/thumb/6/63/Flag_of_Macau.svg/23px-Flag_of_Macau.svg.png
+Solomon Islands	694619	//upload.wikimedia.org/wikipedia/commons/thumb/7/74/Flag_of_the_Solomon_Islands.svg/23px-Flag_of_the_Solomon_Islands.svg.png
+Luxembourg	626108	//upload.wikimedia.org/wikipedia/commons/thumb/d/da/Flag_of_Luxembourg.svg/23px-Flag_of_Luxembourg.svg.png
+Montenegro	621873	//upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Montenegro.svg/23px-Flag_of_Montenegro.svg.png
+Western Sahara[v]	597000	//upload.wikimedia.org/wikipedia/commons/thumb/2/26/Flag_of_the_Sahrawi_Arab_Democratic_Republic.svg/23px-Flag_of_the_Sahrawi_Arab_Democratic_Republic.svg.png
+Suriname	587000	//upload.wikimedia.org/wikipedia/commons/thumb/6/60/Flag_of_Suriname.svg/23px-Flag_of_Suriname.svg.png
+Cape Verde	556857	//upload.wikimedia.org/wikipedia/commons/thumb/3/38/Flag_of_Cape_Verde.svg/23px-Flag_of_Cape_Verde.svg.png
+Malta	514564	//upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Malta.svg/23px-Flag_of_Malta.svg.png
+Transnistria[w]	469000	//upload.wikimedia.org/wikipedia/commons/thumb/5/58/Flag_of_Transnistria.svg/23px-Flag_of_Transnistria.svg.png
+Brunei	459500	//upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Flag_of_Brunei.svg/23px-Flag_of_Brunei.svg.png
+Belize	408487	//upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Flag_of_Belize.svg/23px-Flag_of_Belize.svg.png
+Bahamas	389410	//upload.wikimedia.org/wikipedia/commons/thumb/9/93/Flag_of_the_Bahamas.svg/23px-Flag_of_the_Bahamas.svg.png
+Maldives	374775	//upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Flag_of_Maldives.svg/23px-Flag_of_Maldives.svg.png
+Iceland	366700	//upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Iceland.svg/21px-Flag_of_Iceland.svg.png
+Northern Cyprus[x]	351965	//upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Flag_of_the_Turkish_Republic_of_Northern_Cyprus.svg/23px-Flag_of_the_Turkish_Republic_of_Northern_Cyprus.svg.png
+Vanuatu	304500	//upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Vanuatu.svg/23px-Flag_of_Vanuatu.svg.png
+Barbados	287025	//upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Flag_of_Barbados.svg/23px-Flag_of_Barbados.svg.png
+French Polynesia (France)	275918	//upload.wikimedia.org/wikipedia/commons/thumb/d/db/Flag_of_French_Polynesia.svg/23px-Flag_of_French_Polynesia.svg.png
+New Caledonia (France)	271407	//upload.wikimedia.org/wikipedia/commons/thumb/2/26/Flags_of_New_Caledonia.svg/23px-Flags_of_New_Caledonia.svg.png
+Abkhazia[y]	245246	//upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Flag_of_the_Republic_of_Abkhazia.svg/23px-Flag_of_the_Republic_of_Abkhazia.svg.png
+São Tomé and Príncipe	210240	//upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Flag_of_Sao_Tome_and_Principe.svg/23px-Flag_of_Sao_Tome_and_Principe.svg.png
+Samoa	202506	//upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Samoa.svg/23px-Flag_of_Samoa.svg.png
+Saint Lucia	178696	//upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Saint_Lucia.svg/23px-Flag_of_Saint_Lucia.svg.png
+Guam (US)	172400	//upload.wikimedia.org/wikipedia/commons/thumb/0/07/Flag_of_Guam.svg/23px-Flag_of_Guam.svg.png
+Curaçao (Netherlands)	156223	//upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Flag_of_Cura%C3%A7ao.svg/23px-Flag_of_Cura%C3%A7ao.svg.png
+Republic of Artsakh[z]	148000	//upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Flag_of_Artsakh.svg/23px-Flag_of_Artsakh.svg.png
+Kiribati	120100	//upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Flag_of_Kiribati.svg/23px-Flag_of_Kiribati.svg.png
+Aruba (Netherlands)	112321	//upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Aruba.svg/23px-Flag_of_Aruba.svg.png
+Grenada	112003	//upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Grenada.svg/23px-Flag_of_Grenada.svg.png
+Saint Vincent and the Grenadines	110608	//upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Flag_of_Saint_Vincent_and_the_Grenadines.svg/23px-Flag_of_Saint_Vincent_and_the_Grenadines.svg.png
+Jersey (UK)	107800	//upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Flag_of_Jersey.svg/23px-Flag_of_Jersey.svg.png
+U.S. Virgin Islands (US)	104578	//upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Flag_of_the_United_States_Virgin_Islands.svg/23px-Flag_of_the_United_States_Virgin_Islands.svg.png
+F.S. Micronesia	104468	//upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Flag_of_the_Federated_States_of_Micronesia.svg/23px-Flag_of_the_Federated_States_of_Micronesia.svg.png
+Tonga	100651	//upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Tonga.svg/23px-Flag_of_Tonga.svg.png
+Seychelles	98055	//upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Seychelles.svg/23px-Flag_of_Seychelles.svg.png
+Antigua and Barbuda	97895	//upload.wikimedia.org/wikipedia/commons/thumb/8/89/Flag_of_Antigua_and_Barbuda.svg/23px-Flag_of_Antigua_and_Barbuda.svg.png
+Isle of Man (UK)	83314	//upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_the_Isle_of_Man.svg/23px-Flag_of_the_Isle_of_Man.svg.png
+Andorra	77543	//upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Andorra.svg/22px-Flag_of_Andorra.svg.png
+Dominica	71808	//upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Flag_of_Dominica.svg/23px-Flag_of_Dominica.svg.png
+Cayman Islands (UK)	65813	//upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Flag_of_the_Cayman_Islands.svg/23px-Flag_of_the_Cayman_Islands.svg.png
+Bermuda (UK)	64027	//upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Flag_of_Bermuda.svg/23px-Flag_of_Bermuda.svg.png
+Guernsey (UK)	63196	//upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_Guernsey.svg/23px-Flag_of_Guernsey.svg.png
+American Samoa (US)	56700	//upload.wikimedia.org/wikipedia/commons/thumb/8/87/Flag_of_American_Samoa.svg/23px-Flag_of_American_Samoa.svg.png
+Northern Mariana Islands (US)	56200	//upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Flag_of_the_Northern_Mariana_Islands.svg/23px-Flag_of_the_Northern_Mariana_Islands.svg.png
+Greenland (Denmark)	56081	//upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_Greenland.svg/23px-Flag_of_Greenland.svg.png
+Marshall Islands	55500	//upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Flag_of_the_Marshall_Islands.svg/23px-Flag_of_the_Marshall_Islands.svg.png
+South Ossetia[aa]	53532	//upload.wikimedia.org/wikipedia/commons/thumb/1/12/Flag_of_South_Ossetia.svg/23px-Flag_of_South_Ossetia.svg.png
+Saint Kitts and Nevis	52823	//upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Saint_Kitts_and_Nevis.svg/23px-Flag_of_Saint_Kitts_and_Nevis.svg.png
+Faroe Islands (Denmark)	52562	//upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Flag_of_the_Faroe_Islands.svg/21px-Flag_of_the_Faroe_Islands.svg.png
+Turks and Caicos Islands (UK)	42953	//upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Flag_of_the_Turks_and_Caicos_Islands.svg/23px-Flag_of_the_Turks_and_Caicos_Islands.svg.png
+Sint Maarten (Netherlands)	40614	//upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Flag_of_Sint_Maarten.svg/23px-Flag_of_Sint_Maarten.svg.png
+Liechtenstein	38749	//upload.wikimedia.org/wikipedia/commons/thumb/4/47/Flag_of_Liechtenstein.svg/23px-Flag_of_Liechtenstein.svg.png
+Monaco	38100	//upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Flag_of_Monaco.svg/19px-Flag_of_Monaco.svg.png
+Saint Martin (France)	35334	
+Gibraltar (UK)	33691	//upload.wikimedia.org/wikipedia/commons/thumb/0/02/Flag_of_Gibraltar.svg/23px-Flag_of_Gibraltar.svg.png
+San Marino	33553	//upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Flag_of_San_Marino.svg/20px-Flag_of_San_Marino.svg.png
+British Virgin Islands (UK)	30030	//upload.wikimedia.org/wikipedia/commons/thumb/4/42/Flag_of_the_British_Virgin_Islands.svg/23px-Flag_of_the_British_Virgin_Islands.svg.png
+Åland Islands (Finland)	30028	//upload.wikimedia.org/wikipedia/commons/thumb/5/52/Flag_of_%C3%85land.svg/23px-Flag_of_%C3%85land.svg.png
+Palau	17900	//upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Palau.svg/23px-Flag_of_Palau.svg.png
+Cook Islands (NZ)	15200	//upload.wikimedia.org/wikipedia/commons/thumb/3/35/Flag_of_the_Cook_Islands.svg/23px-Flag_of_the_Cook_Islands.svg.png
+Anguilla (UK)	14869	//upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Anguilla.svg/23px-Flag_of_Anguilla.svg.png
+Wallis and Futuna (France)	11700	//upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/23px-Flag_of_France.svg.png
+Nauru	11000	//upload.wikimedia.org/wikipedia/commons/thumb/3/30/Flag_of_Nauru.svg/23px-Flag_of_Nauru.svg.png
+Tuvalu	10200	//upload.wikimedia.org/wikipedia/commons/thumb/3/38/Flag_of_Tuvalu.svg/23px-Flag_of_Tuvalu.svg.png
+Saint Barthélemy (France)	9961	//upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/23px-Flag_of_France.svg.png
+Saint Pierre and Miquelon (France)	5997	//upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/23px-Flag_of_France.svg.png
+Saint Helena, Ascension	5633	//upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/23px-Flag_of_the_United_Kingdom.svg.png
+Montserrat (UK)	4989	//upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Flag_of_Montserrat.svg/23px-Flag_of_Montserrat.svg.png
+Falkland Islands (UK)	3198	//upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_Falkland_Islands.svg/23px-Flag_of_the_Falkland_Islands.svg.png
+Christmas Island (Australia)	1955	//upload.wikimedia.org/wikipedia/commons/thumb/6/67/Flag_of_Christmas_Island.svg/23px-Flag_of_Christmas_Island.svg.png
+Norfolk Island (Australia)	1735	//upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Norfolk_Island.svg/23px-Flag_of_Norfolk_Island.svg.png
+Niue (NZ)	1520	//upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_Niue.svg/23px-Flag_of_Niue.svg.png
+Tokelau (NZ)	1400	//upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Flag_of_Tokelau.svg/23px-Flag_of_Tokelau.svg.png
+Vatican City[ab]	825	//upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_the_Vatican_City.svg/15px-Flag_of_the_Vatican_City.svg.png
+Cocos (Keeling) Islands (Australia)	555	//upload.wikimedia.org/wikipedia/commons/thumb/7/74/Flag_of_the_Cocos_%28Keeling%29_Islands.svg/23px-Flag_of_the_Cocos_%28Keeling%29_Islands.svg.png	
+Pitcairn Islands (UK)	50	//upload.wikimedia.org/wikipedia/commons/thumb/8/88/Flag_of_the_Pitcairn_Islands.svg/23px-Flag_of_the_Pitcairn_Islands.svg.png
