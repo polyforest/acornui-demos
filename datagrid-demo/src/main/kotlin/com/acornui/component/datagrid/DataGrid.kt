@@ -21,6 +21,7 @@ package com.acornui.component.datagrid
 import com.acornui.component.*
 import com.acornui.component.input.Button
 import com.acornui.component.input.button
+import com.acornui.component.input.submitInput
 import com.acornui.component.style.StyleTag
 import com.acornui.component.text.TextFieldImpl
 import com.acornui.component.text.text
@@ -30,11 +31,9 @@ import com.acornui.css.cssVar
 import com.acornui.di.Context
 import com.acornui.dom.addCssToHead
 import com.acornui.dom.div
+import com.acornui.dom.form
 import com.acornui.dom.getTabbableElements
-import com.acornui.input.Event
-import com.acornui.input.blur
-import com.acornui.input.focusin
-import com.acornui.input.focusout
+import com.acornui.input.*
 import com.acornui.recycle.recycle
 import com.acornui.signal.signal
 import com.acornui.skins.Theme
@@ -158,6 +157,12 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		addClass(Panel.panelColorsStyle)
 		addClass(styleTag)
 
+		keyPressed.listen {
+			when (it.keyCode) {
+				Ascii.ESCAPE -> editRow(null)
+			}
+		}
+
 //		contents.focusin.listen {
 //			val row = it.target.unsafeCast<Node>().parentNode!!
 //			val cellIndex = row.childNodes.asList().indexOf(it.target)
@@ -209,6 +214,7 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 
 		rowEditor?.dispose()
 		rowEditor = null
+		val rowEditorBuilder = rowEditorBuilder
 		if (rowEditorBuilder == null || item == null) return
 
 		// Dispose the row we'll replace with an editor.
@@ -219,7 +225,16 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 
 		rowEditor = row(item) {
 			addClass(rowEditorStyle)
-			rowEditorBuilder?.invoke(this, item)
+			+form {
+				preventAction()
+				submit.listen {
+					println("Submit!")
+
+
+				}
+				rowEditorBuilder.invoke(this, item)
+				+submitInput { style.display = "none" }
+			}
 
 //			focusout.listen {
 //				commitRow()
@@ -338,11 +353,19 @@ $rowStyle {
 	display: contents;
 }
 
-$contentsContainerStyle > div:nth-child(2n+0) > $cellStyle {
+$rowEditorStyle > form {
+	display: contents;
+}
+
+$rowEditorStyle {
+	
+}
+
+$contentsContainerStyle > $rowStyle:nth-child(2n+0) $cellStyle {
 	background: ${cssVar(Theme::dataRowEvenBackground)};
 }
 
-$contentsContainerStyle > div:nth-child(2n+1) > $cellStyle {
+$contentsContainerStyle > $rowStyle:nth-child(2n+1) $cellStyle {
 	background: ${cssVar(Theme::dataRowOddBackground)};
 }
 			"""
@@ -363,7 +386,7 @@ inline fun <E> Context.row(data: E, init: ComponentInit<DataGridRow<E>> = {}): D
 	return DataGridRow(this, data).apply(init)
 }
 
-typealias RowBuilder<E> = DataGridRow<E>.(E) -> Unit
+typealias RowBuilder<E> = UiComponent.(E) -> Unit
 
 inline fun <E> Context.dataGrid(init: ComponentInit<DataGrid<E>> = {}): DataGrid<E> {
 	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }

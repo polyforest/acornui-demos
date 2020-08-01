@@ -142,12 +142,16 @@ grid-template-columns: 32px repeat(3, auto);
 				+cell {
 					+textInput {
 						value = it.name
+						required = true
 					}
 				}
 				+cell {
 					+numberInput {
 						valueAsNumber = it.population.toDouble()
 						step = 1.0
+						max = 10e10
+						min = 1.0
+						required = true
 					}
 				}
 				+cell {
