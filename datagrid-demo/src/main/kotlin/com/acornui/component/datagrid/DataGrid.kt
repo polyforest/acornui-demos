@@ -18,6 +18,7 @@
 
 package com.acornui.component.datagrid
 
+import com.acornui.Disposable
 import com.acornui.component.*
 import com.acornui.component.input.Button
 import com.acornui.component.input.button
@@ -37,7 +38,9 @@ import com.acornui.input.Ascii
 import com.acornui.input.Event
 import com.acornui.input.focusin
 import com.acornui.input.keyPressed
+import com.acornui.recycle.Clearable
 import com.acornui.recycle.recycle
+import com.acornui.signal.SignalSubscription
 import com.acornui.signal.signal
 import com.acornui.skins.Theme
 import com.acornui.time.nextFrameCallback
@@ -72,22 +75,17 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	 */
 	val rowEdited = signal<RowEditEvent<E>>()
 
-	var rowFactory: RowFactory<E>? = null
-		set(value) {
-			if (field == value) return
-			contents.clearElements(dispose = true)
-			field = value
-			refreshRows()
-		}
+	var rowBuilder: (DataGridRow<E>.() -> Unit)? = null
+		private set
 
-	var rowEditorFactory: RowEditorFactory<E>? = null
-		set(value) {
-			if (field == value) return
-			field = value
-			editRow(null)
-		}
+	fun rows(builder: DataGridRow<E>.() -> Unit) {
+		displayRows.forEach(Disposable::dispose)
+		displayRows.clear()
+		rowBuilder = builder
+		refreshRows()
+	}
 
-	var data: List<E>  = emptyList()
+	var data: List<E> = emptyList()
 		set(value) {
 			val old = field
 			if (old == value) return
@@ -110,13 +108,34 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 
 	/**
 	 * Calls the specified function [block] with [header] as its receiver.
-	 * @return Returns [header]
 	 */
-	fun header(block: UiComponent.() -> Unit) = header.apply(block)
+	fun header(block: UiComponent.() -> Unit) {
+		header.apply(block)
+	}
 
 	val contents = mainContainer.addElement(div {
 		addClass(contentsContainerStyle)
 	})
+
+	private val displayRows = ArrayList<DataGridRow<E>>()
+
+	/**
+	 * The row editor. This may be configured via [rowEditor]
+	 */
+	val rowEditor = DataGridEditorRow<E>(this)
+
+	/**
+	 * Returns the currently edited row.
+	 */
+	val editedRow: E?
+		get() = rowEditor.data
+
+	/**
+	 * Calls the specified function [block] with [rowEditor] as its receiver.
+	 */
+	fun rowEditor(block: DataGridEditorRow<E>.() -> Unit) {
+		rowEditor.apply(block)
+	}
 
 	val footer = mainContainer.addElement(footerEl {
 		addClass(footerRowStyle)
@@ -124,31 +143,31 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 
 	/**
 	 * Calls the specified function [block] with [footer] as its receiver.
-	 * @return Returns [footer]
 	 */
-	fun footer(block: UiComponent.() -> Unit) = footer.apply(block)
+	fun footer(block: UiComponent.() -> Unit) {
+		footer.apply(block)
+	}
 
 	private val refreshRows = nextFrameCallback {
 		val previouslyEdited = editedRow
 		editRow(null)
-		val rowsContainer = contents.unsafeCast<ElementParent<DataGridRow<E>>>()
-		recycle(data, rowsContainer.elements, factory = {
-			item: E, index: Int ->
-			createRow(item)
-		}, configure = {
-			element: WithNode, item: E, index: Int ->
+		recycle(data, displayRows, factory = { item: E, index: Int ->
+			contents.addElement(createRow())
+		}, configure = { element: DataGridRow<E>, item: E, index: Int ->
+			element.data = item
 		}, disposer = {
+			println("Dispose ${it.data}")
 			it.dispose()
-		}, retriever = {
-			element ->
+		}, retriever = { element ->
 			element.data
 		})
 		editRow(previouslyEdited)
 	}
 
-	private fun createRow(item: E) = (rowFactory ?: error("rowFactory not set")).invoke(this, item).apply {
+	private fun createRow() = DataGridRow<E>(this).apply {
+		(rowBuilder ?: error("rows not set")).invoke(this)
 		focusin.listen {
-			userEditRow(item)
+			userEditRow(data)
 		}
 	}
 
@@ -171,27 +190,15 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	fun userEditRow(item: E?) {
 		if (editedRow == item) return
 		val rowEditor = rowEditor
-		if (rowEditor != null) {
-			if (!rowEditor.form.checkValidity()) {
-				rowEditor.form.reportValidity()
-				return
-			}
+		if (editedRow != null && !rowEditor.form.checkValidity()) {
+			rowEditor.form.reportValidity()
+			return
 		}
-
 		val e = RowEditEvent(item)
 		rowEditing.dispatch(e)
 		if (e.defaultPrevented) return
 		editRow(item)
 	}
-
-	var rowEditor: DataGridEditorRow<E>? = null
-		private set
-
-	/**
-	 * Returns the currently edited row.
-	 */
-	val editedRow: E?
-		get() = rowEditor?.data
 
 	/**
 	 * Sets the currently edited row.
@@ -202,33 +209,21 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		val e = RowEditEvent(item)
 		rowEdited.dispatch(e)
 
-		val previousRowData = rowEditor?.data
-		if (previousRowData != null) {
-			val previousRowIndex = contents.elements.indexOf(rowEditor!!)
-			if (previousRowIndex != -1) {
-				val row = createRow(previousRowData)
-				contents.addElement(previousRowIndex, row)
-			}
-		}
+		val editedRowOld = displayRows.firstOrNull { it.data === editedRow }
+		editedRowOld?.style?.display = "contents"
+		contents.removeElement(rowEditor)
+		rowEditor.data = item
+		if (item == null) return
 
-		rowEditor?.dispose()
-		rowEditor = null
-		val rowEditorFactory = rowEditorFactory
-		if (rowEditorFactory == null || item == null) return
+		// Swap the display row with the row editor.
+		val editedRowIndex = displayRows.indexOfFirst { it.data === item }
+		if (editedRowIndex == -1) return
+		val editedDisplayRow = displayRows[editedRowIndex]
+		editedDisplayRow.style.display = "none"
+		contents.addElement(editedRowIndex, rowEditor)
 
-		// Dispose the row we'll replace with an editor.
-		val rowIndex = contents.elements.indexOfFirst { it.unsafeCast<DataGridRow<E>>().data === item }
-		if (rowIndex != -1)
-			contents.elements[rowIndex].unsafeCast<DataGridRow<E>>().dispose()
-		else return
-
-		rowEditor = rowEditorFactory.invoke(this, item).apply {
-			submitted.listen {
-				commitRow()
-			}
-		}
-		contents.addElement(rowIndex, rowEditor)
-		val firstInput = rowEditor!!.dom.getTabbableElements().firstOrNull()
+		// Set focus
+		val firstInput = rowEditor.dom.getTabbableElements().firstOrNull()
 		firstInput?.focus()
 		if (firstInput?.tagName.equals("input", ignoreCase = true))
 			firstInput.unsafeCast<HTMLInputElement>().select()
@@ -362,21 +357,63 @@ $contentsContainerStyle > $rowStyle:nth-child(2n+1) $cellStyle {
 	}
 }
 
-open class DataGridRow<E>(owner: Context, val data: E) : DivComponent(owner) {
+open class DataGridRow<E>(owner: Context) : DivComponent(owner) {
+
+	class DataChangeEvent<E>(val old: E?, val new: E?)
+
+	val dataChanged = signal<DataChangeEvent<E>>()
 
 	init {
 		addClass(DataGrid.rowStyle)
 	}
+
+	/**
+	 * Sets the row's data.
+	 */
+	var data: E? = null
+		set(value) {
+			val old = field
+			if (old == value) return
+			field = value
+			dataChanged.dispatch(DataChangeEvent(old, value))
+		}
+
+	/**
+	 * Invokes the callback with the new data when this row's data has changed.
+	 */
+	fun data(callback: (E) -> Unit): SignalSubscription = dataChanged.listen {
+		if (it.new != null)
+			callback(it.new)
+	}
 }
 
-typealias RowFactory<E> = Context.(E) -> DataGridRow<E>
-
-inline fun <E> Context.row(data: E, init: ComponentInit<DataGridRow<E>> = {}): DataGridRow<E> {
+/**
+ * Constructs a new data grid row.
+ *
+ * Example:
+ *
+ * ```
+ * rowFactory = {
+ *   row {
+ *     +cell {
+ *       data {
+ *         label = it.name
+ *       }
+ *       tabIndex = 0
+ *     }
+ *   }
+ * }
+ * ```
+ *
+ * This does not use a dsl marker in order to allow the [DataGridRow.data] method to be invoked without an explicit
+ * receiver. (Ideally only this method would be annotated to not need an explicit receiver.)
+ */
+inline fun <E> Context.row(init: (DataGridRow<E>).() -> Unit = {}): DataGridRow<E> {
 	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
-	return DataGridRow(this, data).apply(init)
+	return DataGridRow<E>(this).apply(init)
 }
 
-class DataGridEditorRow<E>(owner: Context, data: E) : DataGridRow<E>(owner, data) {
+open class DataGridEditorRow<E>(owner: Context) : DataGridRow<E>(owner), Clearable {
 
 	val form = addChild(form {
 		preventAction()
@@ -399,14 +436,12 @@ class DataGridEditorRow<E>(owner: Context, data: E) : DataGridRow<E>(owner, data
 	override fun onElementRemoved(index: Int, element: WithNode) {
 		form.removeElement(element)
 	}
-}
 
-inline fun <E> Context.editorRow(data: E, init: ComponentInit<DataGridEditorRow<E>> = {}): DataGridEditorRow<E> {
-	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
-	return DataGridEditorRow(this, data).apply(init)
+	override fun clear() {
+		data = null
+		clearElements(dispose = true)
+	}
 }
-
-typealias RowEditorFactory<E> = Context.(E) -> DataGridEditorRow<E>
 
 inline fun <E> Context.dataGrid(init: ComponentInit<DataGrid<E>> = {}): DataGrid<E> {
 	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
@@ -430,11 +465,11 @@ inline fun Context.headerCell(label: String = "", init: ComponentInit<Button> = 
 	}
 }
 
-inline fun Context.cell(text: String = "", init: ComponentInit<TextFieldImpl> = {}): TextFieldImpl {
+inline fun Context.cell(label: String = "", init: ComponentInit<TextFieldImpl> = {}): TextFieldImpl {
 	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
 	return text {
 		addClass(DataGrid.cellStyle)
-		this.text = text
+		this.label = label
 		init()
 	}
 }

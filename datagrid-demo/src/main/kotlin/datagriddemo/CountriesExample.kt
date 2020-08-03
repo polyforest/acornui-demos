@@ -20,7 +20,10 @@ import com.acornui.asset.loadText
 import com.acornui.collection.sumByLong
 import com.acornui.component.DivComponent
 import com.acornui.component.applyCss
-import com.acornui.component.datagrid.*
+import com.acornui.component.datagrid.DataGrid
+import com.acornui.component.datagrid.cell
+import com.acornui.component.datagrid.dataGrid
+import com.acornui.component.datagrid.headerCell
 import com.acornui.component.input.button
 import com.acornui.component.input.numberInput
 import com.acornui.component.input.textInput
@@ -37,6 +40,7 @@ import com.acornui.input.clicked
 import com.acornui.logging.Log
 import com.acornui.observe.bind
 import com.acornui.observe.dataBinding
+import com.acornui.observe.or
 import com.acornui.signal.once
 import kotlinx.coroutines.launch
 
@@ -48,10 +52,12 @@ class CountriesExample(owner: Context) : DivComponent(owner) {
 	init {
 		addClass(styleTag)
 		addClass(LayoutStyles.vGroup)
-		applyCss("""
+		applyCss(
+			"""
 			align-content: center;
 			margin: 50px auto;
-		""")
+		"""
+		)
 
 //		+hFlowGroup {
 //			for (i in 0..20) {
@@ -81,9 +87,11 @@ grid-template-columns: 32px repeat(3, auto);
 					title = "Population 2020"
 				}
 				+headerCell("% World") {
-					applyCss("""
+					applyCss(
+						"""
 						white-space: nowrap;
-					""")
+					"""
+					)
 					title = "Percentage of world population"
 				}
 			}
@@ -110,66 +118,87 @@ grid-template-columns: 32px repeat(3, auto);
 				+cell()
 			}
 
-			rowFactory = {
-				row(it) {
-					+cell {
-						frame.once { _ ->
-							+img(it.flag)
+			rows {
+				+cell {
+					+img {
+						data { v ->
+							src = ""
+							frame.once { _ ->
+								src = v.flag
+							}
 						}
 					}
-					+cell(it.name) {
-						tabIndex = 0
+				}
+				+cell {
+					data {
+						label = it.name
 					}
-					+cell(nF.format(it.population)) {
-						tabIndex = 0
+					tabIndex = 0
+				}
+				+cell {
+					tabIndex = 0
+					data {
+						label = nF.format(it.population)
 					}
-					+cell {
-						tabIndex = 0
-						bind(worldPop) { worldPop ->
-							label = pF.format(it.population.toDouble() / worldPop)
-						}
+				}
+				+cell {
+					tabIndex = 0
+					bind(worldPop or dataChanged) {
+						val pop = data?.population?.toDouble() ?: 0.0
+						label = pF.format(pop / worldPop.value)
 					}
 				}
 			}
 
-			rowEditorFactory = {
-				editorRow(it) {
-					+cell {
-						+img(it.flag)
+			rowEditor {
+				+cell {
+					// TODO: pass through?
+					+img {
+						data {
+							src = it.flag
+						}
 					}
-					+cell {
-						+textInput {
+				}
+				+cell {
+					+textInput {
+						data {
 							value = it.name
-							required = true
 						}
+						required = true
 					}
-					+cell {
-						+numberInput {
+				}
+				+cell {
+					+numberInput {
+						data {
 							valueAsNumber = it.population.toDouble()
-							step = 1.0
-							max = 10e10
-							min = 1.0
-							required = true
 						}
+						step = 1.0
+						max = 10e10
+						min = 1.0
+						required = true
 					}
-					+cell {
-						tabIndex = 0
-						bind(worldPop) { worldPop ->
-							label = pF.format(it.population.toDouble() / worldPop)
-						}
+				}
+				+cell {
+					// TODO: pass through?
+					tabIndex = 0
+					bind(worldPop or dataChanged) {
+						val pop = data?.population?.toDouble() ?: 0.0
+						label = pF.format(pop / worldPop.value)
 					}
 				}
 			}
 		}
 
-		dG.data = parseCountries("""
+		dG.data = parseCountries(
+			"""
 China[b]	1403772560	//upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/23px-Flag_of_the_People%27s_Republic_of_China.svg.png
 India[c]	1365368088	//upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/23px-Flag_of_India.svg.png
 United States[d]	330047753	//upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/23px-Flag_of_the_United_States.svg.png
 Indonesia	269603400	//upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/23px-Flag_of_Indonesia.svg.png
 Pakistan[e]	220892331	//upload.wikimedia.org/wikipedia/commons/thumb/3/32/Flag_of_Pakistan.svg/23px-Flag_of_Pakistan.svg.png
 Brazil	211866273	//upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.svg/22px-Flag_of_Brazil.svg.png
-		""")
+		"""
+		)
 
 //		dG.data += CountryData(0, "Fake", "North America", "Junk", 0, 0, 0f)
 
@@ -210,11 +239,13 @@ Brazil	211866273	//upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.s
 		val styleTag = StyleTag("CountriesExample")
 
 		init {
-			addCssToHead("""
+			addCssToHead(
+				"""
 ${DataGrid.headerCellStyle} {
-		
+
 }
-			""")
+			"""
+			)
 		}
 	}
 }

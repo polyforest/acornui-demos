@@ -16,33 +16,16 @@
 
 package datagriddemo
 
-import com.acornui.application
+import com.acornui.app
 import com.acornui.component.DivComponent
-import com.acornui.component.datagrid.DataGrid
-import com.acornui.component.input.button
 import com.acornui.component.layout.vGroup
 import com.acornui.component.scroll.scrollArea
-import com.acornui.component.stage
 import com.acornui.component.style.StyleTag
-import com.acornui.component.text.text
-import com.acornui.css.css
-import com.acornui.css.cssVar
 import com.acornui.css.percent
+import com.acornui.demo.initThemes
+import com.acornui.demo.themeButton
 import com.acornui.di.Context
-import com.acornui.dom.add
-import com.acornui.dom.addCssToHead
-import com.acornui.dom.head
-import com.acornui.dom.linkElement
-import com.acornui.google.Icons
-import com.acornui.google.icon
 import com.acornui.i18n.i18nBundle
-import com.acornui.runMain
-import com.acornui.skins.Theme
-import com.acornui.skins.addCssToHead
-import com.acornui.skins.darkTheme
-import kotlinx.dom.addClass
-import kotlinx.dom.removeClass
-import com.acornui.demo.*
 
 /**
  * @author nbilyk
@@ -113,8 +96,6 @@ class DataGridDemo(owner: Context) : DivComponent(owner) {
 	}
 }
 
-fun main() = runMain {
-	application("acornUiRoot", config) {
-		addElement(DataGridDemo(this))
-	}
+fun main() = app("acornUiRoot") {
+	+DataGridDemo(this)
 }

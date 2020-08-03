@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import com.acornui.application
+import com.acornui.app
 import com.acornui.component.*
 import com.acornui.component.input.*
 import com.acornui.component.layout.FlowGroup
@@ -34,7 +34,6 @@ import com.acornui.dom.addCssToHead
 import com.acornui.dom.div
 import com.acornui.dom.form
 import com.acornui.input.clicked
-import com.acornui.runMain
 import com.acornui.skins.Theme
 import com.acornui.time.Date
 import com.acornui.version
@@ -300,13 +299,8 @@ $mainFlowTag > ${FlowGroup.contentsTag} > div {
 
 /**
  * `main` is our main entry point.
- *
- * This method is wrapped in a [runMain] block to set up the main context.
  */
-fun main() = runMain {
-
-	application("acornUiRoot") {
-		// Create and add our main component to the stage:
-		+InputsDemo(this)
-	}
+fun main() = app("acornUiRoot") {
+	// Create and add our main component to the stage:
+	+InputsDemo(this)
 }
