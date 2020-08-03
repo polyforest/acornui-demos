@@ -33,12 +33,14 @@ import com.acornui.dom.addCssToHead
 import com.acornui.dom.div
 import com.acornui.dom.form
 import com.acornui.dom.getTabbableElements
-import com.acornui.input.*
+import com.acornui.input.Ascii
+import com.acornui.input.Event
+import com.acornui.input.focusin
+import com.acornui.input.keyPressed
 import com.acornui.recycle.recycle
 import com.acornui.signal.signal
 import com.acornui.skins.Theme
 import com.acornui.time.nextFrameCallback
-import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -46,7 +48,7 @@ import com.acornui.dom.footer as footerEl
 
 class DataGrid<E>(owner: Context) : DivComponent(owner) {
 
-	class DataChangeEvent<E>(oldData: List<E>, newData: List<E>)
+	class DataChangeEvent<E>(val oldData: List<E>, val newData: List<E>)
 
 	/**
 	 * This grid's [data] has changed.
@@ -70,8 +72,20 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	 */
 	val rowEdited = signal<RowEditEvent<E>>()
 
-	private var rowBuilder: RowBuilder<E>? = null
-	private var rowEditorBuilder: RowBuilder<E>? = null
+	var rowFactory: RowFactory<E>? = null
+		set(value) {
+			if (field == value) return
+			contents.clearElements(dispose = true)
+			field = value
+			refreshRows()
+		}
+
+	var rowEditorFactory: RowEditorFactory<E>? = null
+		set(value) {
+			if (field == value) return
+			field = value
+			editRow(null)
+		}
 
 	var data: List<E>  = emptyList()
 		set(value) {
@@ -114,19 +128,6 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	 */
 	fun footer(block: UiComponent.() -> Unit) = footer.apply(block)
 
-	/**
-	 * Sets the builder for rows.
-	 */
-	fun rows(builder: RowBuilder<E>) {
-		contents.clearElements(dispose = true)
-		rowBuilder = builder
-		refreshRows()
-	}
-
-	fun rowEditor(builder: RowBuilder<E>) {
-		rowEditorBuilder = builder
-	}
-
 	private val refreshRows = nextFrameCallback {
 		val previouslyEdited = editedRow
 		editRow(null)
@@ -145,9 +146,7 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		editRow(previouslyEdited)
 	}
 
-	private fun createRow(item: E) = row(item) {
-		rowBuilder?.invoke(this, item)
-
+	private fun createRow(item: E) = (rowFactory ?: error("rowFactory not set")).invoke(this, item).apply {
 		focusin.listen {
 			userEditRow(item)
 		}
@@ -162,14 +161,6 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 				Ascii.ESCAPE -> editRow(null)
 			}
 		}
-
-//		contents.focusin.listen {
-//			val row = it.target.unsafeCast<Node>().parentNode!!
-//			val cellIndex = row.childNodes.asList().indexOf(it.target)
-//			val rowIndex = row.parentNode!!.childNodes.asList().indexOf(row)
-//
-//			println("Focused $rowIndex $cellIndex")
-//		}
 	}
 
 	/**
@@ -179,13 +170,21 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	 */
 	fun userEditRow(item: E?) {
 		if (editedRow == item) return
+		val rowEditor = rowEditor
+		if (rowEditor != null) {
+			if (!rowEditor.form.checkValidity()) {
+				rowEditor.form.reportValidity()
+				return
+			}
+		}
+
 		val e = RowEditEvent(item)
 		rowEditing.dispatch(e)
 		if (e.defaultPrevented) return
 		editRow(item)
 	}
 
-	var rowEditor: DataGridRow<E>? = null
+	var rowEditor: DataGridEditorRow<E>? = null
 		private set
 
 	/**
@@ -214,8 +213,8 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 
 		rowEditor?.dispose()
 		rowEditor = null
-		val rowEditorBuilder = rowEditorBuilder
-		if (rowEditorBuilder == null || item == null) return
+		val rowEditorFactory = rowEditorFactory
+		if (rowEditorFactory == null || item == null) return
 
 		// Dispose the row we'll replace with an editor.
 		val rowIndex = contents.elements.indexOfFirst { it.unsafeCast<DataGridRow<E>>().data === item }
@@ -223,22 +222,10 @@ class DataGrid<E>(owner: Context) : DivComponent(owner) {
 			contents.elements[rowIndex].unsafeCast<DataGridRow<E>>().dispose()
 		else return
 
-		rowEditor = row(item) {
-			addClass(rowEditorStyle)
-			+form {
-				preventAction()
-				submit.listen {
-					println("Submit!")
-
-
-				}
-				rowEditorBuilder.invoke(this, item)
-				+submitInput { style.display = "none" }
+		rowEditor = rowEditorFactory.invoke(this, item).apply {
+			submitted.listen {
+				commitRow()
 			}
-
-//			focusout.listen {
-//				commitRow()
-//			}
 		}
 		contents.addElement(rowIndex, rowEditor)
 		val firstInput = rowEditor!!.dom.getTabbableElements().firstOrNull()
@@ -277,6 +264,7 @@ $styleTag {
 	box-sizing: border-box;
 	position: relative;
 	overflow: auto;
+	scroll-padding-top: 4em; /* To prevent the sticky header from covering up the first row when tabbing */
 	${cssProp(::borderThickness)};
 	${cssProp(::borderColor)};
 }
@@ -338,9 +326,9 @@ $footerRowStyle > div {
 }
 
 $styleTag *:focus {
+	/* Take the default focus transition, make it snappier and inset to be better for data grid cells. */
     box-shadow: inset 0 0 0 ${cssVar(Theme::focusThickness)} ${cssVar(Theme::focus)};
 	border-color: ${cssVar(Theme::focus)};
-	/* The default focus transition isn't snappy enough for the datagrid */
 	transition: box-shadow 0.0s ease-in-out;
 }
 
@@ -357,7 +345,7 @@ $rowEditorStyle > form {
 	display: contents;
 }
 
-$rowEditorStyle {
+$rowEditorStyle * {
 	
 }
 
@@ -374,19 +362,51 @@ $contentsContainerStyle > $rowStyle:nth-child(2n+1) $cellStyle {
 	}
 }
 
-class DataGridRow<E>(owner: Context, val data: E) : DivComponent(owner) {
+open class DataGridRow<E>(owner: Context, val data: E) : DivComponent(owner) {
 
 	init {
 		addClass(DataGrid.rowStyle)
 	}
 }
 
+typealias RowFactory<E> = Context.(E) -> DataGridRow<E>
+
 inline fun <E> Context.row(data: E, init: ComponentInit<DataGridRow<E>> = {}): DataGridRow<E> {
 	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
 	return DataGridRow(this, data).apply(init)
 }
 
-typealias RowBuilder<E> = UiComponent.(E) -> Unit
+class DataGridEditorRow<E>(owner: Context, data: E) : DataGridRow<E>(owner, data) {
+
+	val form = addChild(form {
+		preventAction()
+		+submitInput { style.display = "none" }
+	})
+
+	/**
+	 * Dispatched when the row editor form has been submitted.
+	 */
+	val submitted = form.submitted
+
+	init {
+		addClass(DataGrid.rowEditorStyle)
+	}
+
+	override fun onElementAdded(oldIndex: Int, newIndex: Int, element: WithNode) {
+		form.addElement(newIndex, element)
+	}
+
+	override fun onElementRemoved(index: Int, element: WithNode) {
+		form.removeElement(element)
+	}
+}
+
+inline fun <E> Context.editorRow(data: E, init: ComponentInit<DataGridEditorRow<E>> = {}): DataGridEditorRow<E> {
+	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
+	return DataGridEditorRow(this, data).apply(init)
+}
+
+typealias RowEditorFactory<E> = Context.(E) -> DataGridEditorRow<E>
 
 inline fun <E> Context.dataGrid(init: ComponentInit<DataGrid<E>> = {}): DataGrid<E> {
 	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
@@ -401,7 +421,7 @@ inline fun <E> Context.dataGrid(data: List<E>, init: ComponentInit<DataGrid<E>> 
 	}
 }
 
-inline fun DataGrid<*>.headerCell(label: String = "", init: ComponentInit<Button> = {}): Button {
+inline fun Context.headerCell(label: String = "", init: ComponentInit<Button> = {}): Button {
 	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
 	return button {
 		addClass(DataGrid.headerCellStyle)
@@ -410,7 +430,7 @@ inline fun DataGrid<*>.headerCell(label: String = "", init: ComponentInit<Button
 	}
 }
 
-inline fun DataGrid<*>.cell(text: String = "", init: ComponentInit<TextFieldImpl> = {}): TextFieldImpl {
+inline fun Context.cell(text: String = "", init: ComponentInit<TextFieldImpl> = {}): TextFieldImpl {
 	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
 	return text {
 		addClass(DataGrid.cellStyle)

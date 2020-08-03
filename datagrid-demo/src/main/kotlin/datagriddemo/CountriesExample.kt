@@ -20,10 +20,7 @@ import com.acornui.asset.loadText
 import com.acornui.collection.sumByLong
 import com.acornui.component.DivComponent
 import com.acornui.component.applyCss
-import com.acornui.component.datagrid.DataGrid
-import com.acornui.component.datagrid.cell
-import com.acornui.component.datagrid.dataGrid
-import com.acornui.component.datagrid.headerCell
+import com.acornui.component.datagrid.*
 import com.acornui.component.input.button
 import com.acornui.component.input.numberInput
 import com.acornui.component.input.textInput
@@ -41,7 +38,6 @@ import com.acornui.logging.Log
 import com.acornui.observe.bind
 import com.acornui.observe.dataBinding
 import com.acornui.signal.once
-import com.acornui.time.nextFrameCallback
 import kotlinx.coroutines.launch
 
 
@@ -65,8 +61,8 @@ class CountriesExample(owner: Context) : DivComponent(owner) {
 
 		dG = +dataGrid<CountryData> {
 			val worldPop = dataBinding(0L)
-			dataChanged.listen {
-				worldPop.value = data.sumByLong { it.population }
+			dataChanged.listen { e ->
+				worldPop.value = e.newData.sumByLong { it.population }
 			}
 
 			applyCss(
@@ -112,56 +108,58 @@ grid-template-columns: 32px repeat(3, auto);
 					}
 				}
 				+cell()
-
 			}
 
-			rows {
-				+cell {
-					frame.once { _ ->
+			rowFactory = {
+				row(it) {
+					+cell {
+						frame.once { _ ->
+							+img(it.flag)
+						}
+					}
+					+cell(it.name) {
+						tabIndex = 0
+					}
+					+cell(nF.format(it.population)) {
+						tabIndex = 0
+					}
+					+cell {
+						tabIndex = 0
+						bind(worldPop) { worldPop ->
+							label = pF.format(it.population.toDouble() / worldPop)
+						}
+					}
+				}
+			}
+
+			rowEditorFactory = {
+				editorRow(it) {
+					+cell {
 						+img(it.flag)
 					}
-				}
-				+cell(it.name) {
-					tabIndex = 0
-				}
-				+cell(nF.format(it.population)) {
-					tabIndex = 0
-				}
-				+cell {
-					tabIndex = 0
-					bind(worldPop) { worldPop ->
-						label = pF.format(it.population.toDouble() / worldPop)
+					+cell {
+						+textInput {
+							value = it.name
+							required = true
+						}
+					}
+					+cell {
+						+numberInput {
+							valueAsNumber = it.population.toDouble()
+							step = 1.0
+							max = 10e10
+							min = 1.0
+							required = true
+						}
+					}
+					+cell {
+						tabIndex = 0
+						bind(worldPop) { worldPop ->
+							label = pF.format(it.population.toDouble() / worldPop)
+						}
 					}
 				}
 			}
-
-			rowEditor {
-				+cell {
-					+img(it.flag)
-				}
-				+cell {
-					+textInput {
-						value = it.name
-						required = true
-					}
-				}
-				+cell {
-					+numberInput {
-						valueAsNumber = it.population.toDouble()
-						step = 1.0
-						max = 10e10
-						min = 1.0
-						required = true
-					}
-				}
-				+cell {
-					tabIndex = 0
-					bind(worldPop) { worldPop ->
-						label = pF.format(it.population.toDouble() / worldPop)
-					}
-				}
-			}
-
 		}
 
 		dG.data = parseCountries("""
