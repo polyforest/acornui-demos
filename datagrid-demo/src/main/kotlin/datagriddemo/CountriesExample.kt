@@ -17,6 +17,7 @@
 package datagriddemo
 
 import com.acornui.asset.loadText
+import com.acornui.collection.copy
 import com.acornui.collection.sumByLong
 import com.acornui.component.DivComponent
 import com.acornui.component.applyCss
@@ -24,9 +25,7 @@ import com.acornui.component.datagrid.DataGrid
 import com.acornui.component.datagrid.cell
 import com.acornui.component.datagrid.dataGrid
 import com.acornui.component.datagrid.headerCell
-import com.acornui.component.input.button
-import com.acornui.component.input.numberInput
-import com.acornui.component.input.textInput
+import com.acornui.component.input.*
 import com.acornui.component.layout.LayoutStyles
 import com.acornui.component.style.StyleTag
 import com.acornui.css.css
@@ -42,6 +41,9 @@ import com.acornui.observe.bind
 import com.acornui.observe.dataBinding
 import com.acornui.observe.or
 import com.acornui.signal.once
+import kotlinx.collections.immutable.mutate
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 
 
@@ -65,129 +67,7 @@ class CountriesExample(owner: Context) : DivComponent(owner) {
 //			}
 //		}
 
-		dG = +dataGrid<CountryData> {
-			val worldPop = dataBinding(0L)
-			dataChanged.listen { e ->
-				worldPop.value = e.newData.sumByLong { it.population }
-			}
-
-			applyCss(
-				"""
-width: 600px;
-min-height: 100px;
-grid-template-columns: 32px repeat(3, auto);
-
-			"""
-			)
-
-			header {
-				+headerCell()
-				+headerCell("Country")
-				+headerCell("Population 2020") {
-					title = "Population 2020"
-				}
-				+headerCell("% World") {
-					applyCss(
-						"""
-						white-space: nowrap;
-					"""
-					)
-					title = "Percentage of world population"
-				}
-			}
-
-			val nF = numberFormatter()
-			val pF = percentFormatter()
-			pF.maxFractionDigits = 2
-
-			val grid = this
-			footer {
-				applyCss("""font-weight: 400;""")
-				+cell("Total:") {
-					applyCss(
-						"grid-column: 1/3;"
-					)
-				}
-				+cell {
-					grid.dataChanged.listen {
-						bind(worldPop) {
-							label = nF.format(it)
-						}
-					}
-				}
-				+cell()
-			}
-
-			rows {
-				+cell {
-					+img {
-						data { v ->
-							src = ""
-							frame.once { _ ->
-								src = v.flag
-							}
-						}
-					}
-				}
-				+cell {
-					data {
-						label = it.name
-					}
-					tabIndex = 0
-				}
-				+cell {
-					tabIndex = 0
-					data {
-						label = nF.format(it.population)
-					}
-				}
-				+cell {
-					tabIndex = 0
-					bind(worldPop or dataChanged) {
-						val pop = data?.population?.toDouble() ?: 0.0
-						label = pF.format(pop / worldPop.value)
-					}
-				}
-			}
-
-			rowEditor {
-				+cell {
-					// TODO: pass through?
-					+img {
-						data {
-							src = it.flag
-						}
-					}
-				}
-				+cell {
-					+textInput {
-						data {
-							value = it.name
-						}
-						required = true
-					}
-				}
-				+cell {
-					+numberInput {
-						data {
-							valueAsNumber = it.population.toDouble()
-						}
-						step = 1.0
-						max = 10e10
-						min = 1.0
-						required = true
-					}
-				}
-				+cell {
-					// TODO: pass through?
-					tabIndex = 0
-					bind(worldPop or dataChanged) {
-						val pop = data?.population?.toDouble() ?: 0.0
-						label = pF.format(pop / worldPop.value)
-					}
-				}
-			}
-		}
+		dG = +CountryDataGrid(this)
 
 		dG.data = parseCountries(
 			"""
@@ -238,20 +118,5 @@ Brazil	211866273	//upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.s
 	companion object {
 		val styleTag = StyleTag("CountriesExample")
 
-		init {
-			addCssToHead(
-				"""
-${DataGrid.headerCellStyle} {
-
-}
-			"""
-			)
-		}
 	}
 }
-
-private data class CountryData(
-	val name: String,
-	val population: Long,
-	val flag: String
-)

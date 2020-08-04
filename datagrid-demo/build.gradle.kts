@@ -24,4 +24,5 @@ produceExecutable()
 
 dependencies {
 	implementation(project(":common"))
+	implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-js:0.3.2")
 }
