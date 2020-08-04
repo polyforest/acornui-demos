@@ -90,6 +90,23 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	var rowBuilder: (DataGridRow<E>.() -> Unit)? = null
 		private set
 
+	/**
+	 * Sets the callback to populate a new row with cells.
+	 * Rows are recycled and should set their values within [DataGridRow.data] blocks.
+	 *
+	 * Example:
+	 *
+	 * ```
+	 * rows = {
+	 *   +cell {
+	 *     data {
+	 *       label = it.name
+	 *     }
+	 *     tabIndex = 0
+	 *   }
+	 * }
+	 * ```
+	 */
 	fun rows(builder: DataGridRow<E>.() -> Unit) {
 		displayRows.forEach(Disposable::dispose)
 		displayRows.clear()
@@ -444,32 +461,6 @@ open class DataGridRow<E>(owner: Context) : DivComponent(owner) {
 		if (it.new != null)
 			callback(it.new)
 	}
-}
-
-/**
- * Constructs a new data grid row.
- *
- * Example:
- *
- * ```
- * rowFactory = {
- *   row {
- *     +cell {
- *       data {
- *         label = it.name
- *       }
- *       tabIndex = 0
- *     }
- *   }
- * }
- * ```
- *
- * This does not use a dsl marker in order to allow the [DataGridRow.data] method to be invoked without an explicit
- * receiver. (Ideally only this method would be annotated to not need an explicit receiver.)
- */
-inline fun <E> Context.row(init: (DataGridRow<E>).() -> Unit = {}): DataGridRow<E> {
-	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
-	return DataGridRow<E>(this).apply(init)
 }
 
 open class DataGridRowEditor<E>(owner: Context) : DataGridRow<E>(owner), Clearable {
