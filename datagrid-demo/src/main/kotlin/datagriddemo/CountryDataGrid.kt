@@ -25,6 +25,8 @@ import com.acornui.component.input.NumberInput
 import com.acornui.component.input.TextInput
 import com.acornui.component.input.numberInput
 import com.acornui.component.input.textInput
+import com.acornui.component.smallSpinner
+import com.acornui.component.style.LoadingStyles
 import com.acornui.di.Context
 import com.acornui.dom.img
 import com.acornui.formatters.numberFormatter
@@ -55,6 +57,10 @@ grid-template-columns: 32px repeat(3, auto);
 		header {
 			+headerCell {
 				applyCss("pointer-events: none;")
+				+smallSpinner {
+					applyCss("margin-top: 0.1em;")
+					addClass(LoadingStyles.showOnLoading)
+				}
 			}
 			+headerCell("Country")
 			+headerCell("Population 2020") {
@@ -97,7 +103,7 @@ grid-template-columns: 32px repeat(3, auto);
 				+img {
 					data { v ->
 						src = ""
-						frame.once { _ ->
+						frame.once {
 							src = v.flag
 						}
 					}

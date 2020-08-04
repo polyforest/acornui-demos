@@ -30,14 +30,8 @@ import com.acornui.css.css
 import com.acornui.css.cssProp
 import com.acornui.css.cssVar
 import com.acornui.di.Context
-import com.acornui.dom.addCssToHead
-import com.acornui.dom.div
-import com.acornui.dom.form
-import com.acornui.dom.getTabbableElements
-import com.acornui.input.Ascii
-import com.acornui.input.Event
-import com.acornui.input.focusin
-import com.acornui.input.keyPressed
+import com.acornui.dom.*
+import com.acornui.input.*
 import com.acornui.recycle.Clearable
 import com.acornui.recycle.recycle
 import com.acornui.signal.SignalSubscription
@@ -144,6 +138,9 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		submitted.listen {
 			editNextRow()
 		}
+		focusOutContainer.listen {
+			userEditRow(null)
+		}
 	}
 
 	/**
@@ -193,7 +190,7 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 
 	private fun createRow() = DataGridRow<E>(this).apply {
 		(rowBuilder ?: error("rows not set")).invoke(this)
-		focusin.listen {
+		focusInContainer.listen {
 			userEditRow(data)
 		}
 	}
@@ -216,10 +213,8 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		rowSubmitted.listen { e ->
 			if (autoMutate) {
 				data = data.toPersistentList().mutate {
-					println("e.index ${e.index}")
 					it[e.index] = e.newData!!
 				}
-				println("data $data")
 			}
 		}
 	}
@@ -235,7 +230,9 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		val rowEditor = rowEditor
 		if (editedRow != null) {
 			if (rowEditor.form.checkValidity()) {
-				rowSubmitted.dispatch(RowSubmittedEvent(editedRowIndex, rowEditor))
+				val submittedEvent = RowSubmittedEvent(editedRowIndex, rowEditor)
+				if (submittedEvent.oldData != submittedEvent.newData)
+					rowSubmitted.dispatch(submittedEvent)
 			} else {
 				// Edited row has user form errors.
 				rowEditor.form.reportValidity()
@@ -260,12 +257,13 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		val editedRowOld = displayRows.firstOrNull { it.data === editedRow }
 		editedRowOld?.style?.display = "contents"
 		contents.removeElement(rowEditor)
-		rowEditor.data = item
+		rowEditor.data = null
 		if (item == null) return
 
 		// Swap the display row with the row editor.
 		val editedRowIndex = displayRows.indexOfFirst { it.data === item }
 		if (editedRowIndex == -1) return
+		rowEditor.data = item
 		val editedDisplayRow = displayRows[editedRowIndex]
 		editedDisplayRow.style.display = "none"
 		contents.addElement(editedRowIndex, rowEditor)
@@ -478,7 +476,7 @@ open class DataGridRowEditor<E>(owner: Context) : DataGridRow<E>(owner), Clearab
 
 	val form = addChild(form {
 		preventAction()
-		+submitInput { style.display = "none" }
+		+hiddenSubmit()
 	})
 
 	/**

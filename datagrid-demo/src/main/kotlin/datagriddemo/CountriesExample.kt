@@ -17,39 +17,24 @@
 package datagriddemo
 
 import com.acornui.asset.loadText
-import com.acornui.collection.copy
-import com.acornui.collection.sumByLong
 import com.acornui.component.DivComponent
 import com.acornui.component.applyCss
 import com.acornui.component.datagrid.DataGrid
-import com.acornui.component.datagrid.cell
-import com.acornui.component.datagrid.dataGrid
-import com.acornui.component.datagrid.headerCell
 import com.acornui.component.input.*
 import com.acornui.component.layout.LayoutStyles
 import com.acornui.component.style.StyleTag
+import com.acornui.component.style.launchWithIndicator
 import com.acornui.css.css
 import com.acornui.di.Context
-import com.acornui.dom.addCssToHead
-import com.acornui.dom.img
-import com.acornui.formatters.numberFormatter
-import com.acornui.formatters.percentFormatter
-import com.acornui.frame
 import com.acornui.input.clicked
 import com.acornui.logging.Log
-import com.acornui.observe.bind
-import com.acornui.observe.dataBinding
-import com.acornui.observe.or
-import com.acornui.signal.once
-import kotlinx.collections.immutable.mutate
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+import kotlin.time.seconds
 
 
 class CountriesExample(owner: Context) : DivComponent(owner) {
 
-	private val dG: DataGrid<CountryData>
+	private val dataGrid: DataGrid<CountryData>
 
 	init {
 		addClass(styleTag)
@@ -61,15 +46,9 @@ class CountriesExample(owner: Context) : DivComponent(owner) {
 		"""
 		)
 
-//		+hFlowGroup {
-//			for (i in 0..20) {
-//				+button("Test $i")
-//			}
-//		}
+		dataGrid = +CountryDataGrid(this)
 
-		dG = +CountryDataGrid(this)
-
-		dG.data = parseCountries(
+		dataGrid.data = parseCountries(
 			"""
 China[b]	1403772560	//upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/23px-Flag_of_the_People%27s_Republic_of_China.svg.png
 India[c]	1365368088	//upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/23px-Flag_of_India.svg.png
@@ -82,14 +61,22 @@ Brazil	211866273	//upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.s
 
 //		dG.data += CountryData(0, "Fake", "North America", "Junk", 0, 0, 0f)
 
+		dataGrid.rowSubmitted.listen {
+			println("Updating row ${it.index} ${it.newData}")
+			launchWithIndicator {
+				delay(2.seconds)
+				println("Row update complete ${it.index}")
+			}
+		}
+
 		+button("Load more data") {
 			clicked.listen { e ->
-				dG.style.height = css("calc(100vh - 150px)")
+				dataGrid.style.height = css("calc(100vh - 150px)")
 				disabled = true
-				launch {
+				launchWithIndicator {
 					// Data from: https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population
 					val it = loadText("assets/countries.tsv")
-					dG.data = parseCountries(it)
+					dataGrid.data = parseCountries(it)
 					dispose()
 				}
 			}
