@@ -248,8 +248,9 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		if (editedRow != null) {
 			if (rowEditor.form.checkValidity()) {
 				val submittedEvent = RowSubmittedEvent(editedRowIndex, rowEditor)
-				if (submittedEvent.oldData != submittedEvent.newData)
+				if (submittedEvent.oldData != submittedEvent.newData) {
 					rowSubmitted.dispatch(submittedEvent)
+				}
 			} else {
 				// Edited row has user form errors.
 				rowEditor.form.reportValidity()
@@ -271,8 +272,8 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		val e = RowEditEvent(item)
 		rowEdited.dispatch(e)
 
-		val editedRowOld = displayRows.firstOrNull { it.data === editedRow }
-		editedRowOld?.style?.display = "contents"
+		val editedRowOldIndex = displayRows.indexOfFirst { it.data === editedRow }
+		if (editedRowOldIndex != -1) contents.addElement(editedRowOldIndex, displayRows[editedRowOldIndex])
 		contents.removeElement(rowEditor)
 		rowEditor.data = null
 		if (item == null) return
@@ -282,7 +283,7 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		if (editedRowIndex == -1) return
 		rowEditor.data = item
 		val editedDisplayRow = displayRows[editedRowIndex]
-		editedDisplayRow.style.display = "none"
+		contents.removeElement(editedDisplayRow)
 		contents.addElement(editedRowIndex, rowEditor)
 
 		// Set focus
