@@ -20,6 +20,7 @@ import com.acornui.collection.sumByLong
 import com.acornui.component.applyCss
 import com.acornui.component.datagrid.DataGrid
 import com.acornui.component.datagrid.cell
+import com.acornui.component.datagrid.editorCell
 import com.acornui.component.datagrid.headerCell
 import com.acornui.component.input.NumberInput
 import com.acornui.component.input.TextInput
@@ -47,9 +48,9 @@ class CountryDataGrid(owner: Context) : DataGrid<CountryData>(owner) {
 
 		applyCss(
 			"""
-width: 600px;
+width: 520px;
 min-height: 100px;
-grid-template-columns: 32px repeat(3, auto);
+grid-template-columns: 32px 1fr 0.8fr 0.5fr;
 
 			"""
 		)
@@ -57,6 +58,7 @@ grid-template-columns: 32px repeat(3, auto);
 		header {
 			+headerCell {
 				applyCss("pointer-events: none;")
+				tabIndex = -1
 				+smallSpinner {
 					applyCss("margin-top: 0.1em;")
 					addClass(LoadingStyles.showOnLoading)
@@ -110,10 +112,10 @@ grid-template-columns: 32px repeat(3, auto);
 				}
 			}
 			+cell {
+				tabIndex = 0
 				data {
 					label = it.name
 				}
-				tabIndex = 0
 			}
 			+cell {
 				tabIndex = 0
@@ -132,7 +134,7 @@ grid-template-columns: 32px repeat(3, auto);
 
 		rowEditor {
 			+cell {
-				// TODO: pass through?
+				tabIndex = -1
 				+img {
 					data {
 						src = it.flag
@@ -141,7 +143,7 @@ grid-template-columns: 32px repeat(3, auto);
 			}
 
 			val nameInput: TextInput
-			+cell {
+			+editorCell {
 				nameInput = +textInput {
 					data {
 						value = it.name
@@ -158,7 +160,7 @@ grid-template-columns: 32px repeat(3, auto);
 			}
 
 			val populationInput: NumberInput
-			+cell {
+			+editorCell {
 				populationInput = +numberInput {
 					data {
 						valueAsNumber = it.population.toDouble()
@@ -171,8 +173,7 @@ grid-template-columns: 32px repeat(3, auto);
 			}
 
 			+cell {
-				// TODO: pass through?
-				tabIndex = 0
+				tabIndex = -1
 				bind(worldPop or dataChanged) {
 					val pop = data?.population?.toDouble() ?: 0.0
 					label = pF.format(pop / worldPop.value)

@@ -22,9 +22,8 @@ import com.acornui.Disposable
 import com.acornui.component.*
 import com.acornui.component.input.Button
 import com.acornui.component.input.button
-import com.acornui.component.input.submitInput
 import com.acornui.component.style.StyleTag
-import com.acornui.component.text.TextFieldImpl
+import com.acornui.component.text.TextField
 import com.acornui.component.text.text
 import com.acornui.css.css
 import com.acornui.css.cssProp
@@ -38,9 +37,12 @@ import com.acornui.signal.SignalSubscription
 import com.acornui.signal.signal
 import com.acornui.skins.Theme
 import com.acornui.time.nextFrameCallback
+import kotlinx.browser.document
 import kotlinx.collections.immutable.mutate
 import kotlinx.collections.immutable.toPersistentList
+import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.ParentNode
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.properties.Delegates
@@ -61,12 +63,12 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		val index: Int,
 		val oldData: E,
 		val newData: E
-	) {
+	) : Event() {
 		constructor(index: Int, rowEditor: DataGridRowEditor<E>) : this(index, rowEditor.data!!, rowEditor.dataBuilder.invoke(rowEditor.data!!))
 	}
 
 	/**
-	 * Dispatched when the row editor has been validated and the editor is about to be closed.
+	 * Dispatched when the row editor form has been submitted and the form is valid.
 	 * This is typically when data requests should be made.
 	 * @see autoMutate
 	 */
@@ -75,15 +77,7 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	class RowEditEvent<E>(val item: E?) : Event()
 
 	/**
-	 * A row is about to be edited.
-	 * This will only dispatch via a user event, such as focusing a cell.
-	 * This may be cancelled.
-	 */
-	val rowEditing = signal<RowEditEvent<E>>()
-
-	/**
-	 * A row is being edited.
-	 * This may not be cancelled.
+	 * The currently edited row has changed. This may be cancelled.
 	 */
 	val rowEdited = signal<RowEditEvent<E>>()
 
@@ -152,11 +146,18 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	 * The row editor. This may be configured via [rowEditor]
 	 */
 	val rowEditor = DataGridRowEditor<E>(this).apply {
+		keyPressed.listen {
+			if (it.keyCode == Ascii.ENTER && it.shiftKey)
+				if (submitRow(reportValidity = false))
+					editPreviousRow()
+		}
 		submitted.listen {
-			editNextRow()
+			if (submitRow(reportValidity = false))
+				editNextRow()
 		}
 		focusOutContainer.listen {
-			userEditRow(null)
+			if (submitRow())
+				editRow(null)
 		}
 	}
 
@@ -165,6 +166,21 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	 */
 	val editedRow: E?
 		get() = rowEditor.data
+
+	/**
+	 * Returns the currently focused cell within the row, or -1 if the row isn't focused.
+	 */
+	val editedCellIndex: Int
+		get() = rowEditor.activeCellIndex
+
+	private val UiComponent.activeCellIndex: Int
+		get() {
+			val activeElement = document.activeElement ?: return -1
+			return elements.indexOfFirst {
+				it.dom.contains(activeElement)
+			}
+		}
+
 
 	/**
 	 * Returns the index of the row currently being edited.
@@ -191,6 +207,7 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	}
 
 	private val refreshRows = nextFrameCallback {
+		val previouslyFocused = editedCellIndex
 		val previouslyEdited = editedRow
 		editRow(null)
 		recycle(data, displayRows, factory = { item: E, index: Int ->
@@ -202,13 +219,13 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		}, retriever = { element ->
 			element.data
 		})
-		editRow(previouslyEdited)
+		editRow(previouslyEdited, previouslyFocused)
 	}
 
 	private fun createRow() = DataGridRow<E>(this).apply {
 		(rowBuilder ?: error("rows not set")).invoke(this)
 		focusInContainer.listen {
-			userEditRow(data)
+			editRow(data, activeCellIndex)
 		}
 	}
 
@@ -237,40 +254,18 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	}
 
 	/**
-	 * From a user interaction, sets the currently edited row.
-	 * First this will dispatch a [rowEditing] signal, which may be cancelled. If not cancelled, [editRow] will be
-	 * called.
-	 */
-	fun userEditRow(item: E?) {
-		val editedRow = editedRow
-		if (editedRow == item) return
-		val rowEditor = rowEditor
-		if (editedRow != null) {
-			if (rowEditor.form.checkValidity()) {
-				val submittedEvent = RowSubmittedEvent(editedRowIndex, rowEditor)
-				if (submittedEvent.oldData != submittedEvent.newData) {
-					rowSubmitted.dispatch(submittedEvent)
-				}
-			} else {
-				// Edited row has user form errors.
-				rowEditor.form.reportValidity()
-				return
-			}
-		}
-		val e = RowEditEvent(item)
-		rowEditing.dispatch(e)
-		if (e.defaultPrevented) return
-		editRow(item)
-	}
-
-	/**
 	 * Sets the currently edited row.
-	 * Dispatches a [rowEdited] signal, which may not be cancelled.
+	 * Dispatches a [rowEdited] signal, which may be cancelled.
+	 * @param item The data item to edit.
+	 * @param cellIndex The index of the cell within the row to give focus. If there are no tabbable elements within
+	 * that cell, the first tabbable element within the row will be focused.
 	 */
-	fun editRow(item: E?) {
+	fun editRow(item: E?, cellIndex: Int = 0) {
 		if (editedRow == item) return
+
 		val e = RowEditEvent(item)
 		rowEdited.dispatch(e)
+		if (e.defaultPrevented) return
 
 		val editedRowOldIndex = displayRows.indexOfFirst { it.data === editedRow }
 		if (editedRowOldIndex != -1) contents.addElement(editedRowOldIndex, displayRows[editedRowOldIndex])
@@ -287,29 +282,65 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		contents.addElement(editedRowIndex, rowEditor)
 
 		// Set focus
-		val firstInput = rowEditor.dom.getTabbableElements().firstOrNull()
+		val cellToFocus = rowEditor.elements.getOrNull(cellIndex)?.dom?.unsafeCast<ParentNode>()
+		var firstInput = cellToFocus?.getTabbableElements()?.firstOrNull()
+
+		if (firstInput == null) {
+			// The requested cell isn't focusable, pick either the first or last focusable element.
+			val allTabbable = rowEditor.dom.getTabbableElements()
+			firstInput = if (cellIndex <= rowEditor.elements.size / 2) allTabbable.firstOrNull() else allTabbable.lastOrNull()
+		}
+
 		firstInput?.focus()
 		if (firstInput?.tagName.equals("input", ignoreCase = true))
 			firstInput.unsafeCast<HTMLInputElement>().select()
 	}
 
 	/**
-	 * Commits the current row then opens the next row for editing.
+	 * Opens the next row for editing.
+	 * Note: This does not submit the current row.
+	 * @see submitRow
 	 */
 	fun editNextRow() {
-		userEditRow(data.getOrNull(editedRowIndex + 1))
+		editRow(data.getOrNull(editedRowIndex + 1))
 	}
 
 	/**
-	 * Commits the current row then opens the previous row for editing.
+	 * Opens the previous row for editing.
+	 * Note: This does not submit the current row.
+	 * @see submitRow
 	 */
 	fun editPreviousRow() {
-		userEditRow(data.getOrNull(editedRowIndex - 1))
+		editRow(data.getOrNull(editedRowIndex - 1))
 	}
 
-	fun commitRow() {
-		userEditRow(null)
+	/**
+	 * Submits the current row editor form.
+	 * The default behavior after a row has been submitted is if the form is valid and [rowSubmitted] is not default
+	 * prevented, then the next row will be opened.
+	 * @return Returns true if the submission was successful.
+	 */
+	fun submitRow(reportValidity: Boolean = true): Boolean {
+		if (rowEditor.data == null) return false
+		val form = rowEditor.form
+
+		return if (form.checkValidity()) {
+			val submittedEvent = RowSubmittedEvent(editedRowIndex, rowEditor)
+			if (submittedEvent.oldData != submittedEvent.newData) {
+				rowSubmitted.dispatch(submittedEvent)
+			}
+			!submittedEvent.defaultPrevented
+		} else {
+			if (reportValidity)
+				form.reportValidity()
+			false
+		}
 	}
+
+	/**
+	 * Closes the editor without submission or validation.
+	 */
+	fun closeEditor() = editRow(null)
 
 	companion object {
 
@@ -322,6 +353,7 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		val rowStyle = StyleTag("DataGrid_row")
 		val rowEditorStyle = StyleTag("DataGrid_rowEditor")
 		val cellStyle = StyleTag("DataGrid_cell")
+		val editorCellStyle = StyleTag("DataGrid_editorCell")
 
 		val borderThickness: String = css("1px")
 		val borderColor: String = css("#ccc")
@@ -342,7 +374,7 @@ $styleTag {
 }
 
 $cellStyle {
-	padding: ${cssVar(Theme::inputPadding)};
+	padding: calc(${cssVar(Theme::inputPadding)} + ${cssVar(Theme::borderThickness)});
 	display: flex;
 	align-items: center;
 }
@@ -417,8 +449,8 @@ $rowEditorStyle > form {
 	display: contents;
 }
 
-$rowEditorStyle * {
-
+$editorCellStyle {
+	padding: 0;
 }
 
 $contentsContainerStyle > $rowStyle:nth-child(2n+0) $cellStyle {
@@ -521,11 +553,22 @@ inline fun Context.headerCell(label: String = "", init: ComponentInit<Button> = 
 	}
 }
 
-inline fun Context.cell(label: String = "", init: ComponentInit<TextFieldImpl> = {}): TextFieldImpl {
+inline fun Context.cell(label: String = "", init: ComponentInit<TextField> = {}): TextField {
 	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
 	return text {
+		tabIndex = 0
 		addClass(DataGrid.cellStyle)
 		this.label = label
+		init()
+	}
+}
+
+inline fun Context.editorCell(init: ComponentInit<UiComponentImpl<HTMLDivElement>> = {}): UiComponentImpl<HTMLDivElement> {
+	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
+	return div {
+		addClass(DataGrid.cellStyle)
+		addClass(DataGrid.editorCellStyle)
+
 		init()
 	}
 }
