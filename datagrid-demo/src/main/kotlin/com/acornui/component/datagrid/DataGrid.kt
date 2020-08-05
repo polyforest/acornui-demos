@@ -513,6 +513,11 @@ $contentsContainerStyle > $rowStyle:nth-child(2n+1) $cellStyle {
 	background: ${cssVar(Theme::dataRowOddBackground)};
 }
 
+$headerCellStyle {
+	-webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
 $headerCellStyle$sortedAsc::after, $headerCellStyle$sortedDesc::after {
 	content: "${Icons.ARROW_DOWNWARD.toChar()}";
 	font-family: "Material Icons";
@@ -625,8 +630,6 @@ class HeaderCell(owner: Context) : Button(owner) {
 
 	init {
 		addClass(DataGrid.headerCellStyle)
-
-
 	}
 
 	fun <E, T : Comparable<T>> DataGrid<E>.bindSortingBy(columnSort: (row: E) -> T) {
@@ -638,6 +641,9 @@ class HeaderCell(owner: Context) : Button(owner) {
 				val newDirection = if (sortDisplay == ColumnSortDirection.ASCENDING) ColumnSortDirection.DESCENDING else ColumnSortDirection.ASCENDING
 				this.sort(ColumnSort(newDirection, this@HeaderCell, columnSort))
 			}
+		}
+		this@HeaderCell.longTouch.listen {
+			this.sort()
 		}
 	}
 
