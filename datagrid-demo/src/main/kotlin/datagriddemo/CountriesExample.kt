@@ -20,9 +20,9 @@ import com.acornui.asset.loadText
 import com.acornui.component.DivComponent
 import com.acornui.component.applyCss
 import com.acornui.component.datagrid.DataGrid
-import com.acornui.component.input.*
+import com.acornui.component.input.button
 import com.acornui.component.layout.LayoutStyles
-import com.acornui.component.style.StyleTag
+import com.acornui.component.style.cssClass
 import com.acornui.component.style.launchWithIndicator
 import com.acornui.css.css
 import com.acornui.di.Context
@@ -46,10 +46,14 @@ class CountriesExample(owner: Context) : DivComponent(owner) {
 		"""
 		)
 
-		dataGrid = +CountryDataGrid(this)
+		dataGrid = +CountryDataGrid(this).apply {
+			applyCss("""
+				width: 520px;
+				min-height: 200px;				
+			""")
 
-		dataGrid.data = parseCountries(
-			"""
+			data = parseCountries(
+				"""
 China[b]	1403772560	//upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/23px-Flag_of_the_People%27s_Republic_of_China.svg.png
 India[c]	1365368088	//upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/23px-Flag_of_India.svg.png
 United States[d]	330047753	//upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/23px-Flag_of_the_United_States.svg.png
@@ -57,20 +61,21 @@ Indonesia	269603400	//upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_
 Pakistan[e]	220892331	//upload.wikimedia.org/wikipedia/commons/thumb/3/32/Flag_of_Pakistan.svg/23px-Flag_of_Pakistan.svg.png
 Brazil	211866273	//upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.svg/22px-Flag_of_Brazil.svg.png
 		"""
-		)
+			)
 
 //		dG.data += CountryData(0, "Fake", "North America", "Junk", 0, 0, 0f)
 
-		dataGrid.rowSubmitted.listen {
-			println("Updating row ${it.index} ${it.newData}")
-			launchWithIndicator {
-				delay(2.seconds)
-				println("Row update complete ${it.index}")
+			rowSubmitted.listen {
+				println("Updating row ${it.index} ${it.newData}")
+				launchWithIndicator {
+					delay(2.seconds)
+					println("Row update complete ${it.index}")
+				}
 			}
 		}
 
 		+button("Load more data") {
-			clicked.listen { e ->
+			clicked.listen { _ ->
 				dataGrid.style.height = css("calc(100vh - 150px)")
 				disabled = true
 				launchWithIndicator {
@@ -103,7 +108,7 @@ Brazil	211866273	//upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.s
 	}
 
 	companion object {
-		val styleTag = StyleTag("CountriesExample")
+		val styleTag by cssClass()
 
 	}
 }

@@ -22,7 +22,7 @@ import com.acornui.component.layout.hFlowGroup
 import com.acornui.component.layout.hGroup
 import com.acornui.component.layout.vGroup
 import com.acornui.component.scroll.scrollArea
-import com.acornui.component.style.StyleTag
+import com.acornui.component.style.cssClass
 import com.acornui.component.text.text
 import com.acornui.component.text.textArea
 import com.acornui.css.cssVar
@@ -274,8 +274,8 @@ class InputsDemo(owner: Context) : DivComponent(owner) {
 	@Suppress("CssOverwrittenProperties")
 	companion object {
 
-		val styleTag = StyleTag("InputsDemo")
-		val mainFlowTag = StyleTag("mainFlow")
+		val styleTag by cssClass()
+		val mainFlowTag by cssClass()
 
 		init {
 			addCssToHead(

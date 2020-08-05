@@ -20,7 +20,7 @@ import com.acornui.app
 import com.acornui.component.DivComponent
 import com.acornui.component.layout.vGroup
 import com.acornui.component.scroll.scrollArea
-import com.acornui.component.style.StyleTag
+import com.acornui.component.style.cssClass
 import com.acornui.css.percent
 import com.acornui.demo.initThemes
 import com.acornui.demo.themeButton
@@ -91,7 +91,7 @@ class DataGridDemo(owner: Context) : DivComponent(owner) {
 
 	companion object {
 
-		val styleTag = StyleTag("DataGridDemo")
+		val styleTag by cssClass()
 
 	}
 }

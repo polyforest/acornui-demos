@@ -21,8 +21,7 @@ package com.acornui.component.datagrid
 import com.acornui.Disposable
 import com.acornui.component.*
 import com.acornui.component.input.Button
-import com.acornui.component.input.button
-import com.acornui.component.style.StyleTag
+import com.acornui.component.style.cssClass
 import com.acornui.component.text.TextField
 import com.acornui.component.text.text
 import com.acornui.css.css
@@ -30,6 +29,7 @@ import com.acornui.css.cssProp
 import com.acornui.css.cssVar
 import com.acornui.di.Context
 import com.acornui.dom.*
+import com.acornui.google.Icons
 import com.acornui.input.*
 import com.acornui.recycle.Clearable
 import com.acornui.recycle.recycle
@@ -60,12 +60,20 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	val dataChanged = signal<DataChangeEvent<E>>()
 
 	class RowSubmittedEvent<E>(
+
+		/**
+		 * The row index within [data]
+		 */
 		val index: Int,
+
+		/**
+		 * The row index within [dataView]
+		 */
+		val viewIndex: Int,
+
 		val oldData: E,
 		val newData: E
-	) : Event() {
-		constructor(index: Int, rowEditor: DataGridRowEditor<E>) : this(index, rowEditor.data!!, rowEditor.dataBuilder.invoke(rowEditor.data!!))
-	}
+	) : Event()
 
 	/**
 	 * Dispatched when the row editor form has been submitted and the form is valid.
@@ -117,6 +125,34 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 			refreshRows()
 		}
 
+	var sort: List<ColumnSort<E>> = emptyList()
+		set(value) {
+			if (field == value) return
+			field = value
+			refreshRows()
+		}
+
+	fun sort(vararg columnSort: ColumnSort<E>) {
+		this.sort = columnSort.toList()
+	}
+
+	private fun sortComparator(a: E, b: E): Int {
+		for (columnSort in sort) {
+			if (columnSort.direction == ColumnSortDirection.NONE) continue
+			val v1 = columnSort.selector(a)
+			val v2 = columnSort.selector(b)
+			val diff = compareValues(v1, v2)
+			if (diff != 0) return if (columnSort.direction == ColumnSortDirection.ASCENDING) diff else -diff
+		}
+		return 0
+	}
+
+	/**
+	 * The data with any view transformations such as sorting.
+	 */
+	var dataView: List<E> = emptyList()
+		private set
+
 	/**
 	 * Necessary only for Safari
 	 * https://stackoverflow.com/questions/57934803/workaround-for-a-safari-position-sticky-webkit-sticky-bug
@@ -145,7 +181,7 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	/**
 	 * The row editor. This may be configured via [rowEditor]
 	 */
-	val rowEditor = DataGridRowEditor<E>(this).apply {
+	val rowEditor = dataGridRowEditor<E> {
 		keyPressed.listen {
 			if (it.keyCode == Ascii.ENTER && it.shiftKey)
 				if (submitRow(reportValidity = false))
@@ -181,13 +217,6 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 			}
 		}
 
-
-	/**
-	 * Returns the index of the row currently being edited.
-	 */
-	val editedRowIndex: Int
-		get() = if (editedRow == null) -1 else displayRows.indexOfFirst { it.data === editedRow }
-
 	/**
 	 * Calls the specified function [block] with [rowEditor] as its receiver.
 	 */
@@ -207,13 +236,26 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	}
 
 	private val refreshRows = nextFrameCallback {
+		dataView = data.sortedWith(::sortComparator)
+
+		header.elements.forEach {
+			if (it is HeaderCell) {
+				it.sortDisplay = ColumnSortDirection.NONE
+			}
+		}
+		for (columnSort in sort) {
+			columnSort.headerCell?.sortDisplay = columnSort.direction
+		}
+
 		val previouslyFocused = editedCellIndex
 		val previouslyEdited = editedRow
 		editRow(null)
-		recycle(data, displayRows, factory = { item: E, index: Int ->
-			contents.addElement(index, createRow())
+		recycle(dataView, displayRows, factory = { _: E, index: Int ->
+			createRow()
 		}, configure = { element: DataGridRow<E>, item: E, index: Int ->
 			element.data = item
+			contents.removeElement(element)
+			contents.addElement(index, element)
 		}, disposer = {
 			it.dispose()
 		}, retriever = { element ->
@@ -222,7 +264,7 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		editRow(previouslyEdited, previouslyFocused)
 	}
 
-	private fun createRow() = DataGridRow<E>(this).apply {
+	private fun createRow() = dataGridRow<E> {
 		(rowBuilder ?: error("rows not set")).invoke(this)
 		focusInContainer.listen {
 			editRow(data, activeCellIndex)
@@ -288,7 +330,8 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		if (firstInput == null) {
 			// The requested cell isn't focusable, pick either the first or last focusable element.
 			val allTabbable = rowEditor.dom.getTabbableElements()
-			firstInput = if (cellIndex <= rowEditor.elements.size / 2) allTabbable.firstOrNull() else allTabbable.lastOrNull()
+			firstInput =
+				if (cellIndex <= rowEditor.elements.size / 2) allTabbable.firstOrNull() else allTabbable.lastOrNull()
 		}
 
 		firstInput?.focus()
@@ -302,7 +345,9 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	 * @see submitRow
 	 */
 	fun editNextRow() {
-		editRow(data.getOrNull(editedRowIndex + 1))
+		val i = dataView.indexOf(editedRow)
+		if (i != -1) editRow(dataView.getOrNull(i + 1))
+		else editRow(null)
 	}
 
 	/**
@@ -311,7 +356,8 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 	 * @see submitRow
 	 */
 	fun editPreviousRow() {
-		editRow(data.getOrNull(editedRowIndex - 1))
+		val i = dataView.indexOf(editedRow)
+		editRow(dataView.getOrNull(i - 1))
 	}
 
 	/**
@@ -325,7 +371,13 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 		val form = rowEditor.form
 
 		return if (form.checkValidity()) {
-			val submittedEvent = RowSubmittedEvent(editedRowIndex, rowEditor)
+			val previousData = rowEditor.data!!
+			val submittedEvent = RowSubmittedEvent(
+				data.indexOf(previousData),
+				dataView.indexOf(previousData),
+				previousData,
+				rowEditor.dataBuilder.invoke(rowEditor.data!!)
+			)
 			if (submittedEvent.oldData != submittedEvent.newData) {
 				rowSubmitted.dispatch(submittedEvent)
 			}
@@ -344,16 +396,19 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 
 	companion object {
 
-		val styleTag = StyleTag("DataGrid")
-		val mainContainerStyle = StyleTag("DataGrid_mainContainer")
-		val headerRowStyle = StyleTag("DataGrid_headerRow")
-		val footerRowStyle = StyleTag("DataGrid_footerRow")
-		val headerCellStyle = StyleTag("DataGrid_headerCell")
-		val contentsContainerStyle = StyleTag("DataGrid_contentsContainer")
-		val rowStyle = StyleTag("DataGrid_row")
-		val rowEditorStyle = StyleTag("DataGrid_rowEditor")
-		val cellStyle = StyleTag("DataGrid_cell")
-		val editorCellStyle = StyleTag("DataGrid_editorCell")
+		val styleTag by cssClass()
+		val mainContainerStyle by cssClass()
+		val headerRowStyle by cssClass()
+		val footerRowStyle by cssClass()
+		val headerCellStyle by cssClass()
+		val contentsContainerStyle by cssClass()
+		val rowStyle by cssClass()
+		val rowEditorStyle by cssClass()
+		val cellStyle by cssClass()
+		val editorCellStyle by cssClass()
+
+		val sortedAsc by cssClass()
+		val sortedDesc by cssClass()
 
 		val borderThickness: String = css("1px")
 		val borderColor: String = css("#ccc")
@@ -406,13 +461,10 @@ $headerRowStyle > div:first-child {
 $headerRowStyle > div {
 	--br: calc(${cssVar(Theme::borderRadius)} - ${cssVar(Theme::borderThickness)});
 	border-radius: 0;
-	grid-row-start: 1;
-	/*align-self: stretch;*/
 	border: none;
 	position: -webkit-sticky;
 	position: sticky;
 	top: 0;
-
 	font-weight: bolder;
 }
 
@@ -460,9 +512,35 @@ $contentsContainerStyle > $rowStyle:nth-child(2n+0) $cellStyle {
 $contentsContainerStyle > $rowStyle:nth-child(2n+1) $cellStyle {
 	background: ${cssVar(Theme::dataRowOddBackground)};
 }
+
+$headerCellStyle$sortedAsc::after, $headerCellStyle$sortedDesc::after {
+	content: "${Icons.ARROW_DOWNWARD.toChar()}";
+	font-family: "Material Icons";
+    display: inline-block;
+    white-space: nowrap;
+    -webkit-font-smoothing: antialiased;
+	transition: transform 0.3s ease-in-out;
+}
+
+$headerCellStyle$sortedDesc::after {
+	transform: rotate(180deg);
+}
 			"""
 			)
 		}
+	}
+}
+
+inline fun <E> Context.dataGrid(init: ComponentInit<DataGrid<E>> = {}): DataGrid<E> {
+	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
+	return DataGrid<E>(this).apply(init)
+}
+
+inline fun <E> Context.dataGrid(data: List<E>, init: ComponentInit<DataGrid<E>> = {}): DataGrid<E> {
+	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
+	return DataGrid<E>(this).apply {
+		this.data = data
+		init()
 	}
 }
 
@@ -494,6 +572,11 @@ open class DataGridRow<E>(owner: Context) : DivComponent(owner) {
 		if (it.new != null)
 			callback(it.new)
 	}
+}
+
+private inline fun <E> Context.dataGridRow(init: ComponentInit<DataGridRow<E>> = {}): DataGridRow<E> {
+	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
+	return DataGridRow<E>(this).apply(init)
 }
 
 open class DataGridRowEditor<E>(owner: Context) : DataGridRow<E>(owner), Clearable {
@@ -531,23 +614,80 @@ open class DataGridRowEditor<E>(owner: Context) : DataGridRow<E>(owner), Clearab
 	}
 }
 
-inline fun <E> Context.dataGrid(init: ComponentInit<DataGrid<E>> = {}): DataGrid<E> {
+private inline fun <E> Context.dataGridRowEditor(init: ComponentInit<DataGridRowEditor<E>> = {}): DataGridRowEditor<E> {
 	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
-	return DataGrid<E>(this).apply(init)
+	return DataGridRowEditor<E>(this).apply(init)
 }
 
-inline fun <E> Context.dataGrid(data: List<E>, init: ComponentInit<DataGrid<E>> = {}): DataGrid<E> {
-	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
-	return DataGrid<E>(this).apply {
-		this.data = data
-		init()
-	}
-}
+class HeaderCell(owner: Context) : Button(owner) {
 
-inline fun Context.headerCell(label: String = "", init: ComponentInit<Button> = {}): Button {
-	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
-	return button {
+	private var clickListener: SignalSubscription? = null
+
+	init {
 		addClass(DataGrid.headerCellStyle)
+
+
+	}
+
+	fun <E, T : Comparable<T>> DataGrid<E>.bindSortingBy(columnSort: (row: E) -> T) {
+		clickListener?.dispose()
+		clickListener = this@HeaderCell.clicked.listen {
+			if (it.ctrlKey) {
+				sort = emptyList()
+			} else {
+				val newDirection = if (sortDisplay == ColumnSortDirection.ASCENDING) ColumnSortDirection.DESCENDING else ColumnSortDirection.ASCENDING
+				this.sort(ColumnSort(newDirection, this@HeaderCell, columnSort))
+			}
+		}
+	}
+
+	/**
+	 * Adjusts the css class list to represent this column's sorting.
+	 * This will be modified by the DataGrid.
+	 */
+	var sortDisplay = ColumnSortDirection.NONE
+		set(value) {
+			if (field == value) return
+			field = value
+			removeClass(DataGrid.sortedAsc)
+			removeClass(DataGrid.sortedDesc)
+			if (value == ColumnSortDirection.ASCENDING) {
+				addClass(DataGrid.sortedAsc)
+			} else if (value == ColumnSortDirection.DESCENDING) {
+				addClass(DataGrid.sortedDesc)
+			}
+		}
+}
+
+data class ColumnSort<E>(
+
+	/**
+	 * The direction of the sort.
+	 */
+	val direction: ColumnSortDirection = ColumnSortDirection.ASCENDING,
+
+	/**
+	 * If set, the header cell's [HeaderCell.sortDisplay] will be set.
+	 */
+	val headerCell: HeaderCell? = null,
+
+	/**
+	 * Selects the comparable value on which to sort.
+	 */
+	val selector: (E) -> Comparable<*>?
+
+)
+
+
+enum class ColumnSortDirection {
+	NONE,
+	ASCENDING,
+	DESCENDING
+}
+
+inline fun Context.headerCell(label: String = "", init: ComponentInit<HeaderCell> = {}): HeaderCell {
+	contract { callsInPlace(init, InvocationKind.EXACTLY_ONCE) }
+	return HeaderCell(this).apply {
 		this.label = label
 		init()
 	}

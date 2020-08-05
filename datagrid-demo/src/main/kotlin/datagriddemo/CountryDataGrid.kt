@@ -48,8 +48,6 @@ class CountryDataGrid(owner: Context) : DataGrid<CountryData>(owner) {
 
 		applyCss(
 			"""
-width: 520px;
-min-height: 100px;
 grid-template-columns: 32px 1fr 0.8fr 0.5fr;
 
 			"""
@@ -64,9 +62,15 @@ grid-template-columns: 32px 1fr 0.8fr 0.5fr;
 					addClass(LoadingStyles.showOnLoading)
 				}
 			}
-			+headerCell("Country")
+			+headerCell("Country") {
+				title = "Country"
+
+				bindSortingBy { it.name }
+			}
 			+headerCell("Population 2020") {
 				title = "Population 2020"
+
+				bindSortingBy { it.population }
 			}
 			+headerCell("% World") {
 				applyCss(
@@ -75,6 +79,8 @@ grid-template-columns: 32px 1fr 0.8fr 0.5fr;
 					"""
 				)
 				title = "Percentage of world population"
+
+				bindSortingBy { it.population }
 			}
 		}
 
@@ -173,7 +179,6 @@ grid-template-columns: 32px 1fr 0.8fr 0.5fr;
 			}
 
 			+cell {
-				tabIndex = -1
 				bind(worldPop or dataChanged) {
 					val pop = data?.population?.toDouble() ?: 0.0
 					label = pF.format(pop / worldPop.value)
