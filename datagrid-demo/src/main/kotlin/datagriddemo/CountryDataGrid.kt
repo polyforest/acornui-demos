@@ -179,6 +179,7 @@ grid-template-columns: 32px 1fr 0.8fr 0.5fr;
 			}
 
 			+cell {
+				tabIndex = -1
 				bind(worldPop or dataChanged) {
 					val pop = data?.population?.toDouble() ?: 0.0
 					label = pF.format(pop / worldPop.value)

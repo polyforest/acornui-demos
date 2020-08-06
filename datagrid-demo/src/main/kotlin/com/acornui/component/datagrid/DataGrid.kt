@@ -178,6 +178,8 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 
 	private val displayRows = ArrayList<DataGridRow<E>>()
 
+	private var isSecondSaveAttempt = false
+
 	/**
 	 * The row editor. This may be configured via [rowEditor]
 	 */
@@ -191,9 +193,14 @@ open class DataGrid<E>(owner: Context) : DivComponent(owner) {
 			if (submitRow(reportValidity = false))
 				editNextRow()
 		}
+		input.listen {
+			isSecondSaveAttempt = false
+		}
 		focusOutContainer.listen {
-			if (submitRow())
+			if (submitRow() || isSecondSaveAttempt)
 				editRow(null)
+			else
+				isSecondSaveAttempt = true
 		}
 	}
 
