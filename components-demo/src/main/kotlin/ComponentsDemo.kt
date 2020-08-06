@@ -41,7 +41,7 @@ import com.acornui.version
 /**
  * An example of input controls.
  */
-class InputsDemo(owner: Context) : DivComponent(owner) {
+class InputsDemo(owner: Context) : Div(owner) {
 
 	init {
 		addClass(styleTag)

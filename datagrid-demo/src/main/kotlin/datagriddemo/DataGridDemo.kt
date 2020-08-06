@@ -17,7 +17,7 @@
 package datagriddemo
 
 import com.acornui.app
-import com.acornui.component.DivComponent
+import com.acornui.component.Div
 import com.acornui.component.applyCss
 import com.acornui.component.layout.vGroup
 import com.acornui.component.scroll.scrollArea
@@ -33,7 +33,7 @@ import com.acornui.version
 /**
  * @author nbilyk
  */
-class DataGridDemo(owner: Context) : DivComponent(owner) {
+class DataGridDemo(owner: Context) : Div(owner) {
 
 
 

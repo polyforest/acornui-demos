@@ -17,7 +17,7 @@
 package datagriddemo
 
 import com.acornui.asset.loadText
-import com.acornui.component.DivComponent
+import com.acornui.component.Div
 import com.acornui.component.applyCss
 import com.acornui.component.datagrid.DataGrid
 import com.acornui.component.input.button
@@ -32,7 +32,7 @@ import kotlinx.coroutines.delay
 import kotlin.time.seconds
 
 
-class CountriesExample(owner: Context) : DivComponent(owner) {
+class CountriesExample(owner: Context) : Div(owner) {
 
 	private val dataGrid: DataGrid<CountryData>
 
