@@ -635,14 +635,21 @@ class HeaderCell(owner: Context) : Button(owner) {
 	fun <E, T : Comparable<T>> DataGrid<E>.bindSortingBy(columnSort: (row: E) -> T) {
 		clickListener?.dispose()
 		clickListener = this@HeaderCell.clicked.listen {
-			if (it.ctrlKey) {
-				sort = emptyList()
-			} else {
-				val newDirection = if (sortDisplay == ColumnSortDirection.ASCENDING) ColumnSortDirection.DESCENDING else ColumnSortDirection.ASCENDING
-				this.sort(ColumnSort(newDirection, this@HeaderCell, columnSort))
+			if (!it.isHandled) {
+				it.handle()
+				if (it.ctrlKey) {
+					sort = emptyList()
+				} else {
+					val newDirection = if (sortDisplay == ColumnSortDirection.ASCENDING) ColumnSortDirection.DESCENDING else ColumnSortDirection.ASCENDING
+					this.sort(ColumnSort(newDirection, this@HeaderCell, columnSort))
+				}
 			}
 		}
-		this@HeaderCell.longTouch.listen {
+		this@HeaderCell.longTouched.listen {
+			this.sort()
+		}
+
+		this@HeaderCell.longPressed.listen {
 			this.sort()
 		}
 	}
