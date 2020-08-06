@@ -18,14 +18,17 @@ package datagriddemo
 
 import com.acornui.app
 import com.acornui.component.DivComponent
+import com.acornui.component.applyCss
 import com.acornui.component.layout.vGroup
 import com.acornui.component.scroll.scrollArea
 import com.acornui.component.style.cssClass
+import com.acornui.component.text.text
 import com.acornui.css.percent
 import com.acornui.demo.initThemes
 import com.acornui.demo.themeButton
 import com.acornui.di.Context
 import com.acornui.i18n.i18nBundle
+import com.acornui.version
 
 /**
  * @author nbilyk
@@ -80,6 +83,14 @@ class DataGridDemo(owner: Context) : DivComponent(owner) {
 
 
 				+CountriesExample(this)
+
+				+text("v$version") {
+					applyCss("""
+							justify-self: flex-end;
+							align-self: flex-end;
+							margin-top: auto;
+							""")
+				}
 
 //				navAddElement(nav, "countries", disposeOnRemove = true) { CountriesExample(this) layout { fill() } }
 //				navAddElement(nav, "generated", disposeOnRemove = true) { GeneratedDataExample(this) layout { fill() } }
