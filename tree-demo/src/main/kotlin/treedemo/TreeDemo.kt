@@ -21,6 +21,7 @@ import com.acornui.app
 import com.acornui.component.Div
 import com.acornui.component.applyCss
 import com.acornui.component.layout.LayoutStyles
+import com.acornui.component.layout.spacer
 import com.acornui.component.layout.vGroup
 import com.acornui.component.panel
 import com.acornui.component.style.cssClass
@@ -29,6 +30,7 @@ import com.acornui.component.tree
 import com.acornui.demo.initThemes
 import com.acornui.demo.themeButton
 import com.acornui.di.Context
+import com.acornui.dom.a
 import com.acornui.version
 
 /**
@@ -41,8 +43,10 @@ class TreeDemo(owner: Context) : Div(owner) {
 	init {
 		addClass(LayoutStyles.vGroup)
 		applyCss("""
-height: 100%;
-padding: 15px;			
+			overflow: auto;
+			width: 100%;
+			height: 100%;
+			padding: 15px;			
 		""")
 		initThemes()
 
@@ -50,8 +54,13 @@ padding: 15px;
 
 
 		+vGroup() {
-
+			+a("#") {
+				+"Hello World"
+			}
 			+panel {
+				+a("#") {
+					+"Hello World"
+				}
 				+tree<TreeNode> {
 					data = TreeNode("a", listOf(
 						TreeNode("a.a", listOf(
@@ -75,13 +84,13 @@ padding: 15px;
 				}
 			}
 
-			+text("v$version") {
-				applyCss("""
-position: absolute;
-bottom: 5px;
-right: 5px;
-							""")
-			}
+		}
+		+spacer { applyCss("flex-grow: 1;") }
+		+text("v$version") {
+			applyCss("""
+				align-self: flex-end;
+				justify-self: flex-end;
+						""")
 		}
 
 	}

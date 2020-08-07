@@ -34,10 +34,9 @@ import com.acornui.math.Easing
 import com.acornui.math.lerp
 import com.acornui.recycle.recycle
 import com.acornui.resize
-import com.acornui.signal.SignalSubscription
-import com.acornui.signal.once
-import com.acornui.signal.signal
+import com.acornui.signal.*
 import com.acornui.tween.tween
+import org.w3c.dom.events.MouseEvent
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.time.seconds
@@ -59,9 +58,16 @@ open class Tree<T : Node>(owner: Context) : Div(owner) {
 	val labelComponent = inner.addElement(div {
 		addClass(TreeStyle.label)
 		clicked.listen {
-			toggled = !toggled
+			if (data?.children?.isNotEmpty() == true) {
+				toggled = !toggled
+			}
 		}
 	})
+
+	val leafClicked: Signal<MouseEvent>
+		get() = labelComponent.clicked.filtered {
+			data?.children?.isEmpty() == true
+		}
 
 	val subTreesContainer = inner.addElement(div {
 		addClass(TreeStyle.subTreesContainer)
@@ -190,8 +196,6 @@ open class Tree<T : Node>(owner: Context) : Div(owner) {
 object TreeStyle {
 
 	val tree by cssClass()
-	val vLine by cssClass()
-	val hLine by cssClass()
 	val inner by cssClass()
 	val label by cssClass()
 	val subTreesContainer by cssClass()
@@ -204,6 +208,7 @@ $tree {
 	display: flex;
 	flex-direction: row;
 	align-items: self-start;
+	--gap: 12px;
 }
 
 $inner {
@@ -229,7 +234,7 @@ $inner$withChildren > $label:before {
     display: inline-block;
     white-space: nowrap;
     -webkit-font-smoothing: antialiased;
-	transition: transform 0.3s ease-in-out;
+	transition: transform 0.3s ease-out;
 }
 
 $inner:not($withChildren) > $label:before {
@@ -244,16 +249,20 @@ $withChildren$toggled > $label:before {
 
 $subTreesContainer {
 	display: flex;
-	margin-left: 10px;
+	margin-left: 8px;
 	opacity: 0;
 	flex-direction: column;
 	align-items: self-start;
 	overflow: hidden;
-	transition: opacity 0.3s ease-in-out;
+	transition: opacity 0.3s ease-out;
 }
 
 $toggled > $subTreesContainer {
 	opacity: 1;
+}
+
+$subTreesContainer > $tree > $inner > $label {
+	margin-top: var(--gap);
 }
 
 $subTreesContainer > $tree:not(:last-child) {
@@ -261,16 +270,14 @@ $subTreesContainer > $tree:not(:last-child) {
 }
 
 $subTreesContainer > $tree:last-child:before {
-	content: " ";
 	border-left: 1px solid #777676;
-	height: 10px;
 }
 
 $subTreesContainer > $tree:before {
 	content: " ";
 	border-bottom: 1px solid #777676;
 	width: 1ch;
-	height: 10px;
+	height: calc(var(--gap) + 0.6em);
 }
 
 
