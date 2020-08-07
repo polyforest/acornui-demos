@@ -17,6 +17,7 @@
 package com.acornui.demo
 
 import com.acornui.component.StageImpl
+import com.acornui.component.StageStyle
 import com.acornui.component.UiComponent
 import com.acornui.component.input.button
 import com.acornui.component.stage
@@ -44,7 +45,7 @@ fun initThemes() {
 	)
 	addCssToHead(
 		"""
-				${StageImpl.styleTag} {
+				${StageStyle.stage} {
 					font-family: 'Montserrat', sans-serif;
 					font-weight: 300;
 				}

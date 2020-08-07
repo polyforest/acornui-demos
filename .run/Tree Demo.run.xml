@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Tree Demo" type="JavascriptDebugType" uri="http://localhost:63342/acornui-demos/acornui-demos.tree-demo/build/distributions/index.html?debug=true" useBuiltInWebServerPort="true">
+    <method v="2">
+      <option name="Gradle.BeforeRunTask" enabled="false" tasks="browserDevelopmentWebpack" externalProjectPath="$PROJECT_DIR$/tree-demo" vmOptions="" scriptParameters="" />
+    </method>
+  </configuration>
+</component>

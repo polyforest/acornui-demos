@@ -14,25 +14,15 @@
  * limitations under the License.
  */
 
-rootProject.name = "acornui-demos"
+import com.acornui.build.plugins.produceExecutable
 
-pluginManagement {
-	val acornVersion: String by settings
-	repositories {
-		gradlePluginPortal()
-		mavenCentral()
-		jcenter()
-		maven("https://oss.sonatype.org/content/repositories/snapshots")
-		mavenLocal()
-	}
-	resolutionStrategy {
-		eachPlugin {
-			when(requested.id.namespace) {
-				"com.acornui" -> useVersion(acornVersion)
-			}
-		}
-	}
+plugins {
+	id("com.acornui.js")
 }
 
-// Add modules as they are created.  By default, subprojects take on the name of their root directory in gradle.
-include("common", "components-demo", "datagrid-demo", "tree-demo")
+produceExecutable()
+
+dependencies {
+	implementation(project(":common"))
+	implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable-js:0.3.2")
+}
