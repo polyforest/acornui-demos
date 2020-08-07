@@ -14,13 +14,26 @@
  * limitations under the License.
  */
 
+package componentsdemo/*
+ * Copyright 2020 Poly Forest, LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import com.acornui.app
 import com.acornui.component.*
 import com.acornui.component.input.*
-import com.acornui.component.layout.FlowGroup
-import com.acornui.component.layout.hFlowGroup
-import com.acornui.component.layout.hGroup
-import com.acornui.component.layout.vGroup
+import com.acornui.component.layout.*
 import com.acornui.component.scroll.scrollArea
 import com.acornui.component.style.cssClass
 import com.acornui.component.text.text
@@ -41,7 +54,7 @@ import com.acornui.version
 /**
  * An example of input controls.
  */
-class InputsDemo(owner: Context) : Div(owner) {
+class Main(owner: Context) : Div(owner) {
 
 	init {
 		addClass(styleTag)
@@ -286,7 +299,7 @@ $mainFlowTag {
 	width: 100%;
 }
 
-$mainFlowTag > ${FlowGroup.contentsTag} > div {
+$mainFlowTag > ${FlowGroupStyle.contents} > div {
 	max-width: 250px;
 	align-items: stretch;
 }
@@ -298,9 +311,9 @@ $mainFlowTag > ${FlowGroup.contentsTag} > div {
 }
 
 /**
- * `main` is our main entry point.
+ * `componentsdemo.main` is our componentsdemo.main entry point.
  */
 fun main() = app("acornUiRoot") {
-	// Create and add our main component to the stage:
-	+InputsDemo(this)
+	// Create and add our componentsdemo.main component to the stage:
+	+Main(this)
 }
