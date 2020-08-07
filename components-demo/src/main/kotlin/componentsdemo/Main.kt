@@ -33,21 +33,23 @@ package componentsdemo/*
 import com.acornui.app
 import com.acornui.component.*
 import com.acornui.component.input.*
-import com.acornui.component.layout.*
+import com.acornui.component.layout.FlowGroupStyle
+import com.acornui.component.layout.hFlowGroup
+import com.acornui.component.layout.hGroup
+import com.acornui.component.layout.vGroup
 import com.acornui.component.scroll.scrollArea
 import com.acornui.component.style.cssClass
 import com.acornui.component.text.text
 import com.acornui.component.text.textArea
-import com.acornui.css.cssVar
 import com.acornui.css.percent
 import com.acornui.demo.initThemes
 import com.acornui.demo.themeButton
 import com.acornui.di.Context
-import com.acornui.dom.addCssToHead
+import com.acornui.dom.addStyleToHead
 import com.acornui.dom.div
 import com.acornui.dom.form
 import com.acornui.input.clicked
-import com.acornui.skins.Theme
+import com.acornui.skins.CssProps
 import com.acornui.time.Date
 import com.acornui.version
 
@@ -64,7 +66,7 @@ class Main(owner: Context) : Div(owner) {
 
 			applyCss(
 				"""
-					padding: ${cssVar(Theme::padding)};
+					padding: ${CssProps.padding.v};
 					width: 100%;
 					height: 100%;
 			"""
@@ -291,7 +293,7 @@ class Main(owner: Context) : Div(owner) {
 		val mainFlowTag by cssClass()
 
 		init {
-			addCssToHead(
+			addStyleToHead(
 				"""
 					
 $mainFlowTag {

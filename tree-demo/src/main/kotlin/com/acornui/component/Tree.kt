@@ -24,7 +24,7 @@ import com.acornui.component.style.CommonStyleTags.toggled
 import com.acornui.component.style.cssClass
 import com.acornui.css.px
 import com.acornui.di.Context
-import com.acornui.dom.addCssToHead
+import com.acornui.dom.addStyleToHead
 import com.acornui.dom.div
 import com.acornui.formatters.StringFormatter
 import com.acornui.formatters.ToStringFormatter
@@ -202,7 +202,7 @@ object TreeStyle {
 	val withChildren by cssClass()
 
 	init {
-		addCssToHead(
+		addStyleToHead(
 			"""
 $tree {
 	display: flex;

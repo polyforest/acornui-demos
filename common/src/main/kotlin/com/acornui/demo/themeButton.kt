@@ -16,24 +16,22 @@
 
 package com.acornui.demo
 
-import com.acornui.component.StageImpl
 import com.acornui.component.StageStyle
 import com.acornui.component.UiComponent
 import com.acornui.component.input.button
 import com.acornui.component.stage
 import com.acornui.component.text.text
 import com.acornui.css.css
-import com.acornui.css.cssVar
 import com.acornui.di.Context
 import com.acornui.dom.add
-import com.acornui.dom.addCssToHead
+import com.acornui.dom.addStyleToHead
 import com.acornui.dom.head
 import com.acornui.dom.linkElement
 import com.acornui.google.Icons
 import com.acornui.google.icon
-import com.acornui.skins.Theme
-import com.acornui.skins.addCssToHead
+import com.acornui.skins.DefaultStyles
 import com.acornui.skins.darkTheme
+import com.acornui.skins.theme
 import kotlinx.browser.localStorage
 
 fun initThemes() {
@@ -43,7 +41,7 @@ fun initThemes() {
 			rel = "stylesheet"
 		)
 	)
-	addCssToHead(
+	addStyleToHead(
 		"""
 				${StageStyle.stage} {
 					font-family: 'Montserrat', sans-serif;
@@ -52,8 +50,7 @@ fun initThemes() {
 				
 			"""
 	)
-	Theme().addCssToHead()
-	darkTheme.addCssToHead(".dark")
+	DefaultStyles
 }
 
 fun Context.themeButton(): UiComponent {
@@ -65,7 +62,7 @@ fun Context.themeButton(): UiComponent {
 		toggleOnClick = true
 		toggled = (localStorage.getItem("darkMode") ?: "false").toBoolean()
 		if (toggled)
-			stage.dom.classList.toggle("dark")
+			stage.theme = darkTheme
 
 		val refreshLabel = {
 			label.label = if (toggled) "Light" else "Dark"
@@ -73,7 +70,7 @@ fun Context.themeButton(): UiComponent {
 		refreshLabel()
 		toggledChanged.listen {
 			refreshLabel()
-			stage.dom.classList.toggle("dark")
+			stage.theme = if (toggled) darkTheme else null
 			localStorage.setItem("darkMode", toggled.toString())
 		}
 	}
