@@ -21,6 +21,7 @@ import com.acornui.app
 import com.acornui.component.Div
 import com.acornui.component.applyCss
 import com.acornui.component.layout.LayoutStyles
+import com.acornui.component.layout.hGroup
 import com.acornui.component.layout.spacer
 import com.acornui.component.layout.vGroup
 import com.acornui.component.panel
@@ -31,6 +32,7 @@ import com.acornui.demo.initThemes
 import com.acornui.demo.themeButton
 import com.acornui.di.Context
 import com.acornui.dom.a
+import com.acornui.dom.div
 import com.acornui.version
 
 /**
@@ -53,36 +55,79 @@ class TreeDemo(owner: Context) : Div(owner) {
 		+themeButton()
 
 
-		+vGroup() {
-			+a("#") {
-				+"Hello World"
+		+hGroup() {
+			applyCss("""
+				align-items: flex-start;
+			""")
+			val logArea = vGroup {
+				applyCss("""
+					max-height: 500px; 
+					overflow: auto; 
+					padding: 50px;
+			""")
 			}
 			+panel {
-				+a("#") {
-					+"Hello World"
-				}
 				+tree<TreeNode> {
-					data = TreeNode("a", listOf(
-						TreeNode("a.a", listOf(
-							TreeNode("a.a.a"),
-							TreeNode("a.a.b")
+					data = TreeNode("Animalia", listOf(
+						TreeNode("Chordate", listOf(
+							TreeNode("Mammal", listOf(
+								TreeNode("Primate", listOf(
+									TreeNode("Hominidae", listOf(
+										TreeNode("Homo", listOf(
+											TreeNode("Sapiens", listOf(
+												TreeNode("Human")
+											)),
+										)),
+									)),
+									TreeNode("Pongidae", listOf(
+										TreeNode("Pan", listOf(
+											TreeNode("Troglodytes", listOf(
+												TreeNode("Chimpanzee"),
+											)),
+										)),
+									)),
+								)),
+								TreeNode("Carnivora", listOf(
+									TreeNode("Felidae", listOf(
+										TreeNode("Felis", listOf(
+											TreeNode("Domestica", listOf(
+												TreeNode("House Cat"),
+											)),
+											TreeNode("Leo", listOf(
+												TreeNode("Lion"),
+											)),
+										)),
+									)),
+								)),
+							)),
 						)),
-						TreeNode("a.b", listOf(
-							TreeNode("a.b.a"),
-							TreeNode("a.b.b")
+						TreeNode("Arthropoda", listOf(
+							TreeNode("Insect", listOf(
+								TreeNode("Diptera", listOf(
+									TreeNode("Muscidae", listOf(
+										TreeNode("Musca", listOf(
+											TreeNode("Domestica", listOf(
+												TreeNode("Housefly", listOf(
+
+												)),
+											)),
+										)),
+									)),
+								)),
+							)),
 						)),
-						TreeNode("a.c", listOf(
-							TreeNode("a.c.a"),
-							TreeNode("a.c.b"),
-							TreeNode("a.c.c"),
-						))
 					))
 					all {
 						toggled = true
 						formatter { data -> data?.label ?: "Unset" }
+
+						leafClicked.listen {
+							logArea.addElement(text("${data?.label} Clicked!"))
+						}
 					}
 				}
 			}
+			+logArea
 
 		}
 		+spacer { applyCss("flex-grow: 1;") }
